@@ -49,7 +49,7 @@ VascuEye is a medical imaging system that utilizes near-infrared (NIR) technolog
 
 ## Solution Architecture
 
-High level diagram + description
+![Sample Image](./images/3YP-Page.png)
 
 ## Hardware and Software Designs
 
