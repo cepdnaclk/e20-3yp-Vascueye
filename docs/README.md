@@ -39,12 +39,12 @@ title: Project Template
 
 VascuEye is a medical imaging system that utilizes near-infrared (NIR) technology to detect arteries and assist in both preoperative planning and post-surgical inspection for oral and facial surgeries. By providing real-time visualization of blood vessels, the system helps surgeons avoid accidental arterial damage and simplifies post-surgical monitoring to detect complications like hematomas or poor blood circulation.
 
-# Applications & Benefits
-✅ Enhanced Surgical Accuracy – Helps avoid arterial damage during procedures.
-✅ Faster & Easier Post-Surgical Inspection – Reduces reliance on manual monitoring.
-✅ Real-Time Blood Flow Monitoring – Detects complications early.
-✅ Portable & Affordable Solution – More accessible than high-end imaging devices.
-✅ Remote Monitoring Support – Enables telemedicine and second opinions.
+### Applications & Benefits
+- ✅ Enhanced Surgical Accuracy – Helps avoid arterial damage during procedures.
+- ✅ Faster & Easier Post-Surgical Inspection – Reduces reliance on manual monitoring.
+- ✅ Real-Time Blood Flow Monitoring – Detects complications early.
+- ✅ Portable & Affordable Solution – More accessible than high-end imaging devices.
+- ✅ Remote Monitoring Support – Enables telemedicine and second opinions.
 
 
 ## Solution Architecture
