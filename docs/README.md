@@ -14,9 +14,11 @@ title: Project Template
 ---
 
 ## Team
--  eNumber, Name, [email](mailto:name@email.com)
--  eNumber, Name, [email](mailto:name@email.com)
--  eNumber, Name, [email](mailto:name@email.com)
+-  E/20/248, T.L.B Mapagedara, [email](mailto:e2024@eng.pdn.ac.lk)
+-  E/20/158, J.G.C Jananga, [email](mailto:e2024@eng.pdn.ac.lk)
+-  E/20/453, R.J Yogesh, [email](mailto:e2024@eng.pdn.ac.lk)
+-  E/20/300, H.A.M.T Prasadinie, [email](mailto:e2024@eng.pdn.ac.lk)
+
 
 <!-- Image (photo/drawing of the final hardware) should be here -->
 
@@ -35,7 +37,14 @@ title: Project Template
 
 ## Introduction
 
-Description of the real world problem and solution, impact
+VascuEye is a medical imaging system that utilizes near-infrared (NIR) technology to detect arteries and assist in both preoperative planning and post-surgical inspection for oral and facial surgeries. By providing real-time visualization of blood vessels, the system helps surgeons avoid accidental arterial damage and simplifies post-surgical monitoring to detect complications like hematomas or poor blood circulation.
+
+# Applications & Benefits
+✅ Enhanced Surgical Accuracy – Helps avoid arterial damage during procedures.
+✅ Faster & Easier Post-Surgical Inspection – Reduces reliance on manual monitoring.
+✅ Real-Time Blood Flow Monitoring – Detects complications early.
+✅ Portable & Affordable Solution – More accessible than high-end imaging devices.
+✅ Remote Monitoring Support – Enables telemedicine and second opinions.
 
 
 ## Solution Architecture
@@ -64,7 +73,7 @@ What was achieved, future developments, commercialization plans
 
 ## Links
 
-- [Project Repository](https://github.com/cepdnaclk/{{ page.repository-name }}){:target="_blank"}
+- [Project Repository]((https://github.com/cepdnaclk/e20-3yp-Vascueye)){:target="_blank"}
 - [Project Page](https://cepdnaclk.github.io/{{ page.repository-name}}){:target="_blank"}
 - [Department of Computer Engineering](http://www.ce.pdn.ac.lk/)
 - [University of Peradeniya](https://eng.pdn.ac.lk/)
