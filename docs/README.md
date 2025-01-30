@@ -63,9 +63,18 @@ Testing done on hardware and software, detailed + summarized results
 
 All items and costs
 
-| Item          | Quantity  | Unit Cost  | Total  |
-| ------------- |:---------:|:----------:|-------:|
-| Sample item   | 5         | 10 LKR     | 50 LKR |
+| Item                            | Quantity | Unit Cost   | Total     |
+|---------------------------------|:--------:|:-----------:|----------:|
+| Temperature Sensor (DHT22)      | 1        | Rs. 450.00  | Rs. 450.00|
+| Raspberry Pi 4 Model B         | 1        | Rs. 20400.00| Rs. 20400.00|
+| Raspberry Pi NoIR Camera Sony IMX219 | 1   | Rs. 7200.00 | Rs. 7200.00|
+| IR LEDs (850nm)                 | 10       | Rs. 200.00  | Rs. 2000.00|
+| IR LEDs (940nm)                 | 10       | Rs. 200.00  | Rs. 2000.00|
+| 5 Inch LCD Display              | 1        | Rs. 10500.00| Rs. 10500.00|
+| Wires and Other Electronic Components | -    | Rs. 1000.00 | Rs. 1000.00|
+| Power Bank (10000 mAh)          | 1        | Rs. 2500.00 | Rs. 2500.00|
+| **Total Price**                 |          |             | **Rs. 42450.00**|
+
 
 ## Conclusion
 
