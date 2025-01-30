@@ -52,5 +52,5 @@ Follow these steps to set up your local development environment:
 ### Installation Steps:
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/vascueye.git
-   cd vascueye
+   git clone https://github.com/cepdnaclk/e20-3yp-Vascueye.git
+  
