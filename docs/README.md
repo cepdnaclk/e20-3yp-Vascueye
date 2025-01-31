@@ -19,6 +19,8 @@ title: Project Template
 -  E/20/453, R.J Yogesh, [email](mailto:e2024@eng.pdn.ac.lk)
 -  E/20/300, H.A.M.T Prasadinie, [email](mailto:e2024@eng.pdn.ac.lk)
 
+## Supervisor
+- Dr. Isuru Nawinne, [email](mailto:isurunawinne@eng.pdn.ac.lk)
 
 <!-- Image (photo/drawing of the final hardware) should be here -->
 
