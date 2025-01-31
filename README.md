@@ -37,7 +37,7 @@ VascuEye uses a **Raspberry Pi** embedded system with **NIR sensors** for artery
 - **MongoDB**: NoSQL database for storing patient-specific artery images and analysis results.
 
 ### User Interface
-- **Flutter**: Cross-platform development framework for mobile apps to display real-time artery mapping and post-surgical data.
+- **React**: Cross-platform development framework for mobile apps to display post-surgical data.
 
 ## Getting Started
 
@@ -47,7 +47,6 @@ Follow these steps to set up your local development environment:
 - **Raspberry Pi** (3B/4B) with Raspbian OS
 - **AWS Account** (for AWS IoT setup)
 - **Node.js** and **MongoDB** installed locally for backend development
-- **Flutter** SDK for mobile app development
 
 ### Installation Steps:
 1. **Clone the repository:**
