@@ -28,11 +28,11 @@ jobs:
       run: |
         ls -la  # Debugging step: List all files
 
-        if [ -d "./public/" ]; then
-          echo "✅ Found 'public/' directory. Deploying contents..."
-          scp -r ./public/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
+        if [ -d "./code/web-frontend/build/" ]; then
+          echo "✅ Found 'build/' directory. Deploying contents..."
+          scp -r ./code/web-frontend/build/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
         else
-          echo "⚠️ 'public/' directory not found! Deploying all files..."
+          echo "⚠️ 'build/' directory not found! Deploying all files..."
           scp -r ./* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
         fi
 
