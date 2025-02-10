@@ -1,0 +1,41 @@
+name: Deploy HTML to AWS Lightsail
+
+on:
+  push:
+    branches:
+      - main  # Change this if using a different branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H "${{ secrets.AWS_HOST }}" >> ~/.ssh/known_hosts
+
+    - name: List Files in Runner
+      run: ls -la  # This helps debug missing files
+
+    - name: Deploy Files to AWS (aaPanel)
+      run: |
+        ls -la  # Debugging step: List all files
+
+        if [ -d "./public/" ]; then
+          echo "✅ Found 'public/' directory. Deploying contents..."
+          scp -r ./public/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
+        else
+          echo "⚠️ 'public/' directory not found! Deploying all files..."
+          scp -r ./* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
+        fi
+
+
+    - name: Restart Web Server (Apache or Nginx)
+      run: |
+        ssh root@${{ secrets.AWS_HOST }} "sudo systemctl restart apache2 || sudo systemctl restart nginx"
