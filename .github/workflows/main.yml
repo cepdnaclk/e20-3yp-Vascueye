@@ -1,42 +1,55 @@
-name: Deploy HTML to AWS Lightsail
+name: Deploy React and Node.js to AWS (aaPanel)
 
 on:
   push:
     branches:
-      - main  # Change this if using a different branch
+      - main  # Runs deployment only when changes are pushed to 'main' branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: 🛎 Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Setup SSH Key
+    - name: 🔐 Setup SSH Key
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.AWS_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H "${{ secrets.AWS_HOST }}" >> ~/.ssh/known_hosts
 
-
-    - name: List Files in Runner
-      run: ls -la  # This helps debug missing files
-
-    - name: Deploy Files to AWS (aaPanel)
+    - name: 🛠 Install Dependencies & Build Frontend
       run: |
-        ls -la  # Debugging step: List all files
+        cd code/web-frontend
+        npm install
+        npm run build
+        ls -la build  # Debugging: Check if 'build/' exists
 
+    - name: 🚀 Deploy Frontend to AWS (aaPanel)
+      run: |
         if [ -d "./code/web-frontend/build/" ]; then
-          echo "✅ Found 'build/' directory. Deploying contents..."
+          echo "✅ Found 'build/' directory. Deploying frontend..."
           scp -r ./code/web-frontend/build/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
         else
-          echo "⚠️ 'build/' directory not found! Deploying all files..."
-          scp -r ./* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
+          echo "❌ 'build/' directory not found! Exiting..."
+          exit 1
         fi
 
+    - name: 🛠 Install Dependencies & Setup Backend
+      run: |
+        cd code/backend
+        npm install
+        ls -la  # Debugging: List backend files
 
-    - name: Restart Web Server (Apache or Nginx)
+    - name: 🚀 Deploy Backend to AWS (aaPanel)
+      run: |
+        ssh root@${{ secrets.AWS_HOST }} "mkdir -p /var/www/vescueye-backend"
+        scp -r ./code/backend/* root@${{ secrets.AWS_HOST }}:/var/www/vescueye-backend
+        ssh root@${{ secrets.AWS_HOST }} "cd /var/www/vescueye-backend && npm install && pm2 restart server || pm2 start server.js --name vescueye-backend"
+
+    - name: 🔄 Restart Web Server (Apache or Nginx)
       run: |
         ssh root@${{ secrets.AWS_HOST }} "sudo systemctl restart apache2 || sudo systemctl restart nginx"
+
