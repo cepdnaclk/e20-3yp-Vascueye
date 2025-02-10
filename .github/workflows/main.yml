@@ -45,9 +45,21 @@ jobs:
 
     - name: 🚀 Deploy Backend to AWS (aaPanel)
       run: |
-        ssh root@${{ secrets.AWS_HOST }} "mkdir -p /var/www/vescueye-backend"
+        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+          sudo apt-get update
+          curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          sudo npm install -g pm2
+          mkdir -p /var/www/vescueye-backend
+        EOF
+
         scp -r ./code/backend/* root@${{ secrets.AWS_HOST }}:/var/www/vescueye-backend
-        ssh root@${{ secrets.AWS_HOST }} "cd /var/www/vescueye-backend && npm install && pm2 restart server || pm2 start server.js --name vescueye-backend"
+
+        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+          cd /var/www/vescueye-backend
+          npm install
+          pm2 restart server || pm2 start server.js --name vescueye-backend
+        EOF
 
     - name: 🔄 Restart Web Server (Apache or Nginx)
       run: |
