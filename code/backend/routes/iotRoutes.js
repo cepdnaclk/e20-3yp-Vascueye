@@ -1,10 +1,9 @@
 const express = require("express");
-const { latestData } = require("../mqttClient");
+const { getLatestData, getFlapData } = require("../controllers/iotController");
 
 const router = express.Router();
 
-router.get("/latest", (req, res) => {
-  res.json({ success: true, data: latestData });
-});
+router.get("/latest", getLatestData);
+router.get("/flapData/:patient_id", getFlapData);
 
 module.exports = router;
