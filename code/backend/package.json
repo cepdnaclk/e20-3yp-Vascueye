@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-iot-device-sdk": "^2.2.15",
     "backend": "file:",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",

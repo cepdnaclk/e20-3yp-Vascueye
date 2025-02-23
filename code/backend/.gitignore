@@ -34,4 +34,7 @@ Thumbs.db
 *.bak
 *.tmp
 
-]
+# AWS IoT Certificates (Backend)
+/certs/
+/certs/*
+!/certs/README.md 

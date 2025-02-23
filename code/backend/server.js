@@ -2,8 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
+require("./mqttClient"); // Ensure MQTT client starts on server load
 
 const authRoutes = require("./routes/authRoutes");
+const iotRoutes = require("./routes/iotRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +24,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/iot", iotRoutes);
 
 app.get("/", (req, res) => {
   res.send("Vascueye Backend is Running");

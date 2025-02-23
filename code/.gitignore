@@ -50,6 +50,11 @@ docker-compose.yml
 .aws/
 .terraform/
 
+# AWS IoT Certificates (Backend)
+code/backend/certs/
+code/backend/certs/*
+!code/backend/certs/README.md  
+
 # Raspberry Pi and Embedded System Files
 *.bin
 *.elf
