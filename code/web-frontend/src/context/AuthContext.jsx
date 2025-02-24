@@ -1,6 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
+// Define your API URL here
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -33,23 +36,29 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  // Signup function: Automatically logs in the user after signup
-  const signup = async (name, email, password, role) => {
+  const signup = async (userData) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/signup", { 
-        name, email, password, role 
+      const response = await fetch(`${API_URL}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
       });
-
-      if (res.data.success && res.data.token) {
-        login(res.data.token, res.data.user); // Auto-login after signup
+  
+      const data = await response.json();
+  
+      if (data.success && data.token && data.user) {
+        login(data.token, data.user); // Automatically log in the user after signup
       }
-      
-      return res.data;
+  
+      return data;
     } catch (error) {
-      console.error("Signup failed", error);
-      throw error;
+      console.error("Signup error:", error);
+      return { success: false, message: "Network error" };
     }
   };
+  
 
   return (
     <AuthContext.Provider value={{ user, login, logout, signup }}>

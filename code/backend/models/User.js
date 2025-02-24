@@ -1,24 +1,20 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["hospital", "doctor", "patient"], required: true },
-  username: { type: String, unique: true, sparse: true }
-
+  role: { type: String, required: true, enum: ["doctor", "patient", "hospital"] },
+  telephone: { type: String, required: true },
+  nic: { 
+    type: String,
+    required: function () {
+      return this.role === "doctor" || this.role === "patient"; // Required only for doctors & patients
+    },
+  },
+  address: { type: String, required: function () { return this.role === "hospital"; } },
+  registrationNumber: { type: String, required: function () { return this.role === "hospital"; } },
 });
 
-
-// 🔥 Prevent double hashing
-UserSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next(); // Don't rehash if unchanged
-  
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  });
-
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;

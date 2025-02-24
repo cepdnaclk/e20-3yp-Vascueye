@@ -13,20 +13,40 @@ const Navbar = () => {
   };
 
   return (
-    <nav>
-      <Link to="/">Home</Link>
-      {user ? (
-        <>
-          {/* Redirects to the relevant dashboard */}
-          <Link to={`/${user.role}-dashboard`}>Dashboard</Link>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <>
-          <Link to="/signin">Sign In</Link>
-          <Link to="/signup">Sign Up</Link>
-        </>
-      )}
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo">
+          Vescueye
+        </Link>
+
+        <ul className="navbar-links">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+
+          {user ? (
+            <>
+              <li>
+                <Link to={`/${user.role}-dashboard`}>Dashboard</Link>
+              </li>
+              <li>
+                <button className="logout-btn" onClick={handleLogout} aria-label="Logout">
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to="/signin">Sign In</Link>
+              </li>
+              <li>
+                <Link to="/signup">Sign Up</Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
     </nav>
   );
 };

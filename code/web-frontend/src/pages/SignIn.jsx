@@ -1,10 +1,10 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import "../styles/Auth.css";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -16,7 +16,11 @@ const SignIn = () => {
     }
   }, [user, navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setError(null);
 
@@ -24,7 +28,7 @@ const SignIn = () => {
       const res = await fetch("http://localhost:5000/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
@@ -35,21 +39,49 @@ const SignIn = () => {
       } else {
         setError(data.message || "Invalid credentials");
       }
-    } catch (error) {
+    } catch {
       setError("Something went wrong. Please try again.");
     }
-  };
+  }, [formData, login, navigate]);
 
   return (
     <div className="auth-container">
       <h2>Sign In</h2>
       {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">Sign In</button>
+      
+      <form onSubmit={handleSubmit} className="auth-form">
+        <div className="input-group">
+          <label htmlFor="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            value={formData.email} 
+            onChange={handleChange} 
+            required 
+            placeholder="Enter your email"
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            value={formData.password} 
+            onChange={handleChange} 
+            required 
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <button type="submit" className="auth-btn">Sign In</button>
       </form>
-      <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
+
+      <p className="auth-footer">
+        Don't have an account? <Link to="/signup">Sign up</Link>
+      </p>
     </div>
   );
 };
