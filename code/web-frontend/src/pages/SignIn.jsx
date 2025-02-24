@@ -20,67 +20,76 @@ const SignIn = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    setError(null);
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setError(null);
 
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/signin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (data.success) {
-        login(data.token, data.user);
-        navigate(`/${data.user.role}-dashboard`); // Redirect after login
-      } else {
-        setError(data.message || "Invalid credentials");
+        if (data.success) {
+          login(data.token, data.user);
+          navigate(`/${data.user.role}-dashboard`); // Redirect after login
+        } else {
+          setError(data.message || "Invalid credentials");
+        }
+      } catch {
+        setError("Something went wrong. Please try again.");
       }
-    } catch {
-      setError("Something went wrong. Please try again.");
-    }
-  }, [formData, login, navigate]);
+    },
+    [formData, login, navigate]
+  );
 
   return (
     <div className="auth-container">
       <h2>Sign In</h2>
       {error && <p className="error-message">{error}</p>}
-      
+
       <form onSubmit={handleSubmit} className="auth-form">
         <div className="input-group">
           <label htmlFor="email">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            value={formData.email} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
             placeholder="Enter your email"
           />
         </div>
 
         <div className="input-group">
           <label htmlFor="password">Password</label>
-          <input 
-            type="password" 
-            id="password" 
-            name="password" 
-            value={formData.password} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
             placeholder="Enter your password"
           />
         </div>
 
-        <button type="submit" className="auth-btn">Sign In</button>
+        <button type="submit" className="auth-btn">
+          Sign In
+        </button>
       </form>
 
       <p className="auth-footer">
         Don't have an account? <Link to="/signup">Sign up</Link>
+      </p>
+
+      <p className="auth-footer">
+        <Link to="/forgot-password">Forgot Password?</Link>
       </p>
     </div>
   );

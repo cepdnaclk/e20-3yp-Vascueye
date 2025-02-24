@@ -3,8 +3,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
-
 const router = express.Router();
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -13,6 +15,84 @@ const generateToken = (user) => {
     { expiresIn: process.env.JWT_EXPIRES_IN || "24h" }
   );
 };
+
+// ========================== FORGOT PASSWORD ==========================
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ success: false, message: "User not found" });
+  }
+
+  // Generate a random reset token
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  user.resetToken = resetToken;
+  user.resetTokenExpires = Date.now() + 3600000; // 1 hour expiration
+  await user.save();
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false, // Bypass SSL verification
+    },
+  });
+  
+
+  const resetURL = `http://localhost:3000/reset-password/${resetToken}`;
+
+  const mailOptions = {
+    from: process.env.OUTLOOK_EMAIL,
+    to: user.email,
+    subject: "Password Reset Request",
+    text: `Click the link to reset your password: ${resetURL}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email:", error);
+      return res.status(500).json({ success: false, message: "Email sending failed", error });
+    }
+    res.json({ success: true, message: "Email sent successfully!" });
+  });
+});
+
+// ========================== RESET PASSWORD ==========================
+router.post("/reset-password/:token", async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    // Find user with the given reset token
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpires: { $gt: Date.now() }, // Ensure token is not expired
+    });
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: "Invalid or expired token" });
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+
+    // Clear reset token fields
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    await user.save();
+
+    res.json({ success: true, message: "Password reset successful" });
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+});
+
 
 // ========================== SIGNUP ==========================
 router.post(
@@ -79,16 +159,13 @@ router.post(
           .json({ success: false, message: "NIC is required for this role" });
       }
 
-      // Assign `name` dynamically for patients and doctors
       if (!name && (role === "doctor" || role === "patient")) {
         name = `${firstName} ${lastName}`;
       }
 
-      // Hash password before storing it in userData
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      // Create user object based on role
       const userData = {
         name,
         email,
@@ -113,8 +190,6 @@ router.post(
         userData.registrationNumber = registrationNumber;
       }
 
-      console.log("User Data before saving:", userData);
-
       const user = new User(userData);
       await user.save();
 
@@ -133,9 +208,7 @@ router.post(
       });
     } catch (err) {
       console.error("Signup Error:", err);
-      res
-        .status(500)
-        .json({ success: false, message: "Server Error", error: err.message });
+      res.status(500).json({ success: false, message: "Server Error", error: err.message });
     }
   }
 );
@@ -158,40 +231,15 @@ router.post(
 
     try {
       let user = await User.findOne({ email });
-
-      if (!user) {
-        return res
-          .status(401)
-          .json({ success: false, message: "Invalid credentials" });
-      }
-
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res
-          .status(401)
-          .json({ success: false, message: "Invalid credentials" });
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return res.status(401).json({ success: false, message: "Invalid credentials" });
       }
 
       const token = generateToken(user);
-
-      res.json({
-        success: true,
-        message: "Login successful",
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        },
-      });
+      res.json({ success: true, message: "Login successful", token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
     } catch (err) {
       console.error("Signin Error:", err);
-      res.status(500).json({
-        success: false,
-        message: "Server Error",
-        error: err.message,
-      });
+      res.status(500).json({ success: false, message: "Server Error", error: err.message });
     }
   }
 );

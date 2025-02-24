@@ -1,5 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, AuthContext } from "./context/AuthContext";  
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 
 import Footer from "./components/Footer";
@@ -8,10 +13,13 @@ import Signup from "./pages/Signup";
 import SignIn from "./pages/SignIn";
 import Navbar from "./components/Navbar";
 
-import PatientDashboard from "./pages/PatientDashboard";  
+import PatientDashboard from "./pages/PatientDashboard";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import HospitalDashboard from "./pages/HospitalDashboard";
 import Dashboard from "./pages/Dashboard";
+
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 // Protected Route Wrapper
 const AuthRoute = ({ children, roles }) => {
@@ -30,12 +38,19 @@ const AuthRoute = ({ children, roles }) => {
 
 function App() {
   return (
-    <AuthProvider>  
+    <AuthProvider>
       <Router>
-        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh",
+          }}
+        >
           <Navbar />
-          
+
           <div style={{ flex: 1 }}>
+            {/* ✅ Wrap all Routes inside <Routes> */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/signin" element={<SignIn />} />
@@ -74,6 +89,8 @@ function App() {
                   </AuthRoute>
                 }
               />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
             </Routes>
           </div>
 
