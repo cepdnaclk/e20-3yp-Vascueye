@@ -1,18 +1,24 @@
-import { Link } from 'react-router-dom';
-import '../styles/Navbar.css';
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import "../styles/Navbar.css";
 
+const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    logout();
+    navigate("/"); // Redirect to Home after logout
   };
 
   return (
     <nav>
       <Link to="/">Home</Link>
-      {isAuthenticated ? (
+      {user ? (
         <>
-          <Link to="/dashboard">Dashboard</Link>
+          {/* Redirects to the relevant dashboard */}
+          <Link to={`/${user.role}-dashboard`}>Dashboard</Link>
           <button onClick={handleLogout}>Logout</button>
         </>
       ) : (
