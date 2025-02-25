@@ -15,10 +15,14 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
     const storedHospitalEmail = localStorage.getItem("hospitalEmail");
+    const storedLastLogin = localStorage.getItem("lastLogin"); // Get last login time
 
     if (token && storedUser) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      setUser(JSON.parse(storedUser));
+      setUser({
+        ...JSON.parse(storedUser),
+        lastLogin: storedLastLogin, // Add last login time to user state
+      });
     }
 
     if (storedHospitalEmail) {
@@ -30,8 +34,10 @@ export const AuthProvider = ({ children }) => {
   const login = (token, userData) => {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("lastLogin", new Date().toLocaleString()); // Store last login time
+
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setUser(userData);
+    setUser({ ...userData, lastLogin: new Date().toLocaleString() }); // Update state with last login time
 
     if (userData.role === "hospital") {
       localStorage.setItem("hospitalEmail", userData.email);
@@ -44,6 +50,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("hospitalEmail");
+    localStorage.removeItem("lastLogin"); // Clear last login time
     axios.defaults.headers.common["Authorization"] = null;
     setUser(null);
     setHospitalEmail(null);
