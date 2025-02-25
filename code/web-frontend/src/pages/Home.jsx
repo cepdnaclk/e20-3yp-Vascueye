@@ -14,6 +14,7 @@ const Home = () => {
       {user ? (
         <>
           <h2>Hello, {user.name || user.email}!</h2>
+          <p>Email: {user.email}</p>
           <p>Role: {user.role}</p>
           <Link to={`/${user.role}-dashboard`} className="btn">
             Go to Dashboard
@@ -21,7 +22,10 @@ const Home = () => {
         </>
       ) : (
         <>
-          <p>Please <Link to="/signin">Sign In</Link> or <Link to="/signup">Sign Up</Link> to get started.</p>
+          <p>
+            Please <Link to="/signin">Sign In</Link> or{" "}
+            <Link to="/signup">Sign Up</Link> to get started.
+          </p>
         </>
       )}
     </div>
