@@ -76,19 +76,26 @@ exports.registerDoctor = async (req, res) => {
   try {
     const { name, email, specialty, contact } = req.body;
 
+    // Validate all required fields
+    if (!name || !email || !specialty || !contact) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     // Validate contact number (must be 10 digits)
     if (!/^\d{10}$/.test(contact)) {
-      return res
-        .status(400)
-        .json({ message: "Contact number must be exactly 10 digits" });
+      return res.status(400).json({ message: "Contact number must be exactly 10 digits" });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
     }
 
     // Check if doctor with the same email already exists
     const existingDoctor = await Doctor.findOne({ email });
     if (existingDoctor) {
-      return res
-        .status(400)
-        .json({ message: "Doctor with this email already exists" });
+      return res.status(400).json({ message: "Doctor with this email already exists" });
     }
 
     // Create new doctor
@@ -97,15 +104,13 @@ exports.registerDoctor = async (req, res) => {
     // Save to database
     await newDoctor.save();
 
-    res
-      .status(201)
-      .json({ message: "Doctor registered successfully", doctor: newDoctor });
+    res.status(201).json({ message: "Doctor registered successfully", doctor: newDoctor });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error registering doctor", error: error.message });
+    console.error("Error registering doctor:", error);
+    res.status(500).json({ message: "Error registering doctor", error: error.message });
   }
 };
+
 
 exports.assignPatientToDoctor = async (req, res) => {
   try {
@@ -157,6 +162,29 @@ exports.searchPatients = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error searching patients", error: error.message });
+  }
+};
+
+exports.searchDoctors = async (req, res) => {
+  try {
+    const { query } = req.query;
+    if (!query) {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+    // Search doctors by name or contact or email
+    const doctors = await Doctor.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } }, // Case-insensitive name search
+        { contact: { $regex: query, $options: "i" } }, // Case-insensitive contact search
+        { email: { $regex: query, $options: "i" } }, // Case-insensitive email search
+      ],
+    });
+
+    res.status(200).json(doctors);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error searching doctors", error: error.message });
   }
 };
 
