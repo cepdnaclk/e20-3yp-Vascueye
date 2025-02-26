@@ -41,7 +41,6 @@ router.post("/forgot-password", async (req, res) => {
       rejectUnauthorized: false, // Bypass SSL verification
     },
   });
-  
 
   const resetURL = `http://localhost:3000/reset-password/${resetToken}`;
 
@@ -55,7 +54,9 @@ router.post("/forgot-password", async (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error("Error sending email:", error);
-      return res.status(500).json({ success: false, message: "Email sending failed", error });
+      return res
+        .status(500)
+        .json({ success: false, message: "Email sending failed", error });
     }
     res.json({ success: true, message: "Email sent successfully!" });
   });
@@ -74,7 +75,9 @@ router.post("/reset-password/:token", async (req, res) => {
     });
 
     if (!user) {
-      return res.status(400).json({ success: false, message: "Invalid or expired token" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid or expired token" });
     }
 
     // Hash the new password
@@ -89,10 +92,11 @@ router.post("/reset-password/:token", async (req, res) => {
     res.json({ success: true, message: "Password reset successful" });
   } catch (error) {
     console.error("Reset Password Error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 });
-
 
 // ========================== SIGNUP ==========================
 router.post(
@@ -108,7 +112,7 @@ router.post(
       .withMessage("Password must contain at least one lowercase letter")
       .matches(/\d/)
       .withMessage("Password must contain at least one number")
-      .matches(/[@$!%*?&]/)
+      .matches(/[@$!%*?&#]/)
       .withMessage("Password must contain at least one special character"),
     body("role")
       .isIn(["doctor", "patient", "hospital"])
@@ -208,7 +212,9 @@ router.post(
       });
     } catch (err) {
       console.error("Signup Error:", err);
-      res.status(500).json({ success: false, message: "Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ success: false, message: "Server Error", error: err.message });
     }
   }
 );
@@ -232,14 +238,28 @@ router.post(
     try {
       let user = await User.findOne({ email });
       if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ success: false, message: "Invalid credentials" });
+        return res
+          .status(401)
+          .json({ success: false, message: "Invalid credentials" });
       }
 
       const token = generateToken(user);
-      res.json({ success: true, message: "Login successful", token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+      res.json({
+        success: true,
+        message: "Login successful",
+        token,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      });
     } catch (err) {
       console.error("Signin Error:", err);
-      res.status(500).json({ success: false, message: "Server Error", error: err.message });
+      res
+        .status(500)
+        .json({ success: false, message: "Server Error", error: err.message });
     }
   }
 );

@@ -1,25 +1,20 @@
 const mongoose = require("mongoose");
 
-const PatientSchema = new mongoose.Schema({
-  patient_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  }, // Link to User
-  age: { type: Number, required: true },
-  doctor_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    validate: {
-      validator: async function (doctorId) {
-        const doctor = await mongoose.model("User").findById(doctorId);
-        return doctor && doctor.role === "doctor";
-      },
-      message: "Invalid doctor ID.",
+const patientSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    age: { type: Number, required: true, min: 0 },
+    contact: { type: String, required: true },
+    address: { type: String, required: true },
+    medicalHistory: { type: String, default: "No medical history provided" },
+    assignedDoctor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor", // Reference to Doctor
+      default: null, // A patient may not be assigned to a doctor initially
     },
   },
-  createdAt: { type: Date, default: Date.now },
-});
+  { timestamps: true }
+);
 
-const Patient = mongoose.model("Patient", PatientSchema);
+const Patient = mongoose.model("Patient", patientSchema);
 module.exports = Patient;
