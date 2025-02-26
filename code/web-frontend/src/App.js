@@ -9,7 +9,7 @@ import { useContext } from "react";
 
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import Signup from "./pages/Signup";
+import Signup from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import PatientRegister from "./pages/PatientRegister";
 import Navbar from "./components/Navbar";

@@ -1,10 +1,11 @@
 const User = require("../models/User");
 const Patient = require("../models/Patient.js");
 const Doctor = require("../models/Doctor.js");
+
 // Get all doctors
 exports.getDoctors = async (req, res) => {
   try {
-    const doctors = await User.find({ role: "doctor" }).select("-password");
+    const doctors = await Doctor.find(); // Fetch from Doctor model
     res.status(200).json(doctors);
   } catch (error) {
     res.status(500).json({ error: "Server error", details: error.message });
@@ -14,7 +15,7 @@ exports.getDoctors = async (req, res) => {
 // Get all patients
 exports.getPatients = async (req, res) => {
   try {
-    const patients = await User.find({ role: "patient" }).select("-password");
+    const patients = await Patient.find(); // Fetch from Patient model
     res.status(200).json(patients);
   } catch (error) {
     res.status(500).json({ error: "Server error", details: error.message });
