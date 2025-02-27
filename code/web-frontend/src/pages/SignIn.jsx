@@ -6,6 +6,7 @@ import "../styles/Auth.css";
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -69,7 +70,7 @@ const SignIn = () => {
         <div className="input-group">
           <label htmlFor="password">Password</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             name="password"
             value={formData.password}
@@ -77,6 +78,16 @@ const SignIn = () => {
             required
             placeholder="Enter your password"
           />
+        </div>
+
+        <div className="input-group checkbox-group">
+          <input
+            type="checkbox"
+            id="showPassword"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          <label htmlFor="showPassword">Show Password</label>
         </div>
 
         <button type="submit" className="auth-btn">

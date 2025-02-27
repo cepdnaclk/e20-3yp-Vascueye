@@ -11,15 +11,20 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Signup from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-import PatientRegister from "./pages/PatientRegister";
 import Navbar from "./components/Navbar";
-import PatientSearch from "./pages/PatientSearch";
 
 import PatientDashboard from "./pages/PatientDashboard";
+import PatientRegister from "./pages/PatientRegister";
+import PatientSearch from "./pages/PatientSearch";
+import AssignPatient from "./pages/AssignPatient";
+
 import DoctorDashboard from "./pages/DoctorDashboard";
+import DoctorRegister from "./pages/DoctorRegister";
+import DoctorSearch from "./pages/DoctorSearch";
+import AssignDoctor from "./pages/AssignDoctor";
+
 import HospitalDashboard from "./pages/HospitalDashboard";
 import Dashboard from "./pages/Dashboard";
-import AssignPatient from "./pages/AssignPatient";
 
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
@@ -61,6 +66,9 @@ function App() {
               <Route path="/register-patient" element={<PatientRegister />} />
               <Route path="/search-patient" element={<PatientSearch />} />
               <Route path="/assign-patient" element={<AssignPatient />} />
+              <Route path="/register-doctor" element={<DoctorRegister />} />
+              <Route path="/search-doctor" element={<DoctorSearch />} />
+              <Route path="/assign-doctor" element={<AssignDoctor />} />
               {/* Role-based Dashboard Routing */}
               <Route
                 path="/dashboard"
