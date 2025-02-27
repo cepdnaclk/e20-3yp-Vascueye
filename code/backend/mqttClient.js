@@ -2,12 +2,27 @@ const awsIot = require("aws-iot-device-sdk");
 const FlapData = require("./models/FlapData");
 require("dotenv").config();
 
+// Define the fallback paths for server
+const fallbackKeyPath = '/home/ubuntu/certs/privateKey.pem';
+const fallbackCertPath = '/home/ubuntu/certs/certificate.pem';
+const fallbackCaPath = '/home/ubuntu/certs/caCert.pem';
+const fallbackClientId = 'yourClientId';  // Replace with your client ID for the server
+const fallbackHost = 'yourEndpoint.iot.region.amazonaws.com';  // Replace with your endpoint
+
+// Get the key paths from environment variables, fallback to server paths if not set
+const keyPath = process.env.AWS_IOT_PRIVATE_KEY || fallbackKeyPath;
+const certPath = process.env.AWS_IOT_CERTIFICATE || fallbackCertPath;
+const caPath = process.env.AWS_IOT_CA || fallbackCaPath;
+const clientId = process.env.AWS_IOT_CLIENT_ID || fallbackClientId;
+const host = process.env.AWS_IOT_ENDPOINT || fallbackHost;
+
+// Set up the IoT device with the appropriate paths and configuration
 const device = awsIot.device({
-  keyPath: process.env.AWS_IOT_PRIVATE_KEY,
-  certPath: process.env.AWS_IOT_CERTIFICATE,
-  caPath: process.env.AWS_IOT_CA,
-  clientId: process.env.AWS_IOT_CLIENT_ID,
-  host: process.env.AWS_IOT_ENDPOINT,
+  keyPath: keyPath,
+  certPath: certPath,
+  caPath: caPath,
+  clientId: clientId,
+  host: host
 });
 
 let latestData = {
