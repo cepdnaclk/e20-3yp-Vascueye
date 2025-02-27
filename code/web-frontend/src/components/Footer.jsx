@@ -1,8 +1,11 @@
-import '../styles/Footer.css';
+import "../styles/Footer.css";
 
 const Footer = () => {
-    return <footer>© 2025 Vescueye. All rights reserved.</footer>;
-  };
-  
-  export default Footer;
-  
+  return (
+    <footer className="footer">
+      <p>© 2025 Vescueye. All rights reserved.</p>
+    </footer>
+  );
+};
+
+export default Footer;
