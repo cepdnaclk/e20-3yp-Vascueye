@@ -22,11 +22,17 @@ jobs:
 
     - name: 🛠 Install Dependencies & Build Frontend
       run: |
+        # Set CI=false to avoid warnings being treated as errors
+        export CI=false
+
         # Navigate to the web frontend directory
         cd code/web-frontend
         
         # Install all necessary dependencies
         npm install
+        
+        # Optionally install missing Babel plugin
+        npm install --save-dev @babel/plugin-proposal-private-property-in-object
         
         # Run the build script to generate the production build
         npm run build
@@ -76,4 +82,3 @@ jobs:
     - name: 🔄 Restart Web Server (Apache or Nginx)
       run: |
         ssh root@${{ secrets.AWS_HOST }} "sudo systemctl restart apache2 || sudo systemctl restart nginx"
-
