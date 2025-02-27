@@ -22,10 +22,23 @@ jobs:
 
     - name: 🛠 Install Dependencies & Build Frontend
       run: |
+        # Navigate to the web frontend directory
         cd code/web-frontend
+        
+        # Install all necessary dependencies
         npm install
+        
+        # Run the build script to generate the production build
         npm run build
-        ls -la build  # Debugging: Check if 'build/' exists
+        
+        # Check if the build directory exists and display its contents (for debugging)
+        if [ -d "build" ]; then
+          echo "Build directory exists."
+          ls -la build  # List the contents of the build directory
+        else
+          echo "Build directory does not exist."
+          exit 1  # Exit with error code to fail the job if build directory is missing
+        fi
 
     - name: 🚀 Deploy Frontend to AWS (aaPanel)
       run: |
