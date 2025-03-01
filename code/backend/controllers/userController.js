@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Patient = require("../models/Patient.js");
 const Doctor = require("../models/Doctor.js");
+const FlapData = require("../models/FlapData.js");
 
 // Get all doctors
 exports.getDoctors = async (req, res) => {
@@ -201,3 +202,21 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ error: "Server error", details: error.message });
   }
 };
+
+//Get flap data by patient id
+exports.getFlapByPatientId = async (req, res) => {
+  try {
+    const { id } = req.params; // Get patient ID from request parameters
+    // Find all flap records linked to the patient
+    const flapRecords = await FlapData.find({ patient_id: id })
+      .populate("patient_id", "name age contact") // Fetch patient details
+      .sort({ timestamp: -1 }); // Sort by latest entries
+    if (!flapRecords || flapRecords.length === 0) {
+      return res.status(404).json({ error: "No flap data found for this patient." });
+    }
+    res.status(200).json(flapRecords);
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+};
+

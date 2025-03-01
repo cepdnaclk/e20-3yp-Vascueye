@@ -9,7 +9,7 @@ const FlapDataSchema = new mongoose.Schema({
   image_url: { type: String, required: true }, // Image stored in S3
   temperature: { type: Number, required: true },
   timestamp: { type: Date, default: Date.now },
-});
+},{collection:"flapdatas"});
 
 const FlapData = mongoose.model("FlapData", FlapDataSchema);
 module.exports = FlapData;
