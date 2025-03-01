@@ -29,7 +29,7 @@ app.use("/api/iot", iotRoutes);
 app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Vascueye Backend is Running");
+  res.send("Hey guys,Vascueye Backend is Running");
 });
 
 // Connect to MongoDB and start server
