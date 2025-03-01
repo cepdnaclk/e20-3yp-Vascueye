@@ -8,6 +8,7 @@ const {
   registerDoctor,
   searchPatients,
   searchDoctors,
+  getFlapByPatientId
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -23,4 +24,5 @@ router.get("/doctor/search", searchDoctors);
 router.post("/doctor/register", registerDoctor);
 router.delete("/:id", deleteUser); // Delete user
 
+router.get("/flap/search/:id",getFlapByPatientId)//1. Route to get flap data by patientID
 module.exports = router;
