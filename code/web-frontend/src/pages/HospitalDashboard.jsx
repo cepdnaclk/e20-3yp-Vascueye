@@ -100,9 +100,9 @@ const HospitalDashboard = () => {
               variant="outlined"
               fullWidth
               component={Link}
-              to="/assign-doctor"
+              to="/appointments"
             >
-              Assign Doctor to Patient
+              Appointments
             </Button>
           </CardContent>
         </Card>

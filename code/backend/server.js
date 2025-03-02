@@ -40,16 +40,3 @@ mongoose
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => console.error("MongoDB Connection Error:", err));
-
-// Debugging: List all registered routes
-app._router.stack.forEach((middleware) => {
-  if (middleware.route) {
-    console.log(`Available route: ${middleware.route.path}`);
-  } else if (middleware.name === "router") {
-    middleware.handle.stack.forEach((nested) => {
-      if (nested.route) {
-        console.log(`Available nested route: ${nested.route.path}`);
-      }
-    });
-  }
-});

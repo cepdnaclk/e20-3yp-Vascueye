@@ -17,7 +17,6 @@ const AssignPatient = () => {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedPatient, setSelectedPatient] = useState("");
 
-  // Fetch doctors and patients on component mount
   useEffect(() => {
     fetchDoctors();
     fetchPatients();
@@ -35,7 +34,9 @@ const AssignPatient = () => {
 
   const fetchPatients = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/patients");
+      const response = await fetch(
+        "http://localhost:5000/api/users/patients/unassigned"
+      );
       const data = await response.json();
       setPatients(data);
     } catch (error) {
@@ -44,33 +45,70 @@ const AssignPatient = () => {
   };
 
   const handleAssign = async () => {
-    if (!selectedDoctor || !selectedPatient) {
-      alert("Please select both a doctor and a patient.");
+    if (!selectedDoctor) {
+      alert("Please select a doctor.");
       return;
     }
 
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/users/assign-patient",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            doctorId: selectedDoctor,
-            patientId: selectedPatient,
-          }),
+    if (selectedPatient === "assign_all") {
+      // Assign all patients
+      const allPatientIds = patients.map((pat) => pat._id);
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/users/assign-all-patients",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              doctorId: selectedDoctor,
+              patientIds: allPatientIds,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          alert("All patients assigned successfully!");
+          setSelectedDoctor("");
+          setSelectedPatient("");
+        } else {
+          alert(data.error || "Failed to assign all patients.");
+          setSelectedDoctor("");
+          setSelectedPatient("");
         }
-      );
-
-      if (response.ok) {
-        alert("Patient assigned successfully!");
-      } else {
-        alert("Failed to assign patient.");
+      } catch (error) {
+        console.error("Error assigning all patients:", error);
+      } finally {
+        window.location.reload();
       }
-    } catch (error) {
-      console.error("Error assigning patient:", error);
+    } else {
+      // Assign a single patient
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/users/assign-patient",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              doctorId: selectedDoctor,
+              patientId: selectedPatient,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          alert("Patient assigned successfully!");
+        } else {
+          alert(data.error || "Failed to assign patient.");
+        }
+      } catch (error) {
+        console.error("Error assigning patient:", error);
+      } finally {
+        window.location.reload();
+      }
     }
   };
 
@@ -102,6 +140,7 @@ const AssignPatient = () => {
               value={selectedPatient}
               onChange={(e) => setSelectedPatient(e.target.value)}
             >
+              <MenuItem value="assign_all">Assign All</MenuItem>
               {patients.map((pat) => (
                 <MenuItem key={pat._id} value={pat._id}>
                   {pat.name} (Age: {pat.age})

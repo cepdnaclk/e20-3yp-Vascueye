@@ -12,12 +12,13 @@ import { useNavigate } from "react-router-dom";
 const DoctorRegister = () => {
   const [doctorData, setDoctorData] = useState({
     name: "",
+    age: "",
     specialty: "",
     contact: "",
     email: "",
   });
 
-  const [errors, setErrors] = useState({ contact: "", email: "" });
+  const [errors, setErrors] = useState({ contact: "", email: "", age: "" });
 
   const navigate = useNavigate();
 
@@ -37,15 +38,30 @@ const DoctorRegister = () => {
     }
 
     if (name === "email") {
-        // Simple email validation: must include "@" and "."
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          setErrors((prev) => ({ ...prev, email: "Invalid email format" }));
-        } else {
-          setErrors((prev) => ({ ...prev, email: "" }));
-        }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        setErrors((prev) => ({ ...prev, email: "Invalid email format" }));
+      } else {
+        setErrors((prev) => ({ ...prev, email: "" }));
       }
+    }
 
-    setDoctorData((prevState) => ({ ...prevState, [name]: value }));
+    if (name === "age") {
+      if (!/^\d*$/.test(value)) return; // Prevent non-numeric input
+      const ageNum = Number(value);
+      if (ageNum && (ageNum < 25 || ageNum > 100)) {
+        setErrors((prev) => ({
+          ...prev,
+          age: "Age must be between 25 and 100",
+        }));
+      } else {
+        setErrors((prev) => ({ ...prev, age: "" }));
+      }
+    }
+
+    setDoctorData((prevState) => ({
+      ...prevState,
+      [name]: name === "age" ? (value ? Number(value) : "") : value, // Ensure age is stored as a number
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -59,9 +75,9 @@ const DoctorRegister = () => {
       return;
     }
 
-    if (errors.email) {
-        return; // Prevent submission if email is invalid
-      }
+    if (errors.email || errors.age) {
+      return; // Prevent submission if email or age is invalid
+    }
 
     const response = await fetch(
       "http://localhost:5000/api/users/doctor/register",
@@ -71,18 +87,21 @@ const DoctorRegister = () => {
         body: JSON.stringify(doctorData),
       }
     );
-
+    const data = await response.json();
     if (response.ok) {
       console.log("Doctor registered successfully");
       navigate("/hospital-dashboard");
       setDoctorData({
         name: "",
-        speciality: "",
+        age: "",
+        specialty: "",
         contact: "",
         email: "",
       });
     } else {
       console.error("Error registering doctor");
+      window.alert(data.message || "Failed to register doctor");
+      window.location.reload();
     }
   };
 
@@ -102,6 +121,19 @@ const DoctorRegister = () => {
               onChange={handleChange}
               required
               margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Age"
+              name="age"
+              type="number"
+              value={doctorData.age}
+              onChange={handleChange}
+              required
+              margin="normal"
+              error={!!errors.age}
+              helperText={errors.age}
+              inputProps={{ min: "25", max: "100", step: "1" }} // Restrict number input
             />
             <TextField
               fullWidth
@@ -141,7 +173,7 @@ const DoctorRegister = () => {
               color="primary"
               fullWidth
               sx={{ mt: 2 }}
-              disabled={!!errors.email || !!errors.contact}
+              disabled={!!errors.email || !!errors.contact || !!errors.age}
             >
               Register Doctor
             </Button>
