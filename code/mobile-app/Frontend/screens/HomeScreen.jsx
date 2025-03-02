@@ -15,7 +15,7 @@ export default function HomeScreen({ navigation }) {
 
       {/* Profile Button */}
       <View style={styles.buttonContainer}>
-        <Button title="Change Profile" onPress={() => navigation.navigate('Profile')} color="#ffffff" />
+        <Button title="Goto Dashboard" onPress={() => navigation.navigate('doctorpage')} color="#ffffff" />
       </View>
     </LinearGradient>
   );

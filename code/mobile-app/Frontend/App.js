@@ -11,7 +11,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SigupScreen';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import PatientScreen from './screens/PatientScreen';
+import DoctorDashboard from './screens/DoctorDashboard';
 
 // Footer Component
 import Footer from './components/Footer';
@@ -24,7 +24,7 @@ function HomeStack() {
     return (
         <Drawer.Navigator initialRouteName="HomeDrawer">
             <Drawer.Screen name="HomeDrawer" component={HomeScreen} />
-            <Drawer.Screen name="Patients" component={PatientScreen} />
+            <Drawer.Screen name="Doctor" component={DoctorDashboard} />
         </Drawer.Navigator>
     );
 }
@@ -41,6 +41,7 @@ export default function App() {
                     <Stack.Screen name="Signup" component={SignupScreen} />
                     <Stack.Screen name="Home" component={HomeStack} />
                     <Stack.Screen name="Profile" component={ProfileScreen} />
+                    <Stack.Screen name="doctorpage" component={DoctorDashboard} />
                 </Stack.Navigator>
 
                 {/* Footer */}
