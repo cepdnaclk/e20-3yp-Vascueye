@@ -7,6 +7,8 @@
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  overflow-y: auto;
+
 }
 
 h2 {
@@ -37,6 +39,11 @@ h2 {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 1rem;
+}
+.auth-logo {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+  margin-bottom: 10px;
 }
 
 .auth-btn {
