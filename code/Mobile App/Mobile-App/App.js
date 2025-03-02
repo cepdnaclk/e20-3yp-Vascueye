@@ -6,6 +6,7 @@ import AppNavigator from "./AppNavigator";
 
 export default function App() {
   return (
+    
     <AuthProvider>
       <NavigationContainer>
         <AppNavigator />
