@@ -102,9 +102,9 @@ const HospitalDashboard = () => {
                 },
               }}
               component={Link}
-              to="/assign-patient"
+              to="/discharge-patient"
             >
-              Assign Patient to Doctor
+              Discharge
             </Button>
           </CardContent>
         </Card>
@@ -167,15 +167,15 @@ const HospitalDashboard = () => {
                 },
               }}
               component={Link}
-              to="/assign-doctor"
+              to="/assign-patient"
             >
-              Assign Doctor to Patient
+              Assign Patients
             </Button>
           </CardContent>
         </Card>
 
         {/* Quick Links */}
-        <Card sx={{ flex: 1, p: 2 }}>
+        {/* <Card sx={{ flex: 1, p: 2 }}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               Quick Links
@@ -237,7 +237,7 @@ const HospitalDashboard = () => {
               Billing & Payments
             </Button>
           </CardContent>
-        </Card>
+        </Card> */}
       </Box>
     </div>
   );

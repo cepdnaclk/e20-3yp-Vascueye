@@ -200,10 +200,10 @@ exports.searchDoctors = async (req, res) => {
 // Get all patients assigned to a specific doctor by name
 exports.getAssignPatients = async (req, res) => {
   try {
-    const { name } = req.params;
+    const { email } = req.body;
 
     // Check if the doctor exists
-    const doctor = await Doctor.findOne({ name });
+    const doctor = await Doctor.findOne({ email });
     if (!doctor) {
       return res.status(404).json({ error: "Doctor not found" });
     }
