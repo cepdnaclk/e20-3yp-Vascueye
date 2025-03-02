@@ -1,6 +1,7 @@
 require("dotenv").config();  // Load environment variables
 
 const User = require("../models/User");
+const FlapData = require("../models/FlapData");
 const bcrypt = require("bcryptjs");  // For password hashing
 const jwt = require("jsonwebtoken"); // For JWT authentication
 
@@ -69,5 +70,32 @@ const login = async (req, res) => {
     }
 };
 
+// Get Flap Data by Patient ID
+const getFlapByPatientId = async (req, res) => {
+    try {
+      const { id } = req.params; // Extract patient ID from request parameters
+  
+      // Validate if ID is a valid MongoDB ObjectId
+      if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(400).json({ error: "Invalid Patient ID format." });
+      }
+  
+      // Fetch all flap records for the patient
+      const flapRecords = await FlapData.find({ patient_id: id })
+        .populate("patient_id", "name age contact") // Include patient details
+        .sort({ timestamp: -1 }) // Sort by latest entry
+  
+      if (!flapRecords || flapRecords.length === 0) {
+        return res.status(404).json({ error: "No flap data found for this patient." });
+      }
+  
+      res.status(200).json(flapRecords);
+    } catch (error) {
+      console.error("Error fetching flap data:", error);
+      res.status(500).json({ error: "Server error", details: error.message });
+    }
+  };
+  
+
 // Export using CommonJS
-module.exports = { create, login };
+module.exports = { create, login ,getFlapByPatientId};

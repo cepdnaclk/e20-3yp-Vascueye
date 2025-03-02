@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();  // Correct the typo here
 const verifyToken=require("../middlewares/authMiddleware")
 const authorizeRoles = require("../middlewares/roleMiddleware")
+const { getFlapByPatientId } = require("../controller/userController"); 
 // only admin can access this router
 router.get("/admin", verifyToken,authorizeRoles("admin") ,(req, res) => {
     res.json({ message: "Welcome Admin" });
@@ -16,5 +17,8 @@ router.get("/doctor", verifyToken,authorizeRoles("admin","doctor"),(req, res) =>
 router.get("/patient",verifyToken,authorizeRoles("admin","doctor","patient"), (req, res) => {
     res.json({ message: "Welcome Patient" });
 });
+
+// ✅ Fix: Ensure this function is defined before using it
+router.get("/flap/search/:id", verifyToken, authorizeRoles("doctor"), getFlapByPatientId);
 
 module.exports = router;

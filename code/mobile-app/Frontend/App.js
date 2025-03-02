@@ -16,6 +16,8 @@ import ForgotPassword from './screens/ForgotPassword';
 
 // Footer Component
 import Footer from './components/Footer';
+import LiveFlapScreen from './screens/LiveFlapScreen';
+import DoctorDashboard from './screens/DoctorDashboard';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,6 +45,8 @@ export default function App() {
                     <Stack.Screen name="Home" component={HomeStack} />
                     <Stack.Screen name="Profile" component={ProfileScreen} />
                     <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+                    <Stack.Screen name="LiveFlapScreen" component={LiveFlapScreen} />
+                    <Stack.Screen name="Dashboard" component={DoctorDashboard} />
                 </Stack.Navigator>
 
                 {/* Footer */}

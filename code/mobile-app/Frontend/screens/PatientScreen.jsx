@@ -1,4 +1,4 @@
-// screens/PatientScreen.js
+// This is doctor dashboard
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
