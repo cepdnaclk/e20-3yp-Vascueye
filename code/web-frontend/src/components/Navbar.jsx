@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/Navbar.css";
+import logo from "../assets/vescueye-logo.png"; // Adjust path as needed
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -16,6 +17,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
+          <img src={logo} alt="Vescueye Logo" className="logo-img" />
           Vescueye
         </Link>
 

@@ -2,6 +2,7 @@ import { useState, useContext, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/Auth.css";
+import vescueyeLogo from "../assets/vescueye-logo.png"; // Import the logo
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -50,6 +51,9 @@ const SignIn = () => {
 
   return (
     <div className="auth-container">
+      {/* Vescueye Logo */}
+      <img src={vescueyeLogo} alt="Vescueye Logo" className="auth-logo" />
+
       <h2>Sign In</h2>
       {error && <p className="error-message">{error}</p>}
 

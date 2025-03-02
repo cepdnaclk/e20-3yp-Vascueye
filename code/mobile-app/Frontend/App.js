@@ -12,6 +12,7 @@ import SignupScreen from './screens/SigupScreen';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PatientScreen from './screens/PatientScreen';
+import ForgotPassword from './screens/ForgotPassword';
 
 // Footer Component
 import Footer from './components/Footer';
@@ -41,6 +42,7 @@ export default function App() {
                     <Stack.Screen name="Signup" component={SignupScreen} />
                     <Stack.Screen name="Home" component={HomeStack} />
                     <Stack.Screen name="Profile" component={ProfileScreen} />
+                    <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
                 </Stack.Navigator>
 
                 {/* Footer */}

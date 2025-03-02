@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken"); // For JWT authentication
 
 const JWT_SECRET = process.env.JWT_SECRET;  // Get JWT secret from environment variables
 
+// User registration function
 const create = async (req, res) => {
     try {
         const { full_name, email, password, role } = req.body;
@@ -29,6 +30,7 @@ const create = async (req, res) => {
     }
 };
 
+// User login function (Restricted to doctors only)
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -39,16 +41,21 @@ const login = async (req, res) => {
             return res.status(400).json({ message: "User not found" });
         }
 
+        // Restrict login to only doctors
+        if (user.role !== "doctor") {
+            return res.status(403).json({ message: "Access denied. Only doctors can log in." });
+        }
+
         // Validate password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        // Generate JWT token with secret from .env file
+        // Generate JWT token
         const token = jwt.sign(
             { userId: user._id, role: user.role },
-            JWT_SECRET,  // Use JWT secret from .env
+            JWT_SECRET,  
             { expiresIn: "1h" }
         );
 

@@ -8,7 +8,7 @@ const WelcomeScreen = ({ navigation }) => {
         <View style={styles.container}>
             {/* Background Image with Loading Spinner */}
             <Image
-                source={require('../assets/background.jpg')} // ✅ Use local image
+                source={require('../assets/background.webp')} // ✅ Use local image
                 style={styles.backgroundImage}
                 onLoadEnd={() => setLoading(false)}
             />
@@ -27,20 +27,16 @@ const WelcomeScreen = ({ navigation }) => {
                 {/* Logo */}
                 <Image source={require('../assets/vescueye-logo.png')} style={styles.logo} />
 
-                <Text style={styles.heading}>Welcome to VescuEye</Text>
+                <Text style={styles.heading}>Welcome to VescuEye
+
+                </Text>
+            
                 <Text style={styles.introduction}>
-                    VescuEye is an advanced vein visualization solution using near-infrared (NIR) technology to assist healthcare professionals.
+                VescuEye is an advanced vein visualization solution designed exclusively for doctors, particularly for use in free flap surgery. Utilizing near-infrared (NIR) technology, it enables real-time monitoring of blood flow to transplanted tissues, ensuring continuous perfusion. This helps in early detection of vascular complications, improving surgical precision and patient outcomes.
                 </Text>
 
-                {/* Bottom Buttons */}
+                {/* Login Button */}
                 <View style={styles.bottomButtonsContainer}>
-                    <TouchableOpacity
-                        style={styles.getStartedButton}
-                        onPress={() => navigation.navigate('Signup')}
-                    >
-                        <Text style={styles.buttonText}>Get Started</Text>
-                    </TouchableOpacity>
-
                     <TouchableOpacity
                         style={styles.loginButton}
                         onPress={() => navigation.navigate('Login')}
@@ -106,27 +102,14 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
     },
-    getStartedButton: {
-        backgroundColor: '#10e0f8',
-        paddingVertical: 20,
-        borderRadius: 30,
-        alignItems: 'center',
-        width: '100%',
-        marginBottom: 20,
-    },
     loginButton: {
         borderWidth: 2,
-        borderColor: 'white',
+        borderColor: 'transparent',
         paddingVertical: 20,
         borderRadius: 30,
         alignItems: 'center',
         width: '100%',
-        backgroundColor: 'transparent',
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
+        backgroundColor: '#10e0f8',
     },
     loginButtonText: {
         color: 'white',
