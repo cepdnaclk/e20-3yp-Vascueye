@@ -9,7 +9,7 @@ title: VascuEye - A Real-Time Blood Flow Monitoring System
 
 [comment]: # "This is the standard layout for the project, but you can clean this and use your own template"
 
-# Project Title
+# VescuEye
 
 ---
 
@@ -19,13 +19,24 @@ title: VascuEye - A Real-Time Blood Flow Monitoring System
 -  E/20/453, R.J Yogesh, [email](mailto:e2024@eng.pdn.ac.lk)
 -  E/20/300, H.A.M.T Prasadinie, [email](mailto:e2024@eng.pdn.ac.lk)
 
+-  --
+
 ## Supervisor
 - Dr. Isuru Nawinne, [email](mailto:isurunawinne@eng.pdn.ac.lk)
 
-<!-- Image (photo/drawing of the final hardware) should be here -->
+- --
+
+## Hardware Setup
 
 ![Hardware Setup](./images/hardware_setup.jpg)
+
+---
+
+## Image Enhance Process
+
 ![Enhanced Image Sample](./images/enhanced_image.jpg)
+
+---
 
 #### Table of Contents
 1. [Introduction](#introduction)
@@ -37,9 +48,13 @@ title: VascuEye - A Real-Time Blood Flow Monitoring System
 7. [Conclusion](#conclusion)
 8. [Links](#links)
 
+---
+
 ## Introduction
 
 VascuEye is a medical imaging system that utilizes near-infrared (NIR) technology to detect arteries and assist in both preoperative planning and post-surgical inspection for oral and facial surgeries. By providing real-time visualization of blood vessels, the system helps surgeons avoid accidental arterial damage and simplifies post-surgical monitoring to detect complications like hematomas or poor blood circulation.
+
+---
 
 ### Applications & Benefits
 - ✅ **Enhanced Surgical Accuracy** – Helps avoid arterial damage during procedures.
@@ -48,9 +63,13 @@ VascuEye is a medical imaging system that utilizes near-infrared (NIR) technolog
 - ✅ **Portable & Affordable Solution** – More accessible than high-end imaging devices.
 - ✅ **Remote Monitoring Support** – Enables telemedicine and second opinions.
 
+- --
+
 ## Solution Architecture
 
 ![Solution Architecture](./images/3YP-Page.png)
+
+---
 
 ## Hardware and Software Designs
 
@@ -88,12 +107,16 @@ VascuEye is a medical imaging system that utilizes near-infrared (NIR) technolog
   - Integration with the web dashboard for patient tracking.
 - **Notifications:** Firebase Cloud Messaging (FCM) for mobile alerts.
 
+- --
+
 ## Testing
 
 Comprehensive testing on both **hardware** and **software** components:
 - **Hardware Testing:** Accuracy of temperature readings, infrared imaging performance.
 - **Software Testing:** Web & mobile application functionality, security, and performance.
 - **Usability Testing:** Evaluation with medical professionals for feedback.
+
+- --
 
 ## Detailed Budget
 
@@ -111,12 +134,17 @@ All items and costs
 | Power Bank (10000 mAh)          | 1        | Rs. 2500.00 | Rs. 2500.00|
 | **Total Price**                 |          |             | **Rs. 47400.00**|
 
+
+---
+
 ## Conclusion
 
 VascuEye successfully integrates **hardware-based vein visualization** with **web and mobile applications**, enabling efficient real-time monitoring of blood circulation. Future improvements may include:
 - AI-based vein detection and segmentation.
 - Enhanced thermal imaging for deeper tissue analysis.
 - Cloud-based patient data storage for seamless access.
+
+- --
 
 ## Links
 
