@@ -19,7 +19,7 @@ export default function ProfileScreen({ navigation }) {
             <View style={styles.container}>
                 <Image source={profilePlaceholder} style={styles.profileImage} />
                 <Text style={styles.userName}>Test Doctor</Text>
-                <Text style={styles.userEmail}>Demo2@test.com</Text>
+                <Text style={styles.userEmail}>doctor@test.com</Text>
 
                 <TouchableOpacity style={styles.editButton}>
                     <Text style={styles.buttonText}>Edit Profile</Text>

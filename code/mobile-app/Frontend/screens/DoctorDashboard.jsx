@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
@@ -11,15 +11,15 @@ export default function DoctorDashboard() {
   const [flapLoading, setFlapLoading] = useState(false);
   const [error, setError] = useState("");
   const navigation = useNavigation();
-  const doctorEmail = "demo2@g.com"; // Replace with the logged-in doctor's email
+  const doctorEmail = "doctor@test.com"; 
 
-  // API Base URL (Update according to your backend URL)
-  const BASE_URL = "http://localhost:5001/api/users";
+  // API Base URL
+  const BASE_URL = "http://192.168.8.100:5001/api/users";
 
   useEffect(() => {
     const getPatients = async () => {
       try {
-        const response = await axios.post(`${BASE_URL}/doctors/patients`, { email: doctorEmail });
+        const response = await axios.post(`${BASE_URL}/doctor/patients`, { email: doctorEmail });
         setPatients(response.data);
       } catch (error) {
         console.error("Error fetching assigned patients:", error);
@@ -58,10 +58,7 @@ export default function DoctorDashboard() {
           data={patients}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.card}
-              onPress={() => handleFetchFlapData(item._id)}
-            >
+            <View style={styles.card}>
               <Text style={styles.cardText}>
                 <Text style={styles.boldText}>Name:</Text> {item.name}
               </Text>
@@ -71,7 +68,8 @@ export default function DoctorDashboard() {
               <Text style={styles.cardText}>
                 <Text style={styles.boldText}>Contact:</Text> {item.contact}
               </Text>
-            </TouchableOpacity>
+              <Button title="Search Flap Data" onPress={() => handleFetchFlapData(item._id)} />
+            </View>
           )}
         />
       )}
@@ -108,8 +106,8 @@ export default function DoctorDashboard() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#f5f5f5" },
-  header: { fontSize: 24, fontWeight: "bold", marginBottom: 10, textAlign: "center" },
+  container: { flex: 1, padding: 16, backgroundColor: "#f5f5f5" },  
+  header: { fontSize: 24, fontWeight: "bold", marginBottom: 10,marginTop: 40, textAlign: "center" },
   subHeader: { fontSize: 18, marginBottom: 20, textAlign: "center" },
   card: { 
     backgroundColor: "#ffffff",

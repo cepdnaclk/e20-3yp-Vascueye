@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator } from "react-native";
 
-const WEBSOCKET_URL = "ws://192.168.8.104:8080"; // Replace with your backend IP
+const WEBSOCKET_URL = "ws://192.168.8.101:8080"; // Replace with your backend IP
 
 const LiveFlapScreen = () => {
   const [flapData, setFlapData] = useState([]);
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+    marginTop: 40,
   },
   card: {
     backgroundColor: "rgba(255, 255, 255, 0.9)",

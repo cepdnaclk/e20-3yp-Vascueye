@@ -95,7 +95,43 @@ const getFlapByPatientId = async (req, res) => {
       res.status(500).json({ error: "Server error", details: error.message });
     }
   };
+  const Doctor = require("../models/Doctor");
+  const Patient = require("../models/Patient");
+  
+  // Get Assigned Patients for a Doctor by Email
+  const getAssignPatients = async (req, res) => {
+      try {
+          const { email } = req.body; // Extract doctor email from request body
+  
+          // Validate email
+          if (!email) {
+              return res.status(400).json({ error: "Doctor email is required." });
+          }
+  
+          // Find the doctor by email
+          const doctor = await Doctor.findOne({ email });
+          if (!doctor) {
+              return res.status(404).json({ error: "Doctor not found." });
+          }
+  
+          // Fetch all patients assigned to this doctor
+          const assignedPatients = await Patient.find({ assignedDoctor: doctor._id });
+  
+          if (!assignedPatients || assignedPatients.length === 0) {
+              return res.status(404).json({ error: "No assigned patients found for this doctor." });
+          }
+  
+          res.status(200).json(assignedPatients);
+      } catch (error) {
+          console.error("Error fetching assigned patients:", error);
+          res.status(500).json({ error: "Server error", details: error.message });
+      }
+  };
+  
+  
+
+  
   
 
 // Export using CommonJS
-module.exports = { create, login ,getFlapByPatientId};
+module.exports = { create, login ,getFlapByPatientId,getAssignPatients};
