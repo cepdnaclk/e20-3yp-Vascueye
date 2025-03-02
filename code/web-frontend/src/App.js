@@ -22,7 +22,7 @@ import DoctorDashboard from "./pages/DoctorDashboard";
 import DoctorRegister from "./pages/DoctorRegister";
 import DoctorSearch from "./pages/DoctorSearch";
 import AssignDoctor from "./pages/AssignDoctor";
-
+import FlapSearch from "./pages/FlapSearch";
 import HospitalDashboard from "./pages/HospitalDashboard";
 import Dashboard from "./pages/Dashboard";
 
@@ -94,6 +94,13 @@ function App() {
                   </AuthRoute>
                 }
               />
+              <Route
+                path="/search-flap"
+                element={
+                  <AuthRoute roles={["doctor"]}>
+                    <FlapSearch />
+                  </AuthRoute>
+                }/>
               <Route
                 path="/hospital-dashboard"
                 element={
