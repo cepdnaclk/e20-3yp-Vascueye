@@ -59,3 +59,7 @@ code/backend/certs/*
 *.bin
 *.elf
 *.hex
+
+mobile-app/node_modules/
+code/mobile-app/Backend/node_modules/
+code/mobile-app/.expo/
