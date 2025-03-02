@@ -25,7 +25,12 @@ title: VascuEye - A Real-Time Blood Flow Monitoring System
 - Dr. Isuru Nawinne, [email](mailto:isurunawinne@eng.pdn.ac.lk)
 
 - --
+## Introduction Video
 
+[Watch Video](./videos/intro.mp4)
+
+
+---
 ## Hardware Setup
 
 ![Hardware Setup](./images/hardware_setup.jpg)
