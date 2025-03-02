@@ -65,9 +65,9 @@ const HospitalDashboard = () => {
               variant="outlined"
               fullWidth
               component={Link}
-              to="/assign-patient"
+              to="/discharge-patient"
             >
-              Assign Patient to Doctor
+              Discharge
             </Button>
           </CardContent>
         </Card>
@@ -100,15 +100,15 @@ const HospitalDashboard = () => {
               variant="outlined"
               fullWidth
               component={Link}
-              to="/appointments"
+              to="/assign-patient"
             >
-              Appointments
+              Assign Patients
             </Button>
           </CardContent>
         </Card>
 
         {/* Quick Links */}
-        <Card sx={{ flex: 1, p: 2 }}>
+        {/* <Card sx={{ flex: 1, p: 2 }}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               Quick Links
@@ -135,7 +135,7 @@ const HospitalDashboard = () => {
               Billing & Payments
             </Button>
           </CardContent>
-        </Card>
+        </Card> */}
       </Box>
     </div>
   );

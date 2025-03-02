@@ -10,6 +10,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const AssignPatient = () => {
   const [doctors, setDoctors] = useState([]);
@@ -17,6 +18,7 @@ const AssignPatient = () => {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedPatient, setSelectedPatient] = useState("");
 
+  const navigate = useNavigate();
   useEffect(() => {
     fetchDoctors();
     fetchPatients();
@@ -107,7 +109,7 @@ const AssignPatient = () => {
       } catch (error) {
         console.error("Error assigning patient:", error);
       } finally {
-        window.location.reload();
+        navigate("/hospital-dashboard");
       }
     }
   };

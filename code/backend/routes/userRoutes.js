@@ -22,7 +22,7 @@ router.post("/assign-all-patients", assignAllPatientsToDoctor);
 router.get("/doctors", getDoctors); // Get all doctors
 router.get("/patients", getPatients); // Get all patients
 router.get("/patients/unassigned", getUnassignedPatients);
-router.get("/doctors/:name/patients", getAssignPatients);
+router.post("/doctors/patients", getAssignPatients);
 
 router.get("/patient/search", searchPatients);
 router.post("/patient/register", registerPatient);
