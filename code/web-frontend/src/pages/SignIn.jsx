@@ -52,7 +52,7 @@ const SignIn = () => {
 
   return (
     <div className="auth-container">
-      <h2>Sign In</h2>
+      <h2>Sign In jananga</h2>
       {error && <p className="error-message">{error}</p>}
 
       <form onSubmit={handleSubmit} className="auth-form">
