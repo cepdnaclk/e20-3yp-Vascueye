@@ -51,7 +51,7 @@ const DoctorDashboard = () => {
     try {
       setLoading(true);
       setSelectedPatientId(patientId);
-      setSelectedFlap(null); // Reset selected flap
+      setFlapData(""); // Reset selected flap
       const response = await axios.get(
         `http://localhost:5000/api/users/flap/search/${patientId}`
       );
@@ -97,8 +97,6 @@ const DoctorDashboard = () => {
               <Typography variant="h5">Assigned Patients</Typography>
               {loading ? (
                 <CircularProgress />
-              ) : error ? (
-                <Typography color="error">{error}</Typography>
               ) : assignedPatients.length > 0 ? (
                 assignedPatients.map((patient) => (
                   <Card
@@ -121,18 +119,6 @@ const DoctorDashboard = () => {
                 ))
               ) : (
                 <Typography>No assigned patients.</Typography>
-              )}
-              {selectedPatientId && (
-                <Button
-                  variant="contained"
-                  sx={{ mt: 2 }}
-                  onClick={() => {
-                    setSelectedPatientId(null);
-                    setFlapData([]);
-                  }}
-                >
-                  Back to Assigned Patients
-                </Button>
               )}
             </CardContent>
           </Card>

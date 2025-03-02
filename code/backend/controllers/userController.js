@@ -76,7 +76,7 @@ exports.registerPatient = async (req, res) => {
 
 exports.registerDoctor = async (req, res) => {
   try {
-    const { name, email, specialty, contact } = req.body;
+    const { name, email, specialty, contact, age } = req.body;
 
     // Validate all required fields
     if (!name || !email || !specialty || !contact) {
@@ -85,7 +85,9 @@ exports.registerDoctor = async (req, res) => {
 
     // Validate contact number (must be 10 digits)
     if (!/^\d{10}$/.test(contact)) {
-      return res.status(400).json({ message: "Contact number must be exactly 10 digits" });
+      return res
+        .status(400)
+        .json({ message: "Contact number must be exactly 10 digits" });
     }
 
     // Validate email format
@@ -97,22 +99,27 @@ exports.registerDoctor = async (req, res) => {
     // Check if doctor with the same email already exists
     const existingDoctor = await Doctor.findOne({ email });
     if (existingDoctor) {
-      return res.status(400).json({ message: "Doctor with this email already exists" });
+      return res
+        .status(400)
+        .json({ message: "Doctor with this email already exists" });
     }
 
     // Create new doctor
-    const newDoctor = new Doctor({ name, email, specialty, contact });
+    const newDoctor = new Doctor({ name, email, specialty, contact, age });
 
     // Save to database
     await newDoctor.save();
 
-    res.status(201).json({ message: "Doctor registered successfully", doctor: newDoctor });
+    res
+      .status(201)
+      .json({ message: "Doctor registered successfully", doctor: newDoctor });
   } catch (error) {
     console.error("Error registering doctor:", error);
-    res.status(500).json({ message: "Error registering doctor", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error registering doctor", error: error.message });
   }
 };
-
 
 exports.assignPatientToDoctor = async (req, res) => {
   try {
@@ -190,6 +197,40 @@ exports.searchDoctors = async (req, res) => {
   }
 };
 
+// Get all patients assigned to a specific doctor by name
+exports.getAssignPatients = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Check if the doctor exists
+    const doctor = await Doctor.findOne({ email });
+    if (!doctor) {
+      return res.status(404).json({ error: "Doctor not found" });
+    }
+
+    // Find all patients assigned to this doctor
+    const assignedPatients = await Patient.find({ assignedDoctor: doctor._id });
+
+    res.status(200).json(assignedPatients);
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+};
+
+// Get all patients where assignedDoctor is empty
+exports.getUnassignedPatients = async (req, res) => {
+  try {
+    // Find patients where assignedDoctor is null or not set
+    const unassignedPatients = await Patient.find({
+      assignedDoctor: { $in: [null, undefined] },
+    });
+
+    res.status(200).json(unassignedPatients);
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+};
+
 // Delete a user by ID
 exports.deleteUser = async (req, res) => {
   try {
@@ -212,7 +253,9 @@ exports.getFlapByPatientId = async (req, res) => {
       .populate("patient_id", "name age contact") // Fetch patient details
       .sort({ timestamp: -1 }); // Sort by latest entries
     if (!flapRecords || flapRecords.length === 0) {
-      return res.status(404).json({ error: "No flap data found for this patient." });
+      return res
+        .status(404)
+        .json({ error: "No flap data found for this patient." });
     }
     res.status(200).json(flapRecords);
   } catch (error) {
@@ -220,3 +263,33 @@ exports.getFlapByPatientId = async (req, res) => {
   }
 };
 
+// Assign all patients to a specific doctor
+exports.assignAllPatientsToDoctor = async (req, res) => {
+  try {
+    const { doctorId, patientIds } = req.body;
+
+    // Check if the doctor exists
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ error: "Doctor not found" });
+    }
+
+    // Validate patientIds array
+    if (!patientIds || !Array.isArray(patientIds) || patientIds.length === 0) {
+      return res.status(400).json({ error: "No patient IDs provided" });
+    }
+
+    // Update all patients with the assigned doctor
+    const updatedPatients = await Patient.updateMany(
+      { _id: { $in: patientIds } },
+      { $set: { assignedDoctor: doctorId } }
+    );
+
+    res.status(200).json({
+      message: "All patients assigned successfully",
+      modifiedCount: updatedPatients.modifiedCount,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+};

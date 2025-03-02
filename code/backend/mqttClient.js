@@ -26,6 +26,7 @@ const device = awsIot.device({
 });
 
 let latestData = {
+  patient_id: null,
   temperature: null,
   image: null,
 }; // Store latest received data

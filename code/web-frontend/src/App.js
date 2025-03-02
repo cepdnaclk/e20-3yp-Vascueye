@@ -21,7 +21,6 @@ import AssignPatient from "./pages/AssignPatient";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import DoctorRegister from "./pages/DoctorRegister";
 import DoctorSearch from "./pages/DoctorSearch";
-import AssignDoctor from "./pages/AssignDoctor";
 import FlapSearch from "./pages/FlapSearch";
 import HospitalDashboard from "./pages/HospitalDashboard";
 import Dashboard from "./pages/Dashboard";
@@ -68,7 +67,6 @@ function App() {
               <Route path="/assign-patient" element={<AssignPatient />} />
               <Route path="/register-doctor" element={<DoctorRegister />} />
               <Route path="/search-doctor" element={<DoctorSearch />} />
-              <Route path="/assign-doctor" element={<AssignDoctor />} />
               {/* Role-based Dashboard Routing */}
               <Route
                 path="/dashboard"
@@ -100,7 +98,8 @@ function App() {
                   <AuthRoute roles={["doctor"]}>
                     <FlapSearch />
                   </AuthRoute>
-                }/>
+                }
+              />
               <Route
                 path="/hospital-dashboard"
                 element={
