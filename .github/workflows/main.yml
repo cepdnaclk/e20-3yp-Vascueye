@@ -68,11 +68,11 @@ jobs:
           # Navigate to backend location
           cd /www/wwwroot/vescueye.work.gd/code/backend
           
-          # Install dependencies
-          npm install
+          # Debugging: List files in the backend directory
+          ls -la
           
-          # Restart backend with PM2 (or start if not running)
-          pm2 restart vescueye-backend || pm2 start server.js --name vescueye-backend
+          # Install dependencies and restart backend with PM2
+          pm2 restart vescueye-backend || (npm install && pm2 start server.js --name vescueye-backend)
           
           # Save PM2 process & ensure it restarts on reboot
           pm2 save
