@@ -245,19 +245,36 @@ exports.deleteUser = async (req, res) => {
 };
 
 //Get flap data by patient id
+// Get flap data by patient ID with pagination
 exports.getFlapByPatientId = async (req, res) => {
   try {
-    const { id } = req.params; // Get patient ID from request parameters
-    // Find all flap records linked to the patient
+    const { id } = req.params; // Patient ID from route
+    const page = parseInt(req.query.page) || 1; // Page number (default 1)
+    const limit = parseInt(req.query.limit) || 10; // Items per page (default 10)
+    const skip = (page - 1) * limit;
+
+    // Fetch flap records with pagination
     const flapRecords = await FlapData.find({ patient_id: id })
-      .populate("patient_id", "name age contact") // Fetch patient details
-      .sort({ timestamp: -1 }); // Sort by latest entries
+      .populate("patient_id", "name age contact")
+      .sort({ timestamp: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // Count total records for frontend pagination
+    const total = await FlapData.countDocuments({ patient_id: id });
+
     if (!flapRecords || flapRecords.length === 0) {
       return res
         .status(404)
         .json({ error: "No flap data found for this patient." });
     }
-    res.status(200).json(flapRecords);
+
+    res.status(200).json({
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      records: flapRecords,
+    });
   } catch (error) {
     res.status(500).json({ error: "Server error", details: error.message });
   }
