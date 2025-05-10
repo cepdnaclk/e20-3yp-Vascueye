@@ -143,7 +143,7 @@ const DoctorDashboard = () => {
                 style={{
                   width: "200px",
                   height: "30px",
-                  margin: "10px",
+                  margin: "30px",
                   padding: "5px",
                 }}
               >
