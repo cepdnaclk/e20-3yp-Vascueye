@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
- 
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,
   Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView,
@@ -8,12 +7,24 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('demo3@g.com');
+  const [password, setPassword] = useState('Test@123');
 
   const handleLogin = async () => {
+    if (email === 'demo3@g.com' && password === 'Test@123') {
+      // Bypass API for demo user
+      Alert.alert('Success', 'Demo user logged in successfully!');
+      navigation.navigate('Home');
+      return;
+    }
+
+    if (!email || !password) {
+      Alert.alert('Validation Error', 'Please enter both email and password.');
+      return;
+    }
+
     try {
-      const response = await fetch(`http://192.168.8.101:5001/api/auth/login`, {
+      const response = await fetch('http://192.168.0.178:5001/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -25,7 +36,7 @@ export default function LoginScreen({ navigation }) {
         console.log('User logged in:', data);
         navigation.navigate('Home');
       } else {
-        Alert.alert('Error', data.message);
+        Alert.alert('Error', data.message || 'Login failed');
       }
     } catch (error) {
       console.error(error);

@@ -18,7 +18,7 @@ const HospitalDashboard = () => {
     <div
       className="dashboard-container"
       style={{
-        backgroundColor: "#d4e9fb",
+        backgroundColor:"#fefefe",
         minHeight: "100vh",
         padding: "20px",
       }}

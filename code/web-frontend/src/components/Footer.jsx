@@ -3,7 +3,7 @@ import "../styles/Footer.css";
 const Footer = () => {
   return (
     <footer className="footer">
-      <p>© 2025 Vescueye. All rights reserved.</p>
+      <h4>© 2025 Vescueye. All rights reserved.</h4>
     </footer>
   );
 };

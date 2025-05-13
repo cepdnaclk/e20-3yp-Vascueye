@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 
-const WEBSOCKET_URL = "ws://192.168.8.101:8080"; // Replace with your backend IP
+const WEBSOCKET_URL = "ws://192.168.0.101:8080"; // Replace with your backend IP
 
 const LiveFlapScreen = () => {
   const [flapData, setFlapData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation(); // Use the useNavigation hook
 
   useEffect(() => {
     const ws = new WebSocket(WEBSOCKET_URL);
@@ -38,6 +40,9 @@ const LiveFlapScreen = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.backText}>{"< Back"}</Text>
+      </TouchableOpacity>
       <Text style={styles.header}>Live Flap Data</Text>
 
       {loading ? (
@@ -65,6 +70,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+  },
+  backButton: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+    padding: 10,
+    backgroundColor: "#007bff",
+    borderRadius: 5,
+  },
+  backText: {
+    color: "#fff",
+    fontSize: 18,
   },
   header: {
     fontSize: 24,
