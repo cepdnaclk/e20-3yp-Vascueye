@@ -269,12 +269,14 @@ exports.getFlapByPatientId = async (req, res) => {
         .json({ error: "No flap data found for this patient." });
     }
 
+
     res.status(200).json({
       total,
       page,
       totalPages: Math.ceil(total / limit),
       records: flapRecords,
     });
+
   } catch (error) {
     res.status(500).json({ error: "Server error", details: error.message });
   }
