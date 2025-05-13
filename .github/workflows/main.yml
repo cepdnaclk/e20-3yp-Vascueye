@@ -106,7 +106,10 @@ jobs:
 
     - name: 📐 Configure Apache Reverse Proxy
       run: |
-        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+
+        ssh root@${{ secrets.AWS_HOST }} "sudo systemctl restart apache2 || sudo systemctl restart nginx"
+
+#         ssh root@${{ secrets.AWS_HOST }} << 'EOF'
           # Enable necessary Apache modules if not already enabled
           sudo a2enmod proxy proxy_http
           
@@ -135,3 +138,4 @@ jobs:
         echo "Testing application health..."
         curl -s "http://${{ secrets.AWS_HOST }}" | grep -q "Vascueye" && echo "✅ Frontend OK" || echo "❌ Frontend Error"
         curl -s "http://${{ secrets.AWS_HOST }}/backend" | grep -q "Vascueye Backend is Running" && echo "✅ Backend OK" || echo "❌ Backend Error"
+
