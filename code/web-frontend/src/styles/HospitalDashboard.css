@@ -1,6 +1,6 @@
 /* General Dashboard Container */
 body, html {
-    background-color: #d4e9fb; /* Change this to your preferred color */
+    background-color: #fefefe;/* Change this to your preferred color */
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -9,7 +9,7 @@ body, html {
     overflow-y: auto;
   }
   .dashboard-container {
-    background-color: #d4e9fb;
+    background-color: #fefefe;
     min-height: 100vh;
     padding: 20px;
     display: flex;

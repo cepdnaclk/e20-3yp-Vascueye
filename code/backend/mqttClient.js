@@ -3,6 +3,7 @@ const FlapData = require("./models/FlapData");
 require("dotenv").config();
 
 // Define the fallback paths for server
+
 const fallbackKeyPath = "/home/ubuntu/certs/privateKey.pem";
 const fallbackCertPath = "/home/ubuntu/certs/certificate.pem";
 const fallbackCaPath = "/home/ubuntu/certs/caCert.pem";
@@ -22,7 +23,9 @@ const device = awsIot.device({
   certPath: certPath,
   caPath: caPath,
   clientId: clientId,
+
   host: host,
+
 });
 
 let latestData = {

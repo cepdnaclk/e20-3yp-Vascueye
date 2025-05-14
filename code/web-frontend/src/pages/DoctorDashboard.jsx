@@ -10,6 +10,7 @@ import {
   Button,
   Grid,
   CircularProgress,
+
   TextField,
 } from "@mui/material";
 import FlapDetailModal from "../components/FlapDetailModal";
@@ -17,12 +18,16 @@ import "../styles/DoctorDashboard.css"; // Import separate CSS file
 
 const DoctorDashboard = () => {
   const { user } = useContext(AuthContext);
+
+//   const navigate = useNavigate();
+
   const [assignedPatients, setAssignedPatients] = useState([]);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [flapData, setFlapData] = useState([]);
   const [selectedFlap, setSelectedFlap] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,7 +42,9 @@ const DoctorDashboard = () => {
         setLoading(true);
         const response = await axios.post(
           "http://localhost:5000/api/users/doctors/patients",
+
           { email: user.email } // Send email in the body
+
         );
         setAssignedPatients(response.data);
         setLoading(false);
@@ -52,6 +59,7 @@ const DoctorDashboard = () => {
       fetchAssignedPatients();
     }
   }, [user]);
+
 
   // On list item click:
   const handleSelectFlap = (flap, index) => {
@@ -106,16 +114,19 @@ const DoctorDashboard = () => {
     );
 
     setFilteredPatients(results);
+
   };
 
   return (
     <Box className="dashboard-container">
+
       <Typography variant="h4" sx={{ marginBottom: "20px" }}>
         Doctor Dashboard
       </Typography>
       {/* Doctor Profile Section */}
       <Card className="doctor-profile">
         <CardContent>
+
           {user ? (
             <Box>
               <Typography>
@@ -135,12 +146,15 @@ const DoctorDashboard = () => {
       </Card>
 
       {/* Two Column Layout */}
+
       <Grid container spacing={3} style={{ width: "100%" }}>
+
         {/* Left Side - Assigned Patients */}
         <Grid item xs={12} md={6}>
           <Card className="assigned-patients">
             <CardContent>
               <Typography variant="h5">Assigned Patients</Typography>
+
               <div
                 style={{
                   width: "200px",
@@ -163,15 +177,18 @@ const DoctorDashboard = () => {
                   ? filteredPatients
                   : assignedPatients
                 ).map((patient) => (
+
                   <Card
                     key={patient._id}
                     className={`patient-item ${
                       selectedPatientId === patient._id ? "selected" : ""
                     }`}
+
                     onClick={() => {
                       setSelectedPatientId(patient._id);
                       setPage(1);
                     }}
+
                   >
                     <Typography>
                       <strong>Name:</strong> {patient.name}
@@ -201,12 +218,14 @@ const DoctorDashboard = () => {
         </Grid>
 
         {/* Right Side - All Flap Data for Selected Patient */}
+
         <Grid
           item
           xs={12}
           md={6}
           style={{ marginBottom: "40px", paddingBottom: "10px" }}
         >
+
           <Card className="flap-data">
             <CardContent>
               <Typography variant="h5">
@@ -218,13 +237,17 @@ const DoctorDashboard = () => {
               {loading ? (
                 <CircularProgress />
               ) : flapData.length > 0 ? (
+
                 flapData.map((flap, index) => (
+
                   <Card
                     key={flap._id}
                     className={`flap-item ${
                       selectedFlap?._id === flap._id ? "selected" : ""
                     }`}
+
                     onClick={() => handleSelectFlap(flap, index)}
+
                   >
                     <Typography>
                       <strong>Temperature:</strong>{" "}
@@ -241,6 +264,7 @@ const DoctorDashboard = () => {
               )}
 
               {selectedFlap && (
+
                 <FlapDetailModal
                   selectedFlap={selectedFlap}
                   setSelectedFlap={setSelectedFlap}
@@ -269,6 +293,7 @@ const DoctorDashboard = () => {
                 </Button>
               </Box>
             )}
+
           </Card>
         </Grid>
       </Grid>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons"; // For back button
 import axios from "axios";
 
 export default function DoctorDashboard() {
@@ -11,10 +12,10 @@ export default function DoctorDashboard() {
   const [flapLoading, setFlapLoading] = useState(false);
   const [error, setError] = useState("");
   const navigation = useNavigation();
-  const doctorEmail = "doctor@test.com"; 
+  const doctorEmail = "doctor@test.com"; // Set your doctor email
 
   // API Base URL
-  const BASE_URL = "http://192.168.8.100:5001/api/users";
+  const BASE_URL = "http://192.168.0.178:5001/api/users";
 
   useEffect(() => {
     const getPatients = async () => {
@@ -48,6 +49,11 @@ export default function DoctorDashboard() {
 
   return (
     <View style={styles.container}>
+      {/* Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <Text style={styles.header}>Doctor Dashboard</Text>
       <Text style={styles.subHeader}>Welcome, Doctor!</Text>
 
@@ -106,9 +112,31 @@ export default function DoctorDashboard() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#f5f5f5" },  
-  header: { fontSize: 24, fontWeight: "bold", marginBottom: 10,marginTop: 40, textAlign: "center" },
-  subHeader: { fontSize: 18, marginBottom: 20, textAlign: "center" },
+  container: { 
+    flex: 1, 
+    padding: 16, 
+    backgroundColor: "#f5f5f5", // Set background color here
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: semi-transparent background for better visibility
+    borderRadius: 30,
+    padding: 8,
+  },
+  header: { 
+    fontSize: 24, 
+    fontWeight: "bold", 
+    marginBottom: 10, 
+    marginTop: 60, // Adjusted margin for spacing with back button
+    textAlign: "center" 
+  },
+  subHeader: { 
+    fontSize: 18, 
+    marginBottom: 20, 
+    textAlign: "center" 
+  },
   card: { 
     backgroundColor: "#ffffff",
     padding: 15, 
@@ -122,10 +150,27 @@ const styles = StyleSheet.create({
   },
   cardText: { fontSize: 16 },
   boldText: { fontWeight: "bold" },
-  flapContainer: { marginTop: 20, padding: 10, backgroundColor: "#fff", borderRadius: 8 },
-  sectionTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
-  flapCard: { backgroundColor: "#eee", padding: 15, borderRadius: 8, marginBottom: 10 },
-  errorText: { color: "red", fontSize: 16, textAlign: "center", marginTop: 10 }
+  flapContainer: { 
+    marginTop: 20, 
+    padding: 10, 
+    backgroundColor: "#fff", 
+    borderRadius: 8 
+  },
+  sectionTitle: { 
+    fontSize: 20, 
+    fontWeight: "bold", 
+    marginBottom: 10 
+  },
+  flapCard: { 
+    backgroundColor: "#eee", 
+    padding: 15, 
+    borderRadius: 8, 
+    marginBottom: 10 
+  },
+  errorText: { 
+    color: "red", 
+    fontSize: 16, 
+    textAlign: "center", 
+    marginTop: 10 
+  }
 });
-
-// export default DoctorDashboard;

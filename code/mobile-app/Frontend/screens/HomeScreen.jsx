@@ -1,122 +1,147 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons"; // For icons
+import React, { useState } from "react";
+import { View, Text, Pressable, StyleSheet, StatusBar, Image } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function HomeScreen({ navigation }) {
   return (
-    <LinearGradient colors={["#a6e8f0", "#52ebf6"]} style={styles.container}>
-      {/* Profile Button at Top */}
-      <TouchableOpacity
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#465a6e" />
+
+      {/* Profile Button */}
+      <Pressable
         style={styles.profileButton}
         onPress={() => navigation.navigate("Profile")}
+        accessibilityLabel="Profile"
       >
-        <Ionicons name="person-circle-outline" size={30} color="#fff" />
-      </TouchableOpacity>
+        <Ionicons name="person-circle-outline" size={36} color="#fff" />
+      </Pressable>
 
       {/* Header Section */}
-      <Text style={styles.header}>Welcome Doctor!</Text>
-      <Text style={styles.description}>
-        Explore the features and manage your account.
-      </Text>
-
-      {/* Buttons Container */}
-      <View style={styles.buttonsContainer}>
-        {/* View Patients Button */}
-        <TouchableOpacity
-          style={[styles.button, styles.viewPatientsButton]}
-          onPress={() => navigation.navigate("Dashboard")}
-        >
-          <Ionicons name="people-outline" size={24} color="#fff" />
-          <Text style={styles.buttonText}>View Patients</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("LiveFlapScreen")}
-        >
-          <Ionicons name="camera-outline" size={24} color="#fff" />
-          <Text style={styles.buttonText}>View Live Data</Text>
-        </TouchableOpacity>
-
-        {/* Logout Button */}
-        <TouchableOpacity
-          style={[styles.button, styles.logoutButton]}
-          onPress={() => navigation.navigate("Welcome")}
-        >
-          <Ionicons name="log-out-outline" size={24} color="#fff" />
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
+      <View style={styles.headerSection}>
+        {/* Vescueye Logo */}
+        <Image
+          source={require("../assets/vescueye-logo.png")}
+          style={styles.logo} // Adjust the path to your logo
+        />
+        <Text style={styles.header}>Welcome, Doctor</Text>
+        <Text style={styles.subHeader}>Manage your activities smartly</Text>
       </View>
-    </LinearGradient>
+
+      {/* Buttons at the bottom */}
+      <View style={styles.bottomSection}>
+        <HoverButton
+          icon="people"
+          label="View Patients"
+          onPress={() => navigation.navigate("Dashboard")}
+        />
+        <HoverButton
+          icon="pulse"
+          label="View Live Data"
+          onPress={() => navigation.navigate("LiveFlapScreen")}
+        />
+        <HoverButton
+          icon="log-out"
+          label="Logout"
+          onPress={() => navigation.navigate("Welcome")}
+        />
+      </View>
+    </View>
   );
 }
+
+// Hoverable Button
+const HoverButton = ({ icon, label = "Default Label", onPress }) => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <Pressable
+      onPress={onPress}
+      onHoverIn={() => setHovered(true)}
+      onHoverOut={() => setHovered(false)}
+      style={[styles.button, hovered && styles.buttonHover]}
+    >
+      <Ionicons name={icon} size={24} color={hovered ? "#fff" : "#000"} />
+      <Text style={[styles.buttonText, hovered && styles.buttonTextHover]}>
+        {label}
+      </Text>
+    </Pressable>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
+    backgroundColor: "#465a6e",
+    paddingHorizontal: 24,
+    paddingTop: 60,
   },
   profileButton: {
     position: "absolute",
     top: 50,
     right: 20,
-    backgroundColor: "#007aff",
-    padding: 10,
-    borderRadius: 30,
-    elevation: 5,
+    backgroundColor: "#ffffff20",
+    borderRadius: 40,
+    padding: 6,
     shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    elevation: 4,
+  },
+  headerSection: {
+    alignItems: "center",
+    marginTop: 20, // Reduced top margin to make space for the logo
+    marginBottom: 40,
+  },
+  logo: {
+    width: 120, // Adjust the size of the logo as needed
+    height: 120, // Adjust the size of the logo as needed
+    marginBottom: 20, // Space between logo and header text
   },
   header: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 32,
+    fontWeight: "700",
     color: "#fff",
-    marginBottom: 10,
-    textShadowColor: "rgba(0, 0, 0, 0.2)",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 5,
   },
-  description: {
+  subHeader: {
     fontSize: 16,
-    textAlign: "center",
-    color: "#fff",
-    marginBottom: 40,
-    opacity: 0.9,
+    color: "#ddd",
+    marginTop: 6,
   },
-  buttonsContainer: {
-    width: "100%",
+  bottomSection: {
+    flex: 1,
+    justifyContent: "flex-end",
     alignItems: "center",
+    marginBottom: 40,
   },
   button: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#007aff",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    marginVertical: 10,
-    width: "80%",
+    paddingVertical: 14,
+    paddingHorizontal: 25,
+    borderRadius: 14,
+    width: "90%",
     justifyContent: "center",
+    marginVertical: 10,
+    backgroundColor: "#3ecff3",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowRadius: 6,
+    elevation: 6,
+    transitionDuration: "200ms",
   },
-  viewPatientsButton: {
-    backgroundColor: "#34c759", // Green for "View Patients"
-  },
-  logoutButton: {
-    backgroundColor: "#ff3b30", // Red for "Logout"
+  buttonHover: {
+    backgroundColor: "#0d8adf",
+    transform: [{ scale: 1.02 }],
   },
   buttonText: {
-    color: "#fff",
     fontSize: 18,
-    fontWeight: "bold",
-    marginLeft: 10,
+    fontWeight: "600",
+    color: "#000",
+    marginLeft: 12,
+  },
+  buttonTextHover: {
+    color: "#fff",
   },
 });
