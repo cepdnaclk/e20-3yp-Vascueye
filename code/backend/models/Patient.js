@@ -6,6 +6,7 @@ const patientSchema = new mongoose.Schema(
     age: { type: Number, required: true, min: 0 },
     contact: { type: String, required: true },
     address: { type: String, required: true },
+    gender: { type: String, required: true },
     medicalHistory: { type: String, default: "No medical history provided" },
     assignedDoctor: {
       type: mongoose.Schema.Types.ObjectId,

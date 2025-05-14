@@ -24,7 +24,7 @@ import DoctorSearch from "./pages/DoctorSearch";
 import FlapSearch from "./pages/FlapSearch";
 import HospitalDashboard from "./pages/HospitalDashboard";
 import Dashboard from "./pages/Dashboard";
-
+import PatientDetail from "./pages/PatientDetail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
@@ -67,6 +67,7 @@ function App() {
               <Route path="/assign-patient" element={<AssignPatient />} />
               <Route path="/register-doctor" element={<DoctorRegister />} />
               <Route path="/search-doctor" element={<DoctorSearch />} />
+              <Route path="/patient/:id" element={<PatientDetail />} />
               {/* Role-based Dashboard Routing */}
               <Route
                 path="/dashboard"

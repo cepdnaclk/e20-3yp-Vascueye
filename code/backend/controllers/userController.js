@@ -26,9 +26,8 @@ exports.getPatients = async (req, res) => {
 // Get a specific patient by ID
 exports.getPatientById = async (req, res) => {
   try {
-    const patient = await User.findOne({
+    const patient = await Patient.findOne({
       _id: req.params.id,
-      role: "patient",
     }).select("-password");
     if (!patient) {
       return res.status(404).json({ error: "Patient not found" });
@@ -42,7 +41,7 @@ exports.getPatientById = async (req, res) => {
 //Register patient
 exports.registerPatient = async (req, res) => {
   try {
-    const { name, age, address, contact, medicalHistory } = req.body;
+    const { name, age, address, contact, medicalHistory, gender } = req.body;
 
     // Validate contact number (must be 10 digits)
     if (!/^\d{10}$/.test(contact)) {
@@ -58,6 +57,7 @@ exports.registerPatient = async (req, res) => {
       address,
       contact,
       medicalHistory,
+      gender,
     });
 
     // Save to database

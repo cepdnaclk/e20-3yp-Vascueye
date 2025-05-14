@@ -4,8 +4,10 @@ import {
   Button,
   Card,
   CardContent,
+  Select,
   TextField,
   Typography,
+  MenuItem,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -69,6 +71,7 @@ const PatientRegister = () => {
         address: "",
         contact: "",
         medicalHistory: "",
+        gender: "",
       });
     } else {
       console.error("Error registering patient");
@@ -102,6 +105,19 @@ const PatientRegister = () => {
               required
               margin="normal"
             />
+            <Select
+              labelId="patient-label"
+              id="patient-select"
+              name="gender"
+              value={patientData.gender}
+              label="Gender"
+              onChange={handleChange}
+            >
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+              <MenuItem value="other">Other</MenuItem>
+            </Select>
+
             <TextField
               fullWidth
               label="Address"
