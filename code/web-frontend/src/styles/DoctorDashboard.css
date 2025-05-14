@@ -18,6 +18,7 @@
 .assigned-patients {
   /* padding: 20px; */
   min-height: 550px;
+  overflow-y: auto;
 }
 
 .flap-image {
@@ -35,6 +36,7 @@
   transition: background 0.3s;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
 .flap-item:hover,

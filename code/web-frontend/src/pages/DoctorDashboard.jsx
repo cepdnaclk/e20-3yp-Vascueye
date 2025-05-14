@@ -33,6 +33,7 @@ const DoctorDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState([]);
 
+  const navigate = useNavigate();
 
   // Fetch assigned patients when component loads
   useEffect(() => {
@@ -198,6 +199,15 @@ const DoctorDashboard = () => {
                     <Typography>
                       <strong>Contact:</strong> {patient.contact}
                     </Typography>
+                    <Button
+                      variant="contained"
+                      sx={{ mt: 1 }}
+                      onClick={() => {
+                        navigate(`/patient/${patient._id}`);
+                      }}
+                    >
+                      View Details
+                    </Button>
                   </Card>
                 ))
               ) : (
