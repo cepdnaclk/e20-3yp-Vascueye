@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+ 
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,
   Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView,
@@ -7,43 +9,32 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('demo3@g.com');
-  const [password, setPassword] = useState('Test@123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    if (email === 'demo3@g.com' && password === 'Test@123') {
-      // Bypass API for demo user
-      Alert.alert('Success', 'Demo user logged in successfully!');
+  try {
+    const response = await fetch('http://172.20.10.2:5001/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Store the token in AsyncStorage
+      await AsyncStorage.setItem("userToken", data.token);
+      console.log('User logged in:', data);
       navigation.navigate('Home');
-      return;
+    } else {
+      Alert.alert('Error', data.message);
     }
-
-    if (!email || !password) {
-      Alert.alert('Validation Error', 'Please enter both email and password.');
-      return;
-    }
-
-    try {
-      const response = await fetch('http://192.168.0.178:5001/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('User logged in:', data);
-        navigation.navigate('Home');
-      } else {
-        Alert.alert('Error', data.message || 'Login failed');
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Something went wrong. Please try again later.');
-    }
-  };
-
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Error', 'Something went wrong. Please try again later.');
+  }
+};
   return (
     <KeyboardAvoidingView
       style={styles.container}

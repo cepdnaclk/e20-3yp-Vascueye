@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     width: "90%",
     justifyContent: "center",
     marginVertical: 10,
-    backgroundColor: "#3ecff3",
+    backgroundColor: "#5db5c7",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
