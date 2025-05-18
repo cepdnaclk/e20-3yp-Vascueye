@@ -8,11 +8,7 @@ export default function PatientScreen({ navigation }) {
       source={require('../assets/background.jpg')} // Your background image here
       style={styles.container}
     >
-      {/* Back Button */}
-      <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#fff" />
-      </Pressable>
-
+    
       {/* Patient Details Section */}
       <View style={styles.content}>
         <Text style={styles.header}>Patient Screen</Text>
