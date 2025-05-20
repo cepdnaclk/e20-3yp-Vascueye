@@ -17,12 +17,17 @@ function PatientDetail() {
   const [flapData, setFlapData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [patientData, setPatientData] = useState({});
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchFlapData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/users/flap/search/${id}`
+          `http://localhost:5000/api/users/flap/search/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setFlapData(response.data.records || []);
         setLoading(false);
@@ -35,7 +40,12 @@ function PatientDetail() {
     const fetchPatientData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/users/patient/${id}`
+          `http://localhost:5000/api/users/patient/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setPatientData(response.data || []);
       } catch (err) {

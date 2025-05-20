@@ -10,7 +10,6 @@ import {
   Button,
   Grid,
   CircularProgress,
-
   TextField,
 } from "@mui/material";
 import FlapDetailModal from "../components/FlapDetailModal";
@@ -19,7 +18,7 @@ import "../styles/DoctorDashboard.css"; // Import separate CSS file
 const DoctorDashboard = () => {
   const { user } = useContext(AuthContext);
 
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
   const [assignedPatients, setAssignedPatients] = useState([]);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
@@ -33,6 +32,8 @@ const DoctorDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState([]);
 
+  const token = localStorage.getItem("token");
+
   const navigate = useNavigate();
 
   // Fetch assigned patients when component loads
@@ -40,13 +41,22 @@ const DoctorDashboard = () => {
     const fetchAssignedPatients = async () => {
       try {
         setLoading(true);
-        const response = await axios.post(
+        console.log(user.email);
+        const response = await fetch(
           "http://localhost:5000/api/users/doctors/patients",
-
-          { email: user.email } // Send email in the body
-
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: user.email,
+            }),
+          }
         );
-        setAssignedPatients(response.data);
+        const data = await response.json();
+        setAssignedPatients(data);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching assigned patients:", err);
@@ -58,8 +68,7 @@ const DoctorDashboard = () => {
     if (user?.email) {
       fetchAssignedPatients();
     }
-  }, [user]);
-
+  }, []);
 
   // On list item click:
   const handleSelectFlap = (flap, index) => {
@@ -84,7 +93,12 @@ const DoctorDashboard = () => {
         setSelectedFlap(null); // Reset selected flap
 
         const response = await axios.get(
-          `http://localhost:5000/api/users/flap/search/${selectedPatientId}?page=${page}&limit=5`
+          `http://localhost:5000/api/users/flap/search/${selectedPatientId}?page=${page}&limit=5`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         setFlapData(response.data.records);
@@ -97,7 +111,7 @@ const DoctorDashboard = () => {
     };
 
     fetchFlapData();
-  }, [selectedPatientId, page]);
+  }, [selectedPatientId, page, token]);
 
   // Search patients
   const handleSearch = (e) => {
@@ -114,19 +128,16 @@ const DoctorDashboard = () => {
     );
 
     setFilteredPatients(results);
-
   };
 
   return (
     <Box className="dashboard-container">
-
       <Typography variant="h4" sx={{ marginBottom: "20px" }}>
         Doctor Dashboard
       </Typography>
       {/* Doctor Profile Section */}
       <Card className="doctor-profile">
         <CardContent>
-
           {user ? (
             <Box>
               <Typography>
@@ -148,7 +159,6 @@ const DoctorDashboard = () => {
       {/* Two Column Layout */}
 
       <Grid container spacing={3} style={{ width: "100%" }}>
-
         {/* Left Side - Assigned Patients */}
         <Grid item xs={12} md={6}>
           <Card className="assigned-patients">
@@ -177,18 +187,15 @@ const DoctorDashboard = () => {
                   ? filteredPatients
                   : assignedPatients
                 ).map((patient) => (
-
                   <Card
                     key={patient._id}
                     className={`patient-item ${
                       selectedPatientId === patient._id ? "selected" : ""
                     }`}
-
                     onClick={() => {
                       setSelectedPatientId(patient._id);
                       setPage(1);
                     }}
-
                   >
                     <Typography>
                       <strong>Name:</strong> {patient.name}
@@ -225,7 +232,6 @@ const DoctorDashboard = () => {
           md={6}
           style={{ marginBottom: "40px", paddingBottom: "10px" }}
         >
-
           <Card className="flap-data">
             <CardContent>
               <Typography variant="h5">
@@ -237,17 +243,13 @@ const DoctorDashboard = () => {
               {loading ? (
                 <CircularProgress />
               ) : flapData.length > 0 ? (
-
                 flapData.map((flap, index) => (
-
                   <Card
                     key={flap._id}
                     className={`flap-item ${
                       selectedFlap?._id === flap._id ? "selected" : ""
                     }`}
-
                     onClick={() => handleSelectFlap(flap, index)}
-
                   >
                     <Typography>
                       <strong>Temperature:</strong>{" "}
@@ -264,7 +266,6 @@ const DoctorDashboard = () => {
               )}
 
               {selectedFlap && (
-
                 <FlapDetailModal
                   selectedFlap={selectedFlap}
                   setSelectedFlap={setSelectedFlap}
@@ -293,7 +294,6 @@ const DoctorDashboard = () => {
                 </Button>
               </Box>
             )}
-
           </Card>
         </Grid>
       </Grid>
