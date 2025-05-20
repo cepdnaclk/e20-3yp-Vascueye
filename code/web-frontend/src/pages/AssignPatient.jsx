@@ -17,8 +17,10 @@ const AssignPatient = () => {
   const [patients, setPatients] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedPatient, setSelectedPatient] = useState("");
+  const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
+
   useEffect(() => {
     fetchDoctors();
     fetchPatients();
@@ -26,7 +28,11 @@ const AssignPatient = () => {
 
   const fetchDoctors = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/doctors");
+      const response = await fetch("http://localhost:5000/api/users/doctors", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setDoctors(data);
     } catch (error) {
@@ -37,7 +43,12 @@ const AssignPatient = () => {
   const fetchPatients = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/users/patients/unassigned"
+        "http://localhost:5000/api/users/patients/unassigned",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const data = await response.json();
       setPatients(data);
@@ -62,6 +73,7 @@ const AssignPatient = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
               doctorId: selectedDoctor,
@@ -93,6 +105,7 @@ const AssignPatient = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
               doctorId: selectedDoctor,

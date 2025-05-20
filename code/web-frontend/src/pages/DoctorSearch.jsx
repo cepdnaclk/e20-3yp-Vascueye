@@ -17,7 +17,12 @@ const DoctorSearch = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/doctor/search?query=${searchTerm}`
+        `http://localhost:5000/api/users/doctor/search?query=${searchTerm}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       if (!response.ok) {
         throw new Error("Failed to fetch doctors");
