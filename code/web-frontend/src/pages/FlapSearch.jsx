@@ -27,7 +27,12 @@ const DoctorDashboard = () => {
       console.log(`Fetching flap data for Patient ID: ${patientId}`);
 
       const response = await axios.get(
-        `http://localhost:5000/api/users/flap/search/${patientId}`
+        `http://localhost:5000/api/users/flap/search/${patientId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       console.log("API Response:", response.data); // Log response

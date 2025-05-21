@@ -14,23 +14,44 @@ const {
   assignPatientToDoctor,
   assignAllPatientsToDoctor,
 } = require("../controllers/userController");
+const requireRole = require("../middleware/accessControl");
 
 const router = express.Router();
 
-router.post("/assign-patient", assignPatientToDoctor);
-router.post("/assign-all-patients", assignAllPatientsToDoctor);
-router.get("/doctors", getDoctors); // Get all doctors
-router.get("/patients", getPatients); // Get all patients
-router.get("/patients/unassigned", getUnassignedPatients);
-router.post("/doctors/patients", getAssignPatients);
+router.post("/assign-patient", requireRole("hospital"), assignPatientToDoctor);
+router.post(
+  "/assign-all-patients",
+  requireRole("hospital"),
+  assignAllPatientsToDoctor
+);
+router.get("/doctors", requireRole("hospital"), getDoctors); // Get all doctors
+router.get("/patients", requireRole("hospital"), getPatients); // Get all patients
+router.get(
+  "/patients/unassigned",
+  requireRole("hospital"),
+  getUnassignedPatients
+);
+router.post(
+  "/doctors/patients",
+  requireRole("hospital", "doctor"),
+  getAssignPatients
+);
 
-router.get("/patient/search", searchPatients);
-router.post("/patient/register", registerPatient);
-router.get("/patient/:id", getPatientById); // Get one patient
+router.get(
+  "/patient/search",
+  requireRole("hospital", "doctor"),
+  searchPatients
+);
+router.post("/patient/register", requireRole("hospital"), registerPatient);
+router.get("/patient/:id", requireRole("hospital", "doctor"), getPatientById); // Get one patient
 
-router.get("/doctor/search", searchDoctors);
-router.post("/doctor/register", registerDoctor);
-router.delete("/:id", deleteUser); // Delete user
+router.get("/doctor/search", requireRole("hospital"), searchDoctors);
+router.post("/doctor/register", requireRole("hospital"), registerDoctor);
+router.delete("/:id", requireRole("hospital"), deleteUser); // Delete user
 
-router.get("/flap/search/:id", getFlapByPatientId); //1. Route to get flap data by patientID
+router.get(
+  "/flap/search/:id",
+  requireRole("doctor", "hospital"),
+  getFlapByPatientId
+); //1. Route to get flap data by patientID
 module.exports = router;
