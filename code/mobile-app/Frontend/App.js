@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 
 // Import Screens
 import SplashScreen from './screens/SplashScreen';
@@ -13,26 +12,14 @@ import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PatientScreen from './screens/PatientScreen';
 import ForgotPassword from './screens/ForgotPassword';
-
-// Footer Component
-import Footer from './components/Footer';
 import LiveFlapScreen from './screens/LiveFlapScreen';
 import DoctorDashboard from './screens/DoctorDashboard';
 
+// Footer Component
+import Footer from './components/Footer';
+
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
-// Drawer Navigation (For Home)
-function HomeStack() {
-    return (
-        <Drawer.Navigator initialRouteName="HomeDrawer">
-            <Drawer.Screen name="HomeDrawer" component={HomeScreen} />
-            <Drawer.Screen name="Patients" component={PatientScreen} />
-        </Drawer.Navigator>
-    );
-}
-
-// Stack Navigation for Main App
 export default function App() {
     return (
         <NavigationContainer>
@@ -42,11 +29,12 @@ export default function App() {
                     <Stack.Screen name="Welcome" component={WelcomeScreen} />
                     <Stack.Screen name="Login" component={LoginScreen} />
                     <Stack.Screen name="Signup" component={SignupScreen} />
-                    <Stack.Screen name="Home" component={HomeStack} />
+                    <Stack.Screen name="Home" component={HomeScreen} />
                     <Stack.Screen name="Profile" component={ProfileScreen} />
                     <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
                     <Stack.Screen name="LiveFlapScreen" component={LiveFlapScreen} />
                     <Stack.Screen name="Dashboard" component={DoctorDashboard} />
+                    <Stack.Screen name="Patients" component={PatientScreen} />
                 </Stack.Navigator>
 
                 {/* Footer */}
