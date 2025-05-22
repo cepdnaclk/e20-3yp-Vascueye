@@ -83,7 +83,10 @@ const DoctorRegister = () => {
       "http://localhost:5000/api/users/doctor/register",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: JSON.stringify(doctorData),
       }
     );

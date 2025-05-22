@@ -2,8 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
-const authRoutes = require("./routes/auth"); // ✅ Keep only this declaration
+const authRoutes = require("./routes/auth");
 const iotRoutes = require("./routes/iotRoutes");
+const { verifyToken } = require("./middleware/authMiddleware");
 
 require("dotenv").config();
 require("./mqttClient"); // Ensure MQTT client starts on server load
@@ -20,8 +21,15 @@ app.use(
   })
 );
 
-// Middleware to parse JSON
 app.use(express.json());
+
+// Whitelist all routes under /api/auth/*
+app.use((req, res, next) => {
+  if (req.path.startsWith("/api/auth/")) {
+    return next(); // Skip token verification
+  }
+  verifyToken(req, res, next); // Apply JWT check
+});
 
 // Routes
 app.use("/api/auth", authRoutes);
