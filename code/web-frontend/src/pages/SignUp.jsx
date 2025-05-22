@@ -153,7 +153,7 @@ const Signup = () => {
           />
         </div>
 
-        <h2 className="signup-title">Create a New Account</h2>
+        <h2 className="signup-title">Sign Up</h2>
 
         <div className="tabs">
           {["patient", "doctor"].map((role) => (

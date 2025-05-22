@@ -41,6 +41,7 @@ export default function FlapDetailModal({
         Flap Detail
         <IconButton
           onClick={handleClose}
+          data-testid="close-button"
           sx={{ position: "absolute", right: 8, top: 8 }}
         >
           <CloseIcon />
