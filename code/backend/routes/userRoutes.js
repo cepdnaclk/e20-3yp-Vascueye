@@ -1,4 +1,8 @@
 const express = require("express");
+const { verifyToken } = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/accessControl");
+const Patient = require("../models/Patient"); // <-- Make sure this is imported
+
 const {
   getDoctors,
   getPatientById,
@@ -17,20 +21,59 @@ const {
 
 const router = express.Router();
 
-router.post("/assign-patient", assignPatientToDoctor);
-router.post("/assign-all-patients", assignAllPatientsToDoctor);
-router.get("/doctors", getDoctors); // Get all doctors
-router.get("/patients", getPatients); // Get all patients
-router.get("/patients/unassigned", getUnassignedPatients);
-router.post("/doctors/patients", getAssignPatients);
+// ROUTES HERE
+router.post("/assign-patient", requireRole("hospital"), assignPatientToDoctor);
+router.post(
+  "/assign-all-patients",
+  requireRole("hospital"),
+  assignAllPatientsToDoctor
+);
+router.get("/doctors", requireRole("hospital"), getDoctors);
+router.get("/patients", requireRole("hospital"), getPatients);
+router.get(
+  "/patients/unassigned",
+  requireRole("hospital"),
+  getUnassignedPatients
+);
+router.post(
+  "/doctors/patients",
+  requireRole("hospital", "doctor"),
+  getAssignPatients
+);
 
-router.get("/patient/search", searchPatients);
-router.post("/patient/register", registerPatient);
-router.get("/patient/:id", getPatientById); // Get one patient
+router.get(
+  "/patient/search",
+  requireRole("hospital", "doctor"),
+  searchPatients
+);
+router.post("/patient/register", requireRole("hospital"), registerPatient);
+router.get("/patient/:id", requireRole("hospital", "doctor"), getPatientById);
+router.get("/doctor/search", requireRole("hospital"), searchDoctors);
+router.post("/doctor/register", requireRole("hospital"), registerDoctor);
+router.delete("/:id", requireRole("hospital"), deleteUser);
 
-router.get("/doctor/search", searchDoctors);
-router.post("/doctor/register", registerDoctor);
-router.delete("/:id", deleteUser); // Delete user
+router.get(
+  "/flap/search/:id",
+  requireRole("doctor", "hospital"),
+  getFlapByPatientId
+);
 
-router.get("/flap/search/:id", getFlapByPatientId); //1. Route to get flap data by patientID
+// ✅ Discharge (delete) a patient by ID
+router.delete(
+  "/patients/:id",
+  requireRole("hospital"), // or verifyToken, depending on how your auth works
+  async (req, res) => {
+    try {
+      const deleted = await Patient.findByIdAndDelete(req.params.id);
+      if (!deleted) {
+        return res.status(404).json({ error: "Patient not found" });
+      }
+      res.status(200).json({ message: "Patient discharged" });
+    } catch (err) {
+      console.error("Discharge Error:", err);
+      res.status(500).json({ error: "Failed to discharge patient" });
+    }
+  }
+);
+
 module.exports = router;

@@ -56,29 +56,86 @@ jobs:
           exit 1
         fi
 
+    - name: 🚚 Copy Backend Code to AWS
+      run: |
+        # Copy backend code to the server
+        scp -r ./code/backend/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd/backend/
+
     - name: 🛠 Install Dependencies & Setup Backend
       run: |
-        cd code/backend
-        npm install
-        ls -la  # Debugging: List backend files
-
-    - name: 🚀 Deploy Backend to AWS (aaPanel)
-      run: |
         ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+          # Make sure backend directory exists
+          mkdir -p /www/wwwroot/vescueye.work.gd/backend
+          
           # Navigate to backend location
-          cd /www/wwwroot/vescueye.work.gd/code/backend
+          cd /www/wwwroot/vescueye.work.gd/backend
           
           # Install dependencies
           npm install
           
-          # Restart backend with PM2 (or start if not running)
-          pm2 restart vescueye-backend || pm2 start server.js --name vescueye-backend
+          # Check if .env file exists, create if not (you should replace these with actual values)
+          if [ ! -f .env ]; then
+            echo "Creating .env file with default configuration"
+            echo "PORT=5000" > .env
+            echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+            # Add other environment variables as needed
+          fi
+          
+          # Debugging: List files
+          ls -la
+        EOF
+
+    - name: 🚀 Deploy Backend to AWS (aaPanel)
+      run: |
+        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+          # Check if PM2 is installed, install if not
+          which pm2 || npm install -g pm2
+          
+          # Navigate to backend location
+          cd /www/wwwroot/vescueye.work.gd/backend
+          
+          # Stop existing PM2 process if it exists and start a new one
+          pm2 stop vescueye-backend || true
+          pm2 delete vescueye-backend || true
+          pm2 start server.js --name vescueye-backend
           
           # Save PM2 process & ensure it restarts on reboot
           pm2 save
           pm2 startup
         EOF
 
-    - name: 🔄 Restart Web Server (Apache or Nginx)
+    - name: 📐 Configure Apache Reverse Proxy
       run: |
+
         ssh root@${{ secrets.AWS_HOST }} "sudo systemctl restart apache2 || sudo systemctl restart nginx"
+
+#         ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+          # Enable necessary Apache modules if not already enabled
+          sudo a2enmod proxy proxy_http
+          
+          # Check if config is already modified
+          if ! grep -q "ProxyPass /backend" /etc/apache2/sites-available/000-default.conf; then
+            # Create backup of original config
+            sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.bak
+            
+            # Update Apache configuration with proxy settings for port 5000
+            sudo sed -i "s/DocumentRoot \/www\/wwwroot\/vescueye.work.gd/DocumentRoot \/www\/wwwroot\/vescueye.work.gd\n\tProxyPass \/backend http:\/\/localhost:5000\n\tProxyPassReverse \/backend http:\/\/localhost:5000/" /etc/apache2/sites-available/000-default.conf
+            
+            echo "Apache configuration updated successfully"
+          else
+            echo "Apache already configured with proxy settings"
+          fi
+          
+          # Test Apache configuration
+          sudo apache2ctl configtest
+          
+          # Restart Apache to apply changes
+          sudo systemctl restart apache2
+        EOF
+
+    - name: ✅ Verify Deployment
+      run: |
+        echo "Testing application health..."
+        curl -s "http://${{ secrets.AWS_HOST }}" | grep -q "Vascueye" && echo "✅ Frontend OK" || echo "❌ Frontend Error"
+        curl -s "http://${{ secrets.AWS_HOST }}/backend" | grep -q "Vascueye Backend is Running" && echo "✅ Backend OK" || echo "❌ Backend Error"
+

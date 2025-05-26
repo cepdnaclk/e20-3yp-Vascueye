@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b9a5c94c-b279-40b9-b8d3-811cf3bebc46" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/code/backend/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/controllers/userController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/backend/models/Doctor.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/models/Doctor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/backend/mqttClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/mqttClient.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/backend/routes/userRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/routes/userRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/AssignDoctor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/AssignDoctor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/AssignPatient.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/AssignPatient.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/DoctorDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/DoctorDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/DoctorRegister.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/DoctorRegister.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/HospitalDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/HospitalDashboard.jsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2tk8qykX1tSky7WfKSNQQlu6vhK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Gaming/Desktop/e20-3yp-Vascueye&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2023.3.6\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="e20-3yp-Vascueye" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="e20-3yp-Vascueye" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b9a5c94c-b279-40b9-b8d3-811cf3bebc46" name="Changes" comment="" />
+      <created>1740884908540</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1740884908540</updated>
+      <workItem from="1740884909446" duration="2906000" />
+      <workItem from="1740915260115" duration="97000" />
+      <workItem from="1740915505023" duration="34000" />
+      <workItem from="1740916000361" duration="343000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

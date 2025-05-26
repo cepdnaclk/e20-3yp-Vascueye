@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
  
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,
@@ -12,27 +13,28 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    try {
-      const response = await fetch(`http://192.168.8.101:5001/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const response = await fetch('http://172.20.10.2:5001/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (response.ok) {
-        console.log('User logged in:', data);
-        navigation.navigate('Home');
-      } else {
-        Alert.alert('Error', data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Something went wrong. Please try again later.');
+    if (response.ok) {
+      // Store the token in AsyncStorage
+      await AsyncStorage.setItem("userToken", data.token);
+      console.log('User logged in:', data);
+      navigation.navigate('Home');
+    } else {
+      Alert.alert('Error', data.message);
     }
-  };
-
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Error', 'Something went wrong. Please try again later.');
+  }
+};
   return (
     <KeyboardAvoidingView
       style={styles.container}

@@ -2,13 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import "../styles/HospitalDashboard.css";
-import {
-  Box,
-  Button,
-  Typography,
-  Card,
-  CardContent,
-} from "@mui/material";
+import { Box, Button, Typography, Card, CardContent } from "@mui/material";
 
 const HospitalDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -18,7 +12,7 @@ const HospitalDashboard = () => {
     <div
       className="dashboard-container"
       style={{
-        backgroundColor: "#d4e9fb",
+        backgroundColor: "#fefefe",
         minHeight: "100vh",
         padding: "20px",
       }}
@@ -50,6 +44,27 @@ const HospitalDashboard = () => {
             <Typography variant="h5" gutterBottom>
               Patient Management
             </Typography>
+
+            <Button
+              variant="outlined"
+              fullWidth
+              sx={{
+                mb: 1,
+                color: "#1976d2",
+                borderColor: "#1976d2",
+                transition: "all 0.3s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "#1976d2",
+                  color: "white",
+                  borderColor: "#1976d2",
+                },
+              }}
+              component={Link}
+              to="/all-patients"
+            >
+              Registered Patients
+            </Button>
+
             <Button
               variant="outlined"
               fullWidth
@@ -67,7 +82,7 @@ const HospitalDashboard = () => {
               component={Link}
               to="/register-patient"
             >
-              Register Patient
+              Register New Patient
             </Button>
             <Button
               variant="outlined"
@@ -115,6 +130,26 @@ const HospitalDashboard = () => {
             <Typography variant="h5" gutterBottom>
               Doctor Management
             </Typography>
+
+            <Button
+              variant="outlined"
+              fullWidth
+              sx={{
+                mb: 1,
+                color: "#1976d2",
+                borderColor: "#1976d2",
+                transition: "all 0.3s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "#1976d2",
+                  color: "white",
+                  borderColor: "#1976d2",
+                },
+              }}
+              component={Link}
+              to="/all-doctors"
+            >
+              Registered Doctors
+            </Button>
             <Button
               variant="outlined"
               fullWidth
@@ -132,7 +167,7 @@ const HospitalDashboard = () => {
               component={Link}
               to="/register-doctor"
             >
-              Register Doctor
+              Register New Doctor
             </Button>
             <Button
               variant="outlined"
@@ -173,71 +208,6 @@ const HospitalDashboard = () => {
             </Button>
           </CardContent>
         </Card>
-
-        {/* Quick Links */}
-        {/* <Card sx={{ flex: 1, p: 2 }}>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
-              Quick Links
-            </Typography>
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={{
-                mb: 1,
-                color: "#1976d2",
-                borderColor: "#1976d2",
-                transition: "all 0.3s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "#1976d2",
-                  color: "white",
-                  borderColor: "#1976d2",
-                },
-              }}
-              component={Link}
-              to="/appointments"
-            >
-              Manage Appointments
-            </Button>
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={{
-                mb: 1,
-                color: "#1976d2",
-                borderColor: "#1976d2",
-                transition: "all 0.3s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "#1976d2",
-                  color: "white",
-                  borderColor: "#1976d2",
-                },
-              }}
-              component={Link}
-              to="/medical-records"
-            >
-              View Medical Records
-            </Button>
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={{
-                color: "#1976d2",
-                borderColor: "#1976d2",
-                transition: "all 0.3s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "#1976d2",
-                  color: "white",
-                  borderColor: "#1976d2",
-                },
-              }}
-              component={Link}
-              to="/billing"
-            >
-              Billing & Payments
-            </Button>
-          </CardContent>
-        </Card> */}
       </Box>
     </div>
   );

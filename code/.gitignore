@@ -25,6 +25,8 @@ backend/.env.local
 backend/dist/
 backend/coverage/
 
+mobile-app/node_modules
+
 # React (Frontend)
 web-frontend/node_modules/
 web-frontend/.cache/

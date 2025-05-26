@@ -22,17 +22,20 @@ const Signup = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      role: "patient",
     },
     doctor: {
       title: "Mr",
       firstName: "",
       lastName: "",
+      dateOfBirth: "",
       speciality: "",
       telephone: "",
       nic: "",
       email: "",
       password: "",
       confirmPassword: "",
+      role: "doctor",
     },
     hospital: {
       name: "",
@@ -49,14 +52,45 @@ const Signup = () => {
     const data = formData[role];
     const errors = [];
 
-    if (data.password !== data.confirmPassword) errors.push("Passwords don't match");
-    if (data.password.length < 6) errors.push("Password must be at least 6 characters");
-    if (!/^\d{10}$/.test(data.telephone)) errors.push("Telephone must be 10 digits");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.push("Invalid email format");
+    // Password checks
+    if (data.password !== data.confirmPassword)
+      errors.push("Passwords don't match");
+    if (data.password.length < 6)
+      errors.push("Password must be at least 6 characters");
 
-    if (role === "patient" && !data.dateOfBirth) errors.push("Date of birth is required");
-    if (role === "doctor" && !data.speciality) errors.push("Speciality is required");
-    if (role === "hospital" && !data.registrationNumber) errors.push("Registration number is required");
+    // Telephone format check
+    if (!/^\d{10}$/.test(data.telephone))
+      errors.push("Telephone must be 10 digits");
+
+    // Email format check
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
+      errors.push("Invalid email format");
+
+    // Title should not be empty
+    if (!data.title || data.title.trim() === "")
+      errors.push("Title is required");
+
+    // Date of birth: must be at least 18 years ago
+    if (role === "doctor" && data.dateOfBirth) {
+      const dob = new Date(data.dateOfBirth);
+      const now = new Date();
+      const twentyYearsAgo = new Date(
+        now.getFullYear() - 18,
+        now.getMonth(),
+        now.getDate()
+      );
+      if (dob > twentyYearsAgo)
+        errors.push("You must be at least 18 years old");
+    } else if (role === "patient") {
+      errors.push("Date of birth is required");
+    }
+
+    // Role-specific required fields
+    if (role === "doctor" && !data.speciality)
+      errors.push("Speciality is required");
+
+    if (role === "hospital" && !data.registrationNumber)
+      errors.push("Registration number is required");
 
     return errors;
   };
@@ -69,6 +103,15 @@ const Signup = () => {
     const validationErrors = validateForm(role);
     if (validationErrors.length > 0) {
       setError(validationErrors.join(", "));
+
+      // Scroll the scrollable container instead of the window
+      setTimeout(() => {
+        const container = document.querySelector(".scroll-container");
+        if (container) {
+          container.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }, 50); // Delay allows React to render the error message
+
       return;
     }
 
@@ -79,7 +122,9 @@ const Signup = () => {
         setMessage("Signup successful! Redirecting...");
         setTimeout(() => navigate(`/${role}-dashboard`), 1500);
       } else {
-        setError(res.errors?.map((err) => err.msg).join(", ") || "Signup failed");
+        setError(
+          res.errors?.map((err) => err.msg).join(", ") || "Signup failed"
+        );
       }
     } catch (error) {
       setError("Signup failed. Please try again.");
@@ -101,13 +146,17 @@ const Signup = () => {
       <div className="signup-card">
         {/* Vescueye Logo */}
         <div className="logo-container">
-          <img src={vescueyeLogo} alt="Vescueye Logo" className="vescueye-logo" />
+          <img
+            src={vescueyeLogo}
+            alt="Vescueye Logo"
+            className="vescueye-logo"
+          />
         </div>
 
-        <h2 className="signup-title">Create a New Account</h2>
+        <h2 className="signup-title">Sign Up</h2>
 
         <div className="tabs">
-          {["patient", "doctor", "hospital"].map((role) => (
+          {["patient", "doctor"].map((role) => (
             <button
               key={role}
               className={`tab-button ${activeTab === role ? "active" : ""}`}
@@ -122,16 +171,53 @@ const Signup = () => {
         {error && <p className="error-message">{error}</p>}
 
         <div className="scroll-container">
-          <form onSubmit={(e) => handleSubmit(e, activeTab)} className="signup-form">
+          <form
+            onSubmit={(e) => handleSubmit(e, activeTab)}
+            className="signup-form"
+          >
             {Object.entries(formData[activeTab]).map(([field, value]) => (
               <div key={field} className="form-group">
-                <input
-                  type={field.includes("password") ? (showPassword ? "text" : "password") : "text"}
-                  placeholder={field.replace(/([A-Z])/g, " $1").trim()}
-                  value={value}
-                  onChange={(e) => handleChange(activeTab, field, e.target.value)}
-                  required
-                />
+                {field === "title" ? (
+                  <select
+                    value={value}
+                    onChange={(e) =>
+                      handleChange(activeTab, field, e.target.value)
+                    }
+                    required
+                  >
+                    <option value="">Select Title</option>
+                    <option value="Mr">Mr</option>
+                    <option value="Mrs">Mrs</option>
+                    <option value="Miss">Miss</option>
+                  </select>
+                ) : field === "dateOfBirth" ? (
+                  <input
+                    type="date"
+                    value={value}
+                    onChange={(e) =>
+                      handleChange(activeTab, field, e.target.value)
+                    }
+                    required
+                    max={new Date().toISOString().split("T")[0]}
+                  />
+                ) : (
+                  <input
+                    type={
+                      field.includes("password")
+                        ? showPassword
+                          ? "text"
+                          : "password"
+                        : "text"
+                    }
+                    placeholder={field.replace(/([A-Z])/g, " $1").trim()}
+                    value={value}
+                    onChange={(e) =>
+                      handleChange(activeTab, field, e.target.value)
+                    }
+                    required
+                    disabled={field === "role"}
+                  />
+                )}
               </div>
             ))}
 
@@ -145,7 +231,8 @@ const Signup = () => {
             </div>
 
             <button type="submit" className="signup-button">
-              Sign Up as {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+              Sign Up as{" "}
+              {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
             </button>
           </form>
         </div>
