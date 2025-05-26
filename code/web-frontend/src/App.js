@@ -32,7 +32,12 @@ import PatientDetail from "./pages/PatientDetail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
-import NotFound from "./pages/NotFound";  // <-- Import the 404 component
+import NotFound from "./pages/NotFound"; // <-- Import the 404 component
+
+import AllPatients from "./pages/AllPatients";
+import AllDoctors from "./pages/AllDoctors";
+
+import DischargePatient from "./pages/DischargePatient";
 
 // Protected Route Wrapper
 const AuthRoute = ({ children, roles }) => {
@@ -73,6 +78,17 @@ function App() {
               <Route path="/register-doctor" element={<DoctorRegister />} />
               <Route path="/search-doctor" element={<DoctorSearch />} />
               <Route path="/patient/:id" element={<PatientDetail />} />
+              <Route path="/all-patients" element={<AllPatients />} />
+              <Route path="/all-doctors" element={<AllDoctors />} />
+
+              <Route
+                path="/discharge-patient"
+                element={
+                  <AuthRoute roles={["hospital"]}>
+                    <DischargePatient />
+                  </AuthRoute>
+                }
+              />
 
               {/* Role-based Dashboard Routing */}
               <Route
@@ -117,7 +133,10 @@ function App() {
               />
 
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
+              <Route
+                path="/reset-password/:token"
+                element={<ResetPassword />}
+              />
 
               {/* 404 catch-all route */}
               <Route path="*" element={<NotFound />} />
