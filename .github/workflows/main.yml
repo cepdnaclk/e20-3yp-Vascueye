@@ -3,7 +3,8 @@ name: Deploy React and Node.js to AWS (aaPanel)
 on:
   push:
     branches:
-      - main  # Runs deployment only when changes are pushed to 'main' branch
+      - main   #   Runs deployment only when changes are pushed to 'main' branch
+      #test
 
 jobs:
   deploy:
