@@ -57,34 +57,7 @@ jobs:
           exit 1
         fi
 
-    - name: 🚚 Copy Backend Code to AWS
-      run: |
-        # Copy backend code to the server
-        scp -r ./code/backend/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd/backend/
 
-    - name: 🛠 Install Dependencies & Setup Backend
-      run: |
-        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
-          # Make sure backend directory exists
-          mkdir -p /www/wwwroot/vescueye.work.gd/backend
-          
-          # Navigate to backend location
-          cd /www/wwwroot/vescueye.work.gd/backend
-          
-          # Install dependencies
-          npm install
-          
-          # Check if .env file exists, create if not (you should replace these with actual values)
-          if [ ! -f .env ]; then
-            echo "Creating .env file with default configuration"
-            echo "PORT=5000" > .env
-            echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-            # Add other environment variables as needed
-          fi
-          
-          # Debugging: List files
-          ls -la
-        EOF
 
     - name: 🚀 Deploy Backend to AWS (aaPanel)
       run: |
@@ -107,30 +80,20 @@ jobs:
 
     - name: 📐 Configure Apache Reverse Proxy
       run: |
+        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+          sudo systemctl restart apache2 || sudo systemctl restart nginx
 
-        ssh root@${{ secrets.AWS_HOST }} "sudo systemctl restart apache2 || sudo systemctl restart nginx"
-
-          #ssh root@${{ secrets.AWS_HOST }} << 'EOF'
-          # Enable necessary Apache modules if not already enabled
           sudo a2enmod proxy proxy_http
-          
-          # Check if config is already modified
+
           if ! grep -q "ProxyPass /backend" /etc/apache2/sites-available/000-default.conf; then
-            # Create backup of original config
             sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.bak
-            
-            # Update Apache configuration with proxy settings for port 5000
-            sudo sed -i "s/DocumentRoot \/www\/wwwroot\/vescueye.work.gd/DocumentRoot \/www\/wwwroot\/vescueye.work.gd\n\tProxyPass \/backend http:\/\/localhost:5000\n\tProxyPassReverse \/backend http:\/\/localhost:5000/" /etc/apache2/sites-available/000-default.conf
-            
+            sudo sed -i "s|DocumentRoot /www/wwwroot/vescueye.work.gd|DocumentRoot /www/wwwroot/vescueye.work.gd\n\tProxyPass /backend http://localhost:5000\n\tProxyPassReverse /backend http://localhost:5000|" /etc/apache2/sites-available/000-default.conf
             echo "Apache configuration updated successfully"
           else
             echo "Apache already configured with proxy settings"
           fi
-          
-          # Test Apache configuration
+
           sudo apache2ctl configtest
-          
-          # Restart Apache to apply changes
           sudo systemctl restart apache2
         EOF
 
