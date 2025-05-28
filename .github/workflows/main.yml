@@ -110,7 +110,7 @@ jobs:
 
         ssh root@${{ secrets.AWS_HOST }} "sudo systemctl restart apache2 || sudo systemctl restart nginx"
 
-#         ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+          #ssh root@${{ secrets.AWS_HOST }} << 'EOF'
           # Enable necessary Apache modules if not already enabled
           sudo a2enmod proxy proxy_http
           
