@@ -3,7 +3,8 @@ name: Deploy React and Node.js to AWS (aaPanel)
 on:
   push:
     branches:
-      - main  # Runs deployment only when changes are pushed to 'main' branch
+      - main   #   Runs deployment only when changes are pushed to 'main' branch
+      #test
 
 jobs:
   deploy:
@@ -106,30 +107,20 @@ jobs:
 
     - name: 📐 Configure Apache Reverse Proxy
       run: |
+        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+          sudo systemctl restart apache2 || sudo systemctl restart nginx
 
-        ssh root@${{ secrets.AWS_HOST }} "sudo systemctl restart apache2 || sudo systemctl restart nginx"
-
-#         ssh root@${{ secrets.AWS_HOST }} << 'EOF'
-          # Enable necessary Apache modules if not already enabled
           sudo a2enmod proxy proxy_http
-          
-          # Check if config is already modified
+
           if ! grep -q "ProxyPass /backend" /etc/apache2/sites-available/000-default.conf; then
-            # Create backup of original config
             sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.bak
-            
-            # Update Apache configuration with proxy settings for port 5000
-            sudo sed -i "s/DocumentRoot \/www\/wwwroot\/vescueye.work.gd/DocumentRoot \/www\/wwwroot\/vescueye.work.gd\n\tProxyPass \/backend http:\/\/localhost:5000\n\tProxyPassReverse \/backend http:\/\/localhost:5000/" /etc/apache2/sites-available/000-default.conf
-            
+            sudo sed -i "s|DocumentRoot /www/wwwroot/vescueye.work.gd|DocumentRoot /www/wwwroot/vescueye.work.gd\n\tProxyPass /backend http://localhost:5000\n\tProxyPassReverse /backend http://localhost:5000|" /etc/apache2/sites-available/000-default.conf
             echo "Apache configuration updated successfully"
           else
             echo "Apache already configured with proxy settings"
           fi
-          
-          # Test Apache configuration
+
           sudo apache2ctl configtest
-          
-          # Restart Apache to apply changes
           sudo systemctl restart apache2
         EOF
 
