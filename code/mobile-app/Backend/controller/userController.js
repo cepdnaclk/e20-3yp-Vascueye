@@ -241,9 +241,11 @@ const getAssignPatients = async (req, res) => {
     try {
         const { email } = req.body; // Extract doctor email from request body
         
+        
         // Use the user ID from the token instead of relying on email in request body
         // This is more secure as it prevents doctors from accessing other doctors' patients
         const doctorId = req.user.userId;
+        console.log(doctorId);
         
         // Validate email if you still want to use it
         if (!email) {
@@ -266,7 +268,7 @@ const getAssignPatients = async (req, res) => {
 
         // Fetch all patients assigned to this doctor
         const assignedPatients = await Patient.find({ assignedDoctor: doctor._id });
-
+        console.log(assignedPatients);
         if (!assignedPatients || assignedPatients.length === 0) {
             return res.status(404).json({ error: "No assigned patients found for this doctor." });
         }
