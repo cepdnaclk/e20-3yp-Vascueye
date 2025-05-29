@@ -37,6 +37,8 @@ web-frontend/public/static/
 web-frontend/.env
 web-frontend/.env.local
 
+mobile-app/node_modules
+
 # Editor and OS files
 .vscode/
 .idea/
