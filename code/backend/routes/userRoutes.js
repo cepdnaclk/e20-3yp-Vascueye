@@ -1,4 +1,8 @@
 const express = require("express");
+const { verifyToken } = require("../middleware/authMiddleware");
+const requireRole = require("../middleware/accessControl");
+const Patient = require("../models/Patient"); // <-- Make sure this is imported
+
 const {
   getDoctors,
   getPatientById,
@@ -14,18 +18,18 @@ const {
   assignPatientToDoctor,
   assignAllPatientsToDoctor,
 } = require("../controllers/userController");
-const requireRole = require("../middleware/accessControl");
 
 const router = express.Router();
 
+// ROUTES HERE
 router.post("/assign-patient", requireRole("hospital"), assignPatientToDoctor);
 router.post(
   "/assign-all-patients",
   requireRole("hospital"),
   assignAllPatientsToDoctor
 );
-router.get("/doctors", requireRole("hospital"), getDoctors); // Get all doctors
-router.get("/patients", requireRole("hospital"), getPatients); // Get all patients
+router.get("/doctors", requireRole("hospital"), getDoctors);
+router.get("/patients", requireRole("hospital"), getPatients);
 router.get(
   "/patients/unassigned",
   requireRole("hospital"),
@@ -43,15 +47,33 @@ router.get(
   searchPatients
 );
 router.post("/patient/register", requireRole("hospital"), registerPatient);
-router.get("/patient/:id", requireRole("hospital", "doctor"), getPatientById); // Get one patient
-
+router.get("/patient/:id", requireRole("hospital", "doctor"), getPatientById);
 router.get("/doctor/search", requireRole("hospital"), searchDoctors);
 router.post("/doctor/register", requireRole("hospital"), registerDoctor);
-router.delete("/:id", requireRole("hospital"), deleteUser); // Delete user
+router.delete("/:id", requireRole("hospital"), deleteUser);
 
 router.get(
   "/flap/search/:id",
   requireRole("doctor", "hospital"),
   getFlapByPatientId
-); //1. Route to get flap data by patientID
+);
+
+// ✅ Discharge (delete) a patient by ID
+router.delete(
+  "/patients/:id",
+  requireRole("hospital"), // or verifyToken, depending on how your auth works
+  async (req, res) => {
+    try {
+      const deleted = await Patient.findByIdAndDelete(req.params.id);
+      if (!deleted) {
+        return res.status(404).json({ error: "Patient not found" });
+      }
+      res.status(200).json({ message: "Patient discharged" });
+    } catch (err) {
+      console.error("Discharge Error:", err);
+      res.status(500).json({ error: "Failed to discharge patient" });
+    }
+  }
+);
+
 module.exports = router;
