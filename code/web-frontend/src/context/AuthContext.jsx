@@ -18,19 +18,18 @@ export const AuthProvider = ({ children }) => {
     const storedLastLogin = localStorage.getItem("lastLogin"); // Get last login time
 
     if (token && storedUser) {
-  try {
-    const parsedUser = JSON.parse(storedUser);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setUser({
-      ...parsedUser,
-      lastLogin: storedLastLogin,
-    });
-  } catch (err) {
-    console.error("Failed to parse stored user:", err);
-    localStorage.removeItem("user"); // optional: clean up
-  }
-}
-
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        setUser({
+          ...parsedUser,
+          lastLogin: storedLastLogin,
+        });
+      } catch (err) {
+        console.error("Failed to parse stored user:", err);
+        localStorage.removeItem("user"); // optional: clean up
+      }
+    }
 
     if (storedHospitalEmail) {
       setHospitalEmail(storedHospitalEmail);
@@ -87,7 +86,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, hospitalEmail, login, logout, signup }}>
+    <AuthContext.Provider
+      value={{ user, hospitalEmail, login, logout, signup }}
+    >
       {children}
     </AuthContext.Provider>
   );

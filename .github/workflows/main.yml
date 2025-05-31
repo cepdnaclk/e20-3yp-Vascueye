@@ -21,6 +21,11 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H "${{ secrets.AWS_HOST }}" >> ~/.ssh/known_hosts
 
+      - name: 🌍 Create .env from GitHub Secrets
+        run: |
+          cd code/web-frontend
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
+
       - name: 🛠 Install Dependencies & Build Frontend
         run: |
           # Set CI=false to avoid warnings being treated as errors

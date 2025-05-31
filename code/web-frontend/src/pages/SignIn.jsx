@@ -11,6 +11,8 @@ const SignIn = () => {
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
@@ -25,17 +27,13 @@ const SignIn = () => {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-      // http://127.0.0.1:5000
       setError(null);
-        try {
-          
-          // const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/signin`, {
-          const res = await fetch(`http://127.0.0.1:5000/api/auth/signin`, {
-
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-          });
+      try {
+        const res = await fetch(`${API_URL}/auth/signin`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
 
         const data = await res.json();
 
