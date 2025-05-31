@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b9a5c94c-b279-40b9-b8d3-811cf3bebc46" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/backend/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/backend/models/Doctor.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/models/Doctor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/backend/mqttClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/mqttClient.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/backend/routes/userRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/routes/userRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/AssignDoctor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/AssignDoctor.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/AssignPatient.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/AssignPatient.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/DoctorDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/DoctorDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/DoctorRegister.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/DoctorRegister.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/web-frontend/src/pages/HospitalDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/web-frontend/src/pages/HospitalDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/node_modules/.package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,21 +46,6 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="e20-3yp-Vascueye" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="e20-3yp-Vascueye" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -88,6 +66,7 @@
       <workItem from="1740915260115" duration="97000" />
       <workItem from="1740915505023" duration="34000" />
       <workItem from="1740916000361" duration="343000" />
+      <workItem from="1748665251973" duration="56000" />
     </task>
     <servers />
   </component>

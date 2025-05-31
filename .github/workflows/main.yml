@@ -3,7 +3,7 @@ name: Deploy React and Node.js to AWS (aaPanel)
 on:
   push:
     branches:
-      - main   #   Runs deployment only when changes are pushed to 'main' branch
+      - main #   Runs deployment only when changes are pushed to 'main' branch
       #test
 
 jobs:
@@ -11,122 +11,138 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 🛎 Checkout Repository
-      uses: actions/checkout@v3
+      - name: 🛎 Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: 🔐 Setup SSH Key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.AWS_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H "${{ secrets.AWS_HOST }}" >> ~/.ssh/known_hosts
+      - name: 🔐 Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AWS_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.AWS_HOST }}" >> ~/.ssh/known_hosts
 
-    - name: 🛠 Install Dependencies & Build Frontend
-      run: |
-        # Set CI=false to avoid warnings being treated as errors
-        export CI=false
+      - name: 🛠 Install Dependencies & Build Frontend
+        run: |
+          # Set CI=false to avoid warnings being treated as errors
+          export CI=false
 
-        # Navigate to the web frontend directory
-        cd code/web-frontend
-        
-        # Install all necessary dependencies
-        npm install
-        
-        # Optionally install missing Babel plugin
-        npm install --save-dev @babel/plugin-proposal-private-property-in-object
-        
-        # Run the build script to generate the production build
-        npm run build
-        
-        # Check if the build directory exists and display its contents (for debugging)
-        if [ -d "build" ]; then
-          echo "Build directory exists."
-          ls -la build  # List the contents of the build directory
-        else
-          echo "Build directory does not exist."
-          exit 1  # Exit with error code to fail the job if build directory is missing
-        fi
+          # Navigate to the web frontend directory
+          cd code/web-frontend
 
-    - name: 🚀 Deploy Frontend to AWS (aaPanel)
-      run: |
-        if [ -d "./code/web-frontend/build/" ]; then
-          echo "✅ Found 'build/' directory. Deploying frontend..."
-          scp -r ./code/web-frontend/build/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
-        else
-          echo "❌ 'build/' directory not found! Exiting..."
-          exit 1
-        fi
-
-    - name: 🚚 Copy Backend Code to AWS
-      run: |
-        # Copy backend code to the server
-        scp -r ./code/backend/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd/backend/
-
-    - name: 🛠 Install Dependencies & Setup Backend
-      run: |
-        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
-          # Make sure backend directory exists
-          mkdir -p /www/wwwroot/vescueye.work.gd/backend
-          
-          # Navigate to backend location
-          cd /www/wwwroot/vescueye.work.gd/backend
-          
-          # Install dependencies
+          # Install all necessary dependencies
           npm install
-          
-          # Check if .env file exists, create if not (you should replace these with actual values)
-          if [ ! -f .env ]; then
-            echo "Creating .env file with default configuration"
-            echo "PORT=5000" > .env
-            echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-            # Add other environment variables as needed
-          fi
-          
-          # Debugging: List files
-          ls -la
-        EOF
 
-    - name: 🚀 Deploy Backend to AWS (aaPanel)
-      run: |
-        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
-          # Check if PM2 is installed, install if not
-          which pm2 || npm install -g pm2
-          
-          # Navigate to backend location
-          cd /www/wwwroot/vescueye.work.gd/backend
-          
-          # Stop existing PM2 process if it exists and start a new one
-          pm2 stop vescueye-backend || true
-          pm2 delete vescueye-backend || true
-          pm2 start server.js --name vescueye-backend
-          
-          # Save PM2 process & ensure it restarts on reboot
-          pm2 save
-          pm2 startup
-        EOF
+          # Optionally install missing Babel plugin
+          npm install --save-dev @babel/plugin-proposal-private-property-in-object
 
-    - name: 📐 Configure Apache Reverse Proxy
-      run: |
-        ssh root@${{ secrets.AWS_HOST }} << 'EOF'
-          sudo systemctl restart apache2 || sudo systemctl restart nginx
+          # Run the build script to generate the production build
+          npm run build
 
-          sudo a2enmod proxy proxy_http
-
-          if ! grep -q "ProxyPass /backend" /etc/apache2/sites-available/000-default.conf; then
-            sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.bak
-            sudo sed -i "s|DocumentRoot /www/wwwroot/vescueye.work.gd|DocumentRoot /www/wwwroot/vescueye.work.gd\n\tProxyPass /backend http://localhost:5000\n\tProxyPassReverse /backend http://localhost:5000|" /etc/apache2/sites-available/000-default.conf
-            echo "Apache configuration updated successfully"
+          # Check if the build directory exists and display its contents (for debugging)
+          if [ -d "build" ]; then
+            echo "Build directory exists."
+            ls -la build  # List the contents of the build directory
           else
-            echo "Apache already configured with proxy settings"
+            echo "Build directory does not exist."
+            exit 1  # Exit with error code to fail the job if build directory is missing
           fi
 
-          sudo apache2ctl configtest
-          sudo systemctl restart apache2
-        EOF
+      - name: 🚀 Deploy Frontend to AWS (aaPanel)
+        run: |
+          if [ -d "./code/web-frontend/build/" ]; then
+            echo "✅ Found 'build/' directory. Deploying frontend..."
+            scp -r ./code/web-frontend/build/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd
+          else
+            echo "❌ 'build/' directory not found! Exiting..."
+            exit 1
+          fi
 
-    - name: ✅ Verify Deployment
-      run: |
-        echo "Testing application health..."
-        curl -s "http://${{ secrets.AWS_HOST }}" | grep -q "Vascueye" && echo "✅ Frontend OK" || echo "❌ Frontend Error"
-        curl -s "http://${{ secrets.AWS_HOST }}/backend" | grep -q "Vascueye Backend is Running" && echo "✅ Backend OK" || echo "❌ Backend Error"
+      - name: 🚚 Copy Backend Code to AWS
+        run: |
+          # Copy backend code to the server
+          scp -r ./code/backend/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd/backend/
 
+      - name: 🛠 Install Dependencies & Setup Backend
+        run: |
+          ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+            # Make sure backend directory exists
+            mkdir -p /www/wwwroot/vescueye.work.gd/backend
+            
+            # Navigate to backend location
+            cd /www/wwwroot/vescueye.work.gd/backend
+            
+            # Install dependencies
+            npm install
+            
+            # Check if .env file exists, create if not (you should replace these with actual values)
+            if [ ! -f .env ]; then
+              echo "Creating .env file with default configuration"
+              echo "PORT=5000" > .env
+              echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+              # Add other environment variables as needed
+            fi
+            
+            # Debugging: List files
+            ls -la
+          EOF
+
+      - name: 🚀 Deploy Backend to AWS (aaPanel)
+        run: |
+          ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+            # Check if PM2 is installed, install if not
+            which pm2 || npm install -g pm2
+            
+            # Navigate to backend location
+            cd /www/wwwroot/vescueye.work.gd/backend
+            
+            # Stop existing PM2 process if it exists and start a new one
+            pm2 stop vescueye-backend || true
+            pm2 delete vescueye-backend || true
+            pm2 start server.js --name vescueye-backend
+            
+            # Save PM2 process & ensure it restarts on reboot
+            pm2 save
+            pm2 startup
+          EOF
+
+      - name: 📐 Configure Apache Reverse Proxy
+        run: |
+          ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+            sudo systemctl restart apache2 || sudo systemctl restart nginx
+
+            sudo a2enmod proxy proxy_http
+
+            CONFIG_FILE="/etc/apache2/sites-available/000-default.conf"
+            BACKUP_FILE="/etc/apache2/sites-available/000-default.conf.bak"
+
+            # Backup current config
+            sudo cp "$CONFIG_FILE" "$BACKUP_FILE"
+
+            # Remove any existing /backend proxy rules
+            sudo sed -i '/ProxyPass \/backend/d' "$CONFIG_FILE"
+            sudo sed -i '/ProxyPassReverse \/backend/d' "$CONFIG_FILE"
+
+            # Add /api proxy rules only if not already present
+            if ! grep -q "ProxyPass /api" "$CONFIG_FILE"; then
+              sudo sed -i "s|DocumentRoot /www/wwwroot/vescueye.work.gd|DocumentRoot /www/wwwroot/vescueye.work.gd\n\tProxyPass /api http://localhost:5000\n\tProxyPassReverse /api http://localhost:5000|" "$CONFIG_FILE"
+              echo "✅ Replaced /backend with /api in Apache config"
+            else
+              echo "ℹ️  /api proxy already present"
+            fi
+
+            # Test and restart Apache
+            sudo apache2ctl configtest
+            sudo systemctl restart apache2
+          EOF
+
+      - name: 🚀 Restart Nginx
+        run: |
+          ssh root@${{ secrets.AWS_HOST }} << 'EOF'
+            sudo systemctl restart nginx
+          EOF
+
+      - name: ✅ Verify Deployment
+        run: |
+          echo "Testing application health..."
+          curl -s "http://${{ secrets.AWS_HOST }}" | grep -q "Vascueye" && echo "✅ Frontend OK" || echo "❌ Frontend Error"
+          curl -s "http://${{ secrets.AWS_HOST }}/backend" | grep -q "Vascueye Backend is Running" && echo "✅ Backend OK" || echo "❌ Backend Error"
