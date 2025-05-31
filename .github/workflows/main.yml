@@ -135,12 +135,6 @@ jobs:
             sudo systemctl restart apache2
           EOF
 
-      - name: 🚀 Restart Nginx
-        run: |
-          ssh root@${{ secrets.AWS_HOST }} << 'EOF'
-            sudo systemctl restart nginx
-          EOF
-
       - name: ✅ Verify Deployment
         run: |
           echo "Testing application health..."

@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b9a5c94c-b279-40b9-b8d3-811cf3bebc46" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.github/workflows/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/main.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/backend/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/backend/node_modules/.package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +64,7 @@
       <workItem from="1740915505023" duration="34000" />
       <workItem from="1740916000361" duration="343000" />
       <workItem from="1748665251973" duration="56000" />
+      <workItem from="1748671219019" duration="304000" />
     </task>
     <servers />
   </component>
