@@ -62,10 +62,9 @@ jobs:
             exit 1
           fi
 
-      - name: 🚚 Copy Backend Code to AWS
+      - name: 🚚 Copy Backend Code to AWS (excluding node_modules)
         run: |
-          # Copy backend code to the server
-          scp -r ./code/backend/* root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd/backend/
+          rsync -avz --exclude 'node_modules' ./code/backend/ root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd/backend/
 
       - name: 🛠 Install Dependencies & Setup Backend
         run: |
@@ -84,7 +83,6 @@ jobs:
               echo "Creating .env file with default configuration"
               echo "PORT=5000" > .env
               echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-              # Add other environment variables as needed
             fi
             
             # Debugging: List files
