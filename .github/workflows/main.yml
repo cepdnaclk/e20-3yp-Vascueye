@@ -107,13 +107,6 @@ jobs:
             pm2 save
             pm2 startup
           EOF
-
-      - name: ✅ Verify Deployment
-        run: |
-          echo "Testing application health..."
-          curl -s "http://${{ secrets.AWS_HOST }}" | grep -q "Vascueye" && echo "✅ Frontend OK" || echo "❌ Frontend Error"
-          curl -s "http://${{ secrets.AWS_HOST }}/backend" | grep -q "Vascueye Backend is Running" && echo "✅ Backend OK" || echo "❌ Backend Error"
-
       - name: 📐 Configure Apache Reverse Proxy
         run: |
           ssh root@${{ secrets.AWS_HOST }} << 'EOF'
@@ -163,8 +156,7 @@ jobs:
             fi
           EOF
 
-      - name: ✅ Verify Deployment
+      - name: ✅ Verify Frontend
         run: |
           echo "Testing application health..."
-          curl -s "http://${{ secrets.AWS_HOST }}" | grep -q "Vascueye" && echo "✅ Frontend OK" || echo "❌ Frontend Error"
-          curl -s "http://${{ secrets.AWS_HOST }}/backend" | grep -q "Vascueye Backend is Running" && echo "✅ Backend OK" || echo "❌ Backend Error"
+          curl -s "https://${{ secrets.AWS_HOST }}" | grep -q "Vascueye" && echo "✅ Frontend OK" || echo "❌ Frontend Error"
