@@ -7,7 +7,7 @@ const iotRoutes = require("./routes/iotRoutes");
 const { verifyToken } = require("./middleware/authMiddleware");
 
 require("dotenv").config();
-require("./mqttClient"); // Ensure MQTT client starts on server load
+require("./mqttClient");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
