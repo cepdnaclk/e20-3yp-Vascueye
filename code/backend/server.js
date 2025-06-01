@@ -25,7 +25,7 @@ app.use(express.json());
 
 // Whitelist all routes under /api/auth/*
 app.use((req, res, next) => {
-  if (req.path.startsWith("/api/auth/")) {
+  if (req.path == "/" || req.path.startsWith("/api/auth/")) {
     return next(); // Skip token verification
   }
   verifyToken(req, res, next); // Apply JWT check
