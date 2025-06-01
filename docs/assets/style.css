@@ -427,3 +427,54 @@ body {
   color: #666;
   line-height: 1.5;
 }
+
+.nir-vein-method {
+  background-color: #f4f8fb;
+  padding: 60px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #1a1a1a;
+}
+
+.nir-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.nir-text {
+  flex: 1 1 500px;
+}
+
+.nir-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #005f73;
+}
+
+.nir-text p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.nir-text strong {
+  color: #0a9396;
+  font-weight: 600;
+}
+
+.nir-image {
+  flex: 1 1 400px;
+  text-align: center;
+}
+
+.nir-image img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}

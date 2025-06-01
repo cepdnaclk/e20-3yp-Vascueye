@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="assets/style.css" />
     <link rel="stylesheet" href="assets/budget.css" />
     <link rel="stylesheet" href="assets/team-card.css" />
+    <link rel="stylesheet" href="assets/circuit.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -86,6 +87,28 @@
         </div>
       </section>
     </section>
+    <section class="nir-vein-method">
+      <div class="nir-content-wrapper">
+        <div class="nir-text">
+          <h2>Near-Infrared Imaging & Vein Detection</h2>
+          <p>
+            VascuEye uses <strong>near-infrared (NIR) light</strong>, typically
+            around <strong>850 nm</strong>, to illuminate the skin. Human tissue
+            reflects most of the IR light, but
+            <strong>deoxygenated hemoglobin in veins absorbs it</strong>, making
+            veins appear darker under NIR imaging.
+          </p>
+          <p>
+            A <strong>700 nm long-pass filter</strong> blocks visible light,
+            allowing only IR to pass. This enhances contrast between veins and
+            surrounding tissue for accurate, non-invasive visualization.
+          </p>
+        </div>
+        <div class="nir-image">
+          <img src="./images/method.png" alt="NIR Vein Imaging" />
+        </div>
+      </div>
+    </section>
 
     <section class="images" id="architecture">
       <section class="high-level-architecture">
@@ -102,6 +125,10 @@
             <h3>Components Used</h3>
             <div class="component-card">
               <div class="component-item">
+                <span class="label">Cloud Platform:</span>
+                <span class="value">AWS (Amazon Web Services)</span>
+              </div>
+              <div class="component-item">
                 <span class="label">Single Board Computer:</span>
                 <span class="value">Raspberry Pi 3B</span>
               </div>
@@ -117,9 +144,10 @@
                 <span class="label">Temperature Sensor:</span>
                 <span class="value">MLX90614</span>
               </div>
+
               <div class="component-item">
-                <span class="label">Cloud Platform:</span>
-                <span class="value">AWS (Amazon Web Services)</span>
+                <span class="label">Distance Sensor:</span>
+                <span class="value">vl53l0x</span>
               </div>
             </div>
           </div>
@@ -207,6 +235,34 @@
           </div>
         </div>
       </section>
+      <section class="Circuit">
+        <div class="circuit-container">
+          <h2>Circuit Design</h2>
+          <div class="circuit-image">
+            <img
+              class="scrolling-image"
+              src="./images/circuit.jpg"
+              alt="Circuit Design"
+            />
+          </div>
+        </div>
+      </section>
+      <section class="cad-designs">
+        <div class="cad-container">
+          <h2>Final Look</h2>
+          <div class="cad-images">
+            <div class="cad-image-box">
+              <img src="./images/cad1.png" alt="CAD Design 1" />
+              <p>Top View</p>
+            </div>
+            <div class="cad-image-box">
+              <img src="./images/cad2.png" alt="CAD Design 2" />
+              <p>Bottom View</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="hand-test-section">
         <h2>Hand Test Output</h2>
         <div class="hand-images">
@@ -282,8 +338,8 @@
           <tr>
             <td>Raspberry Pi NoIR Camera Sony IMX219</td>
             <td>1</td>
-            <td>Rs. 7200.00</td>
-            <td>Rs. 7200.00</td>
+            <td>Rs. 7800.00</td>
+            <td>Rs. 7800.00</td>
           </tr>
           <tr>
             <td>IR LEDs (850nm)</td>
@@ -298,10 +354,10 @@
             <td>Rs. 2000.00</td>
           </tr>
           <tr>
-            <td>5 Inch LCD Display</td>
+            <td>3.5 Inch LCD Display</td>
             <td>1</td>
-            <td>Rs. 10500.00</td>
-            <td>Rs. 10500.00</td>
+            <td>Rs. 4000.00</td>
+            <td>Rs. 4000.00</td>
           </tr>
           <tr>
             <td>Wires and Other Electronic Components</td>
@@ -313,7 +369,7 @@
             <td>Total Price</td>
             <td>-</td>
             <td>-</td>
-            <td>Rs. 47400.00</td>
+            <td>Rs. 41700.00</td>
           </tr>
         </tbody>
       </table>
