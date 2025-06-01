@@ -22,14 +22,11 @@ function PatientDetail() {
   useEffect(() => {
     const fetchFlapData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/users/flap/search/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/users/flap/search/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setFlapData(response.data.records || []);
         setLoading(false);
       } catch (err) {
@@ -40,14 +37,11 @@ function PatientDetail() {
 
     const fetchPatientData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/users/patient/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/users/patient/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setPatientData(response.data || []);
       } catch (err) {
         console.error("Failed to fetch patient data", err);

@@ -21,11 +21,10 @@ const DoctorRegister = () => {
   const [errors, setErrors] = useState({ contact: "", email: "", age: "" });
 
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const API_URL =
-      process.env.REACT_APP_API_URL || "http://localhost:5000/api";
     if (name === "contact") {
       if (!/^\d{0,10}$/.test(value)) return; // Allow only up to 10 digits
       if (value.length === 10) {
@@ -80,17 +79,14 @@ const DoctorRegister = () => {
       return; // Prevent submission if email or age is invalid
     }
 
-    const response = await fetch(
-      "http://localhost:5000/api/users/doctor/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(doctorData),
-      }
-    );
+    const response = await fetch(`${API_URL}/users/doctor/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(doctorData),
+    });
     const data = await response.json();
     if (response.ok) {
       console.log("Doctor registered successfully");

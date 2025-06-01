@@ -33,12 +33,9 @@ const DischargePatient = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/users/patients",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await axios.get(`${API_URL}/users/patients`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setPatients(res.data);
       } catch (err) {
         console.error("Failed to fetch patients", err);
@@ -74,7 +71,7 @@ const DischargePatient = () => {
   const handleConfirmDischarge = async () => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/users/patients/${patientToDischarge._id}`,
+        `${API_URL}/users/patients/${patientToDischarge._id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

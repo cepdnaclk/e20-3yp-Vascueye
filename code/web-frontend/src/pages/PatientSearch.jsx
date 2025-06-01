@@ -17,7 +17,7 @@ const PatientSearch = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/patient/search?query=${searchTerm}`,
+        `${API_URL}/users/patient/search?query=${searchTerm}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

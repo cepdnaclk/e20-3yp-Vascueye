@@ -42,19 +42,16 @@ const DoctorDashboard = () => {
       try {
         setLoading(true);
         console.log(user.email);
-        const response = await fetch(
-          "http://localhost:5000/api/users/doctors/patients",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: user.email,
-            }),
-          }
-        );
+        const response = await fetch(`${API_URL}/users/doctors/patients`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+          }),
+        });
         const data = await response.json();
         setAssignedPatients(data);
         setLoading(false);
@@ -93,7 +90,7 @@ const DoctorDashboard = () => {
         setSelectedFlap(null); // Reset selected flap
 
         const response = await axios.get(
-          `http://localhost:5000/api/users/flap/search/${selectedPatientId}?page=${page}&limit=5`,
+          `${API_URL}/users/flap/search/${selectedPatientId}?page=${page}&limit=5`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
