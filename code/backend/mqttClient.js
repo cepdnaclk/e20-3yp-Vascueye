@@ -25,7 +25,6 @@ const device = awsIot.device({
   clientId: clientId,
 
   host: host,
-
 });
 
 let latestData = {
@@ -57,6 +56,13 @@ device.on("message", async (topic, payload) => {
         const flapData = new FlapData({ patient_id, image_url, temperature });
         await flapData.save();
 
+        if (flapData.temperature <= 37 || flapData.abnormal === true) {
+          invokeLambda({
+            patient_id: flapData.patient_id,
+            temperature: flapData.temperature,
+            image_url: flapData.image_url,
+          });
+        }
         // Send success response back to Raspberry Pi
         device.publish(
           "sensor/response",
