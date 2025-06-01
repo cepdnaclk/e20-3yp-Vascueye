@@ -95,9 +95,10 @@ exports.registerDoctor = async (req, res) => {
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: "Invalid email format" });
     }
-
+    console.log(email);
     // Check if doctor with the same email already exists
     const existingDoctor = await Doctor.findOne({ email });
+    console.log(existingDoctor);
     if (existingDoctor) {
       return res
         .status(400)

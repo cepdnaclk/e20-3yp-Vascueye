@@ -11,6 +11,7 @@ import {
   Select,
   MenuItem,
   TextField,
+  Button,
 } from "@mui/material";
 
 const AllDoctors = () => {
@@ -18,8 +19,9 @@ const AllDoctors = () => {
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [specialties, setSpecialties] = useState([]);
   const [selectedSpecialty, setSelectedSpecialty] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");  // <-- New state
+  const [searchTerm, setSearchTerm] = useState(""); // <-- New state
   const [visibleDoctors, setVisibleDoctors] = useState([]); // For animation
+  const [assignedPatients, setAssignedPatients] = useState([]);
 
   const token = localStorage.getItem("token");
 
@@ -33,6 +35,7 @@ const AllDoctors = () => {
         });
         setDoctors(res.data);
         setFilteredDoctors(res.data);
+        console.log(res.data);
 
         const uniqueSpecialties = [
           ...new Set(res.data.map((doc) => doc.specialty)),
@@ -45,6 +48,31 @@ const AllDoctors = () => {
 
     fetchDoctors();
   }, [token]);
+
+  const getAssignedPatients = async (email) => {
+    setAssignedPatients([]);
+    console.log(email);
+    try {
+      const res = await axios.post(
+        `http://localhost:5000/api/users/doctors/patients`,
+        {
+          email: email,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setAssignedPatients((prev) => ({
+        ...prev,
+        [email]: res.data || [],
+      }));
+      console.log("assignedPatients", assignedPatients);
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    }
+  };
 
   // Combine filters on searchTerm and selectedSpecialty
   useEffect(() => {
@@ -143,6 +171,24 @@ const AllDoctors = () => {
                   <>
                     <div>Email: {doc.email}</div>
                     <div>Contact: {doc.contact || "N/A"}</div>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => getAssignedPatients(doc.email)}
+                    >
+                      Assigned Patients
+                    </Button>
+                    {assignedPatients[doc.email]?.length > 0 && (
+                      <ul style={{ marginTop: 8 }}>
+                        {assignedPatients[doc.email].map((p, i) => (
+                          <>
+                            <li key={i}>
+                              {p.name} ({p.contact})
+                            </li>
+                          </>
+                        ))}
+                      </ul>
+                    )}
                   </>
                 }
               />

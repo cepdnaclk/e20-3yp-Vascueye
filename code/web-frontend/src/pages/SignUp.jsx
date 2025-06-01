@@ -1,8 +1,10 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/Signup.css";
 import vescueyeLogo from "../assets/vescueye-logo.png"; // Import Vescueye logo
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -11,6 +13,9 @@ const Signup = () => {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("patient");
   const [showPassword, setShowPassword] = useState(false);
+  const [snackOpen, setSnackOpen] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackSeverity, setSnackSeverity] = useState("error"); // "success", "info", "warning"
 
   const [formData, setFormData] = useState({
     patient: {
@@ -67,8 +72,8 @@ const Signup = () => {
       errors.push("Invalid email format");
 
     // Title should not be empty
-    if (!data.title || data.title.trim() === "")
-      errors.push("Title is required");
+    // if (!data.title || data.title.trim() === "")
+    //   errors.push("Title is required");
 
     // Date of birth: must be at least 18 years ago
     if (role === "doctor" && data.dateOfBirth) {
@@ -81,8 +86,6 @@ const Signup = () => {
       );
       if (dob > twentyYearsAgo)
         errors.push("You must be at least 18 years old");
-    } else if (role === "patient") {
-      errors.push("Date of birth is required");
     }
 
     // Role-specific required fields
@@ -91,6 +94,10 @@ const Signup = () => {
 
     if (role === "hospital" && !data.registrationNumber)
       errors.push("Registration number is required");
+
+    setSnackMessage(errors.join(", "));
+    setSnackSeverity("error");
+    setSnackOpen(true);
 
     return errors;
   };
@@ -103,15 +110,6 @@ const Signup = () => {
     const validationErrors = validateForm(role);
     if (validationErrors.length > 0) {
       setError(validationErrors.join(", "));
-
-      // Scroll the scrollable container instead of the window
-      setTimeout(() => {
-        const container = document.querySelector(".scroll-container");
-        if (container) {
-          container.scrollTo({ top: 0, behavior: "smooth" });
-        }
-      }, 50); // Delay allows React to render the error message
-
       return;
     }
 
@@ -122,9 +120,10 @@ const Signup = () => {
         setMessage("Signup successful! Redirecting...");
         setTimeout(() => navigate(`/${role}-dashboard`), 1500);
       } else {
-        setError(
-          res.errors?.map((err) => err.msg).join(", ") || "Signup failed"
-        );
+        setError(res.error ? res.error : "Signup failed");
+        setSnackMessage(res.error ? res.error : "Signup failed");
+        setSnackSeverity("error");
+        setSnackOpen(true);
       }
     } catch (error) {
       setError("Signup failed. Please try again.");
@@ -170,7 +169,7 @@ const Signup = () => {
         {message && <p className="success-message">{message}</p>}
         {error && <p className="error-message">{error}</p>}
 
-        <div className="scroll-container">
+        <div>
           <form
             onSubmit={(e) => handleSubmit(e, activeTab)}
             className="signup-form"
@@ -241,6 +240,20 @@ const Signup = () => {
           Already have an account? <Link to="/signin">Sign in</Link>
         </p>
       </div>
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={4000}
+        onClose={() => setSnackOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackOpen(false)}
+          severity={snackSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
