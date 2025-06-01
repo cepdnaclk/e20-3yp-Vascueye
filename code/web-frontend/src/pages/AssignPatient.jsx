@@ -9,6 +9,8 @@ import {
   MenuItem,
   Select,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +20,10 @@ const AssignPatient = () => {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedPatient, setSelectedPatient] = useState("");
   const token = localStorage.getItem("token");
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackBarSeverity, setSnackBarSeverity] = useState("error");
 
   const navigate = useNavigate();
 
@@ -83,18 +89,22 @@ const AssignPatient = () => {
         );
         const data = await response.json();
         if (response.ok) {
-          alert("All patients assigned successfully!");
+          setSnackbarMessage("All patients assigned successfully!");
+          setSnackBarSeverity("success");
+          setSnackbarOpen(true);
           setSelectedDoctor("");
           setSelectedPatient("");
         } else {
-          alert(data.error || "Failed to assign all patients.");
+          setSnackbarMessage(data.error || "Failed to assign all patients.");
+          setSnackBarSeverity("error");
+          setSnackbarOpen(true);
           setSelectedDoctor("");
           setSelectedPatient("");
         }
       } catch (error) {
         console.error("Error assigning all patients:", error);
       } finally {
-        window.location.reload();
+        setTimeout(() => window.location.reload(), 2000);
       }
     } else {
       // Assign a single patient
@@ -115,14 +125,21 @@ const AssignPatient = () => {
         );
         const data = await response.json();
         if (response.ok) {
-          alert("Patient assigned successfully!");
+          setSnackbarMessage("Patient assigned successfully!");
+          setSnackBarSeverity("success");
+          setSnackbarOpen(true);
         } else {
-          alert(data.error || "Failed to assign patient.");
+          setSnackbarMessage(data.error || "Failed to assign patient.");
+          setSnackBarSeverity("error");
+          setSnackbarOpen(true);
         }
       } catch (error) {
         console.error("Error assigning patient:", error);
+        setSnackbarMessage("Failed to assign patient. Please try again.");
+        setSnackBarSeverity("error");
+        setSnackbarOpen(true);
       } finally {
-        navigate("/hospital-dashboard");
+        setTimeout(() => navigate("/hospital-dashboard"), 2000);
       }
     }
   };
@@ -175,6 +192,20 @@ const AssignPatient = () => {
           </Button>
         </CardContent>
       </Card>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={2000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={snackBarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

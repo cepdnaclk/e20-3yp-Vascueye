@@ -7,6 +7,9 @@ const router = express.Router();
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
+const Doctor = require("../models/Doctor");
+const Patient = require("../models/Patient");
+const { error } = require("console");
 
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
@@ -147,13 +150,30 @@ router.post(
 
     email = email.toLowerCase();
 
+    const models = {
+      doctor: Doctor,
+      patient: Patient,
+    };
+
     try {
       let userExists = await User.findOne({ email });
+
       if (userExists) {
         return res
           .status(400)
-          .json({ success: false, message: "User already exists" });
+          .json({ success: false, error: "User already exists" });
       }
+
+      const Model = models[role];
+      registerUser = await Model.findOne({ email });
+
+      if (!registerUser) {
+        return res
+          .status(400)
+          .json({ success: false, error: "User not registered" });
+      }
+
+      if (role === "doctor") registerUser = await Doctor.findOne({ email });
 
       if ((role === "doctor" || role === "patient") && !nic) {
         return res
@@ -212,7 +232,7 @@ router.post(
       console.error("Signup Error:", err);
       res
         .status(500)
-        .json({ success: false, message: "Server Error", error: err.message });
+        .json({ success: false, errors: "Server Error", error: err.message });
     }
   }
 );
