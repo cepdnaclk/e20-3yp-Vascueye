@@ -21,7 +21,7 @@ const PatientRegister = () => {
   });
 
   const [errors, setErrors] = useState({ contact: "" });
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   const navigate = useNavigate();
 
   const handleChange = (e) => {

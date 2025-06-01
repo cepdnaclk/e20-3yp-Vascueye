@@ -24,7 +24,7 @@ const AssignPatient = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackBarSeverity, setSnackBarSeverity] = useState("error");
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const AssignPatient = () => {
 
   const fetchDoctors = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/doctors", {
+      const response = await fetch(`${API_URL}/users/doctors`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,14 +48,11 @@ const AssignPatient = () => {
 
   const fetchPatients = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/users/patients/unassigned",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/users/patients/unassigned`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setPatients(data);
     } catch (error) {
@@ -73,20 +70,17 @@ const AssignPatient = () => {
       // Assign all patients
       const allPatientIds = patients.map((pat) => pat._id);
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/users/assign-all-patients",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              doctorId: selectedDoctor,
-              patientIds: allPatientIds,
-            }),
-          }
-        );
+        const response = await fetch(`${API_URL}/users/assign-all-patients`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            doctorId: selectedDoctor,
+            patientIds: allPatientIds,
+          }),
+        });
         const data = await response.json();
         if (response.ok) {
           setSnackbarMessage("All patients assigned successfully!");
@@ -109,20 +103,17 @@ const AssignPatient = () => {
     } else {
       // Assign a single patient
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/users/assign-patient",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              doctorId: selectedDoctor,
-              patientId: selectedPatient,
-            }),
-          }
-        );
+        const response = await fetch(`${API_URL}/users/assign-patient`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            doctorId: selectedDoctor,
+            patientId: selectedPatient,
+          }),
+        });
         const data = await response.json();
         if (response.ok) {
           setSnackbarMessage("Patient assigned successfully!");

@@ -4,18 +4,21 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setMessage(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        "http://localhost:5000/api/auth/forgot-password",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       const data = await res.json();
 
@@ -49,7 +52,9 @@ const ForgotPassword = () => {
           />
         </div>
 
-        <button type="submit" className="auth-btn">Send Reset Link</button>
+        <button type="submit" className="auth-btn">
+          Send Reset Link
+        </button>
       </form>
     </div>
   );

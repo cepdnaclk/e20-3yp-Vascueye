@@ -24,11 +24,12 @@ const AllDoctors = () => {
   const [assignedPatients, setAssignedPatients] = useState([]);
 
   const token = localStorage.getItem("token");
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users/doctors", {
+        const res = await axios.get(`${API_URL}/users/doctors`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -54,7 +55,7 @@ const AllDoctors = () => {
     console.log(email);
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/users/doctors/patients`,
+        `${API_URL}/users/doctors/patients`,
         {
           email: email,
         },

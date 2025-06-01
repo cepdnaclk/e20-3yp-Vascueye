@@ -178,7 +178,7 @@ router.post(
       if ((role === "doctor" || role === "patient") && !nic) {
         return res
           .status(400)
-          .json({ success: false, message: "NIC is required for this role" });
+          .json({ success: false, error: "NIC is required for this role" });
       }
 
       if (!name && (role === "doctor" || role === "patient")) {

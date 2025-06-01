@@ -24,7 +24,8 @@ const DoctorRegister = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+    const API_URL =
+      process.env.REACT_APP_API_URL || "http://localhost:5000/api";
     if (name === "contact") {
       if (!/^\d{0,10}$/.test(value)) return; // Allow only up to 10 digits
       if (value.length === 10) {

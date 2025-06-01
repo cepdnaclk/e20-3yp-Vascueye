@@ -6,7 +6,7 @@ import "../styles/FlapSearch.css";
 const DoctorDashboard = () => {
   const { user } = useContext(AuthContext);
   const lastLogin = localStorage.getItem("lastLogin");
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   const [patientId, setPatientId] = useState("");
   const [flapData, setFlapData] = useState([]);
   const [loading, setLoading] = useState(false);

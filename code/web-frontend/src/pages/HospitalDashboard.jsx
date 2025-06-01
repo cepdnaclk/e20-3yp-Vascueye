@@ -7,7 +7,7 @@ import { Box, Button, Typography, Card, CardContent } from "@mui/material";
 const HospitalDashboard = () => {
   const { user } = useContext(AuthContext);
   const lastLogin = localStorage.getItem("lastLogin");
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   return (
     <div
       className="dashboard-container"

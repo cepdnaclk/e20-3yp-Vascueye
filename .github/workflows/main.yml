@@ -152,7 +152,7 @@ jobs:
               echo "✅ Backend is up and responding as expected!"
               exit 0
             else
-              echo "❌ Backend did not respond correctly!"
+              echo "❌ Backend did not respond correctly"
               exit 1
             fi
           EOF

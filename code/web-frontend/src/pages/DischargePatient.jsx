@@ -27,15 +27,18 @@ const DischargePatient = () => {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState("");
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users/patients", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "http://localhost:5000/api/users/patients",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setPatients(res.data);
       } catch (err) {
         console.error("Failed to fetch patients", err);
@@ -70,12 +73,19 @@ const DischargePatient = () => {
   // Confirm discharge
   const handleConfirmDischarge = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/patients/${patientToDischarge._id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `http://localhost:5000/api/users/patients/${patientToDischarge._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-      setPatients((prev) => prev.filter((p) => p._id !== patientToDischarge._id));
-      setSnackbarMsg(`Patient ${patientToDischarge.name} discharged successfully.`);
+      setPatients((prev) =>
+        prev.filter((p) => p._id !== patientToDischarge._id)
+      );
+      setSnackbarMsg(
+        `Patient ${patientToDischarge.name} discharged successfully.`
+      );
       setSnackbarOpen(true);
 
       closeConfirmDialog();
@@ -128,8 +138,9 @@ const DischargePatient = () => {
         <DialogTitle>Confirm Discharge</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to discharge <strong>{patientToDischarge?.name}</strong>?
-            This action cannot be undone.
+            Are you sure you want to discharge{" "}
+            <strong>{patientToDischarge?.name}</strong>? This action cannot be
+            undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

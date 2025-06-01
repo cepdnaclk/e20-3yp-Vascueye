@@ -18,6 +18,7 @@ function PatientDetail() {
   const [loading, setLoading] = useState(true);
   const [patientData, setPatientData] = useState({});
   const token = localStorage.getItem("token");
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   useEffect(() => {
     const fetchFlapData = async () => {
       try {

@@ -19,18 +19,15 @@ const AllPatients = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const token = localStorage.getItem("token");
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/users/patients",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await axios.get(`${API_URL}/users/patients`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setPatients(res.data);
         setFilteredPatients(res.data);
       } catch (err) {

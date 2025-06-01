@@ -12,7 +12,7 @@ const DoctorSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   const handleSearch = async () => {
     setLoading(true);
     try {

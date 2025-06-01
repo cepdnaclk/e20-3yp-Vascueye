@@ -7,18 +7,21 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setMessage(null);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/auth/reset-password/${token}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/auth/reset-password/${token}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        }
+      );
 
       const data = await res.json();
 
@@ -53,7 +56,9 @@ const ResetPassword = () => {
           />
         </div>
 
-        <button type="submit" className="auth-btn">Reset Password</button>
+        <button type="submit" className="auth-btn">
+          Reset Password
+        </button>
       </form>
     </div>
   );
