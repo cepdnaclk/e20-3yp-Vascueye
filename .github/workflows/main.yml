@@ -64,16 +64,16 @@ jobs:
 
       - name: 🚚 Copy Backend Code to AWS (excluding node_modules)
         run: |
-          rsync -avz --exclude 'node_modules' ./code/backend/ root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd/backend/
+          rsync -avz --exclude 'node_modules' ./code/backend/ root@${{ secrets.AWS_HOST }}:/www/wwwroot/vescueye.work.gd/code/backend/
 
       - name: 🛠 Install Dependencies & Setup Backend
         run: |
           ssh root@${{ secrets.AWS_HOST }} << 'EOF'
             # Make sure backend directory exists
-            mkdir -p /www/wwwroot/vescueye.work.gd/backend
+            mkdir -p /www/wwwroot/vescueye.work.gd/code/backend
             
             # Navigate to backend location
-            cd /www/wwwroot/vescueye.work.gd/backend
+            cd /www/wwwroot/vescueye.work.gd/code/backend
             
             # Install dependencies
             npm install
@@ -96,7 +96,7 @@ jobs:
             which pm2 || npm install -g pm2
             
             # Navigate to backend location
-            cd /www/wwwroot/vescueye.work.gd/backend
+            cd /www/wwwroot/vescueye.work.gd/code/backend
             
             # Stop existing PM2 process if it exists and start a new one
             pm2 stop vescueye-backend || true
@@ -107,6 +107,12 @@ jobs:
             pm2 save
             pm2 startup
           EOF
+
+      - name: ✅ Verify Deployment
+        run: |
+          echo "Testing application health..."
+          curl -s "http://${{ secrets.AWS_HOST }}" | grep -q "Vascueye" && echo "✅ Frontend OK" || echo "❌ Frontend Error"
+          curl -s "http://${{ secrets.AWS_HOST }}/backend" | grep -q "Vascueye Backend is Running" && echo "✅ Backend OK" || echo "❌ Backend Error"
 
       - name: 📐 Configure Apache Reverse Proxy
         run: |
