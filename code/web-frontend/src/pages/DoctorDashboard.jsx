@@ -155,15 +155,28 @@ const DoctorDashboard = () => {
 
       {/* Two Column Layout */}
 
-      <Grid container spacing={3} style={{ width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          width: "100%",
+          gap: 3,
+        }}
+      >
         {/* Left Side - Assigned Patients */}
-        <Grid item xs={12} md={6}>
+        <Box
+          sx={{
+            flexBasis: { xs: "100%", md: "48%" },
+            boxSizing: "border-box",
+          }}
+        >
           <Card className="assigned-patients">
             <CardContent>
               <Typography variant="h5">Assigned Patients</Typography>
 
-              <div
-                style={{
+              <Box
+                sx={{
                   width: "200px",
                   height: "30px",
                   margin: "30px",
@@ -176,7 +189,8 @@ const DoctorDashboard = () => {
                   onChange={handleSearch}
                   fullWidth
                 />
-              </div>
+              </Box>
+
               {loading ? (
                 <CircularProgress />
               ) : assignedPatients.length > 0 ? (
@@ -219,15 +233,16 @@ const DoctorDashboard = () => {
               )}
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
 
-        {/* Right Side - All Flap Data for Selected Patient */}
-
-        <Grid
-          item
-          xs={12}
-          md={6}
-          style={{ marginBottom: "40px", paddingBottom: "10px" }}
+        {/* Right Side - Flap Data */}
+        <Box
+          sx={{
+            flexBasis: { xs: "100%", md: "48%" },
+            boxSizing: "border-box",
+            mb: 5,
+            pb: 1,
+          }}
         >
           <Card className="flap-data">
             <CardContent>
@@ -272,8 +287,9 @@ const DoctorDashboard = () => {
                 />
               )}
             </CardContent>
+
             {flapData.length > 0 && (
-              <Box style={{ display: "flex", justifyContent: "space-evenly" }}>
+              <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
                 <Button
                   size="small"
                   variant="contained"
@@ -292,8 +308,8 @@ const DoctorDashboard = () => {
               </Box>
             )}
           </Card>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

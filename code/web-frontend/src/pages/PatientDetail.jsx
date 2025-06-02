@@ -98,9 +98,27 @@ function PatientDetail() {
       <Typography variant="h6" gutterBottom>
         Flap Images
       </Typography>
-      <Grid container spacing={2}>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 2,
+          justifyContent: "space-between",
+        }}
+      >
         {flapData.map((f, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
+          <Box
+            key={index}
+            sx={{
+              flexBasis: {
+                xs: "100%",
+                sm: "48%",
+                md: "30%",
+              },
+              boxSizing: "border-box",
+            }}
+          >
             <img
               src={f.image_url}
               alt={`Flap ${index}`}
@@ -112,9 +130,9 @@ function PatientDetail() {
             <Typography variant="body2">
               Temperature: {f.temperature.toFixed(2)} °C
             </Typography>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }
