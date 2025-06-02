@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
   res.send("Hey guys,Vascueye Backend is Running");
 });
 
-// Connect to MongoDB and start server
+//Connect to MongoDB and start server
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
