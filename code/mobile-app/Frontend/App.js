@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Platform } from 'react-native';
@@ -21,12 +21,13 @@ import DoctorDashboard from './screens/DoctorDashboard';
 import ImageViewer from './screens/ImageViewer';
 
 const Stack = createStackNavigator();
-const BASE_URL = "http://172.20.10.6:5001/api/users";
+
+// Update with your backend base URL (no trailing slash)
+const BASE_URL = 'http://172.20.10.3:5001/api';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowBanner: true,
-    shouldShowList: true,
+    shouldShowAlert: true,
     shouldPlaySound: false,
     shouldSetBadge: false,
   }),
@@ -36,15 +37,18 @@ export default function App() {
   const [pendingNavigation, setPendingNavigation] = useState(null);
 
   useEffect(() => {
+    // Register for push notifications on app start
     registerForPushNotificationsAsync();
 
+    // Listen for notification responses (user taps on notification)
     const subscription = Notifications.addNotificationResponseReceivedListener(async (response) => {
-      const data = response.notification.request.content.data;
-      const { navigateTo, params } = data;
-
-      const isLoggedIn = await checkAuthStatus();
+      try {
+        const data = response.notification.request.content.data;
+        const { navigateTo, params } = data || {};
+        const isLoggedIn = await checkAuthStatus();
 
       if (navigateTo) {
+
         if (isLoggedIn) {
           navigationRef.current?.navigate(navigateTo, params || {});
         } else {
@@ -52,13 +56,15 @@ export default function App() {
           navigationRef.current?.navigate('Login');
         }
       }
+      } catch (err) {
+        console.error('Error handling notification response:', err);
+      }
     });
 
-    return () => {
-      subscription.remove();
-    };
+    return () => subscription.remove();
   }, []);
 
+  // Check if user is logged in by verifying stored token
   const checkAuthStatus = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
@@ -68,6 +74,7 @@ export default function App() {
     }
   };
 
+  // After login success, navigate to pending screen if any
   const handleLoginSuccess = () => {
     if (pendingNavigation) {
       const { screen, params } = pendingNavigation;
@@ -105,9 +112,10 @@ export default function App() {
   );
 }
 
+// Register device for push notifications and send token to backend
 async function registerForPushNotificationsAsync() {
   if (!Device.isDevice) {
-    console.log('❌ Must use physical device');
+    console.log('❌ Must use physical device for push notifications');
     return;
   }
 
@@ -120,14 +128,15 @@ async function registerForPushNotificationsAsync() {
   }
 
   if (finalStatus !== 'granted') {
-    console.log('❌ Permission not granted');
+    console.log('❌ Notification permission not granted');
     return;
   }
 
   try {
     const tokenData = await Notifications.getExpoPushTokenAsync();
-    console.log('✅ Expo Push Token:', tokenData.data);
-    await sendPushTokenToBackend(tokenData.data);
+    const expoPushToken = tokenData.data;
+    console.log('✅ Expo Push Token:', expoPushToken);
+    await sendPushTokenToBackend(expoPushToken);
   } catch (err) {
     console.log('❌ Error getting Expo Push Token:', err);
   }
@@ -140,20 +149,24 @@ async function registerForPushNotificationsAsync() {
   }
 }
 
+// Send Expo push token to backend server to save
 async function sendPushTokenToBackend(expoPushToken) {
   try {
     const response = await fetch(`${BASE_URL}/savePushToken`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ token: expoPushToken }),
     });
 
     if (response.ok) {
-      console.log('✅ Push token sent');
+      console.log('✅ Push token sent successfully');
     } else {
-      console.log('❌ Failed to send push token');
+      const errorText = await response.text();
+      console.log('❌ Failed to send push token:', errorText);
     }
   } catch (err) {
-    console.log('❌ Error sending push token:', err);
+    console.log('❌ Error sending push token to backend:', err);
   }
 }

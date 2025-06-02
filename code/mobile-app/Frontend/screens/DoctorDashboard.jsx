@@ -19,7 +19,7 @@ export default function DoctorDashboard() {
   const [doctorInfo, setDoctorInfo] = useState(null);
 
   const navigation = useNavigation();
-  const BASE_URL = "http://172.20.10.6:5001/api/users";
+  const BASE_URL = "http://172.20.10.3:5001/api/users";
 
   useEffect(() => {
     const initializeToken = async () => {
@@ -326,13 +326,20 @@ export default function DoctorDashboard() {
                       <Text style={styles.boldText}>Patient:</Text> {item.patient_id.name}
                     </Text>
                   )}
-                  {item.imageUrl ? (
-                    <Image
-                      source={{ uri: item.imageUrl }}
-                      style={styles.flapImage}
-                      resizeMode="contain"
-                      onError={() => console.log("Failed to load flap image for record:", item._id)}
-                    />
+                  {item.image_url ? (
+                    <View style={styles.imageContainer}>
+                      <Image
+                        source={{ uri: item.image_url }}
+                        style={styles.flapImage}
+                        resizeMode="contain"
+                        onError={(error) => {
+                          console.log("Failed to load flap image for record:", item._id);
+                          console.log("Image URL:", item.image_url);
+                          console.log("Error:", error.nativeEvent.error);
+                        }}
+                        onLoad={() => console.log("Image loaded successfully for record:", item._id)}
+                      />
+                    </View>
                   ) : (
                     <Text style={styles.noImageText}>No image available</Text>
                   )}
@@ -448,6 +455,19 @@ const styles = StyleSheet.create({
   flapList: {
     maxHeight: 300,
   },
+  imageContainer: {
+    marginTop: 10,
+    alignItems: "center",
+    backgroundColor: "#2c3e50",
+    borderRadius: 8,
+    padding: 8,
+  },
+  flapImage: {
+    width: 200,
+    height: 150,
+    borderRadius: 8,
+    backgroundColor: "#f0f0f0",
+  },
   noDataText: {
     color: "#bbb",
     fontStyle: "italic",
@@ -459,6 +479,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontStyle: "italic",
     marginTop: 5,
+    textAlign: "center",
   },
   loadingText: {
     color: "#10e0f8",

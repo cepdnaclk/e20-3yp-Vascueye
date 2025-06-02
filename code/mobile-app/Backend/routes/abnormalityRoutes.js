@@ -1,8 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const abnormalityController = require('../controller/abnormalityController');
+const abnormalityController = require("../controller/abnormalityController");
 
-// POST /api/abnormality
-router.post('/', abnormalityController.sendAbnormality);
+router.post("/", abnormalityController.sendAbnormality);
 
 module.exports = router;
