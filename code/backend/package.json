@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-lambda": "^3.821.0",
     "aws-iot-device-sdk": "^2.2.15",
     "backend": "file:",
     "bcrypt": "^5.1.1",

@@ -49,14 +49,14 @@ device.on("connect", () => {
 device.on("message", async (topic, payload) => {
   try {
     const data = JSON.parse(payload.toString());
-    const { patient_id, image_url, temperature } = data;
+    const { patient_id, image_url, temperature, abnormal } = data;
 
     if (topic === "sensor/data") {
       try {
         const flapData = new FlapData({ patient_id, image_url, temperature });
         await flapData.save();
 
-        if (flapData.temperature <= 37 || flapData.abnormal === true) {
+        if (temperature <= 35 || abnormal === true) {
           invokeLambda({
             patient_id: flapData.patient_id,
             temperature: flapData.temperature,
