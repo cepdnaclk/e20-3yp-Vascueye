@@ -25,7 +25,6 @@ const device = awsIot.device({
   clientId: clientId,
 
   host: host,
-
 });
 
 let latestData = {

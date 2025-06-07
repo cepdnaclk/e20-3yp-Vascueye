@@ -10,7 +10,7 @@ require("dotenv").config();
 const Doctor = require("../models/Doctor");
 const Patient = require("../models/Patient");
 const { error } = require("console");
-
+const REACT_URL = process.env.REACT_APP_URL || "http://localhost:3000";
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -43,7 +43,7 @@ router.post("/forgot-password", async (req, res) => {
     },
   });
 
-  const resetURL = `http://localhost:3000/reset-password/${resetToken}`;
+  const resetURL = `${REACT_URL}/reset-password/${resetToken}`;
 
   const mailOptions = {
     from: process.env.OUTLOOK_EMAIL,
