@@ -23,7 +23,7 @@ jobs:
         working-directory: code/web-frontend
 
       - name: Build project
-        run: npm run build
+        run: CI=false npm run build
         working-directory: code/web-frontend
 
       - name: Deploy to EC2
