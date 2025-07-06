@@ -1,0 +1,30 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches: [ "main" ]  # Adjust as needed
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted  # Assumes the same EC2 instance is a GitHub runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React App
+        run: npm run build
+
+      - name: Deploy build to server
+        run: |
+          rm -rf ~/web-frontend
+          mv build ~/web-frontend
+          sudo systemctl reload nginx
