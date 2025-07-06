@@ -3,7 +3,7 @@ name: Deploy Frontend to EC2
 on:
   push:
     branches:
-      - main  # Or your deploy branch
+      - main  # or your deployment branch
 
 jobs:
   deploy:
@@ -18,18 +18,21 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Build Project
-        run: |
-          npm install
-          npm run build
+      - name: Install dependencies
+        run: npm install
+        working-directory: web-frontend
+
+      - name: Build project
+        run: npm run build
+        working-directory: web-frontend
 
       - name: Deploy to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}  //
-          source: "build/*"
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "web-frontend/build/*"
           target: ${{ secrets.TARGET_DIR }}
 
       - name: Restart Nginx (optional)
