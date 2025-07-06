@@ -32,7 +32,7 @@ jobs:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "web-frontend/build/*"
+          source: "code/web-frontend/build/*"
           target: ${{ secrets.TARGET_DIR }}
 
       - name: Restart Nginx (optional)
