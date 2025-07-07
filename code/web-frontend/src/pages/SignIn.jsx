@@ -11,7 +11,7 @@ const SignIn = () => {
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const API_URL = process.env.REACT_APP_API_URL || "https://18.206.116.132/api";
+  const API_URL = process.env.REACT_APP_API_URL || "https:/localhost:5000/api";
 
   // Redirect if already logged in
   useEffect(() => {
@@ -19,7 +19,7 @@ const SignIn = () => {
       navigate(`/${user.role}-dashboard`);
     }
   }, [user, navigate]);
-
+``
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
