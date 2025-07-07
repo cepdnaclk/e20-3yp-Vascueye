@@ -1,56 +1,103 @@
-name: Node.js CI
+name: Node.js CI/CD
+
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 jobs:
   build:
     runs-on: self-hosted
+    
     strategy:
       matrix:
         node-version: [20.x]
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+      
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: 'code/backend/package-lock.json'  # Point to correct package-lock.json
-    
-    - name: Navigate to backend directory
-      run: cd code/backend
-    
+        cache-dependency-path: 'code/backend/package-lock.json'
+        
     - name: Install dependencies
+      working-directory: code/backend
       run: |
-        cd code/backend
-        npm ci
-    
-    - name: Set environment variables from secret
+        npm ci --only=production
+        
+    - name: Set environment variables
+      working-directory: code/backend
       run: |
-        cd code/backend
-        touch .env
         echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
-    
-    - name: Build the app (if applicable)
+        
+    - name: Build application
+      working-directory: code/backend
       run: |
-        cd code/backend
         npm run build --if-present
-    
-    - name: Install PM2 globally
-      run: npm install -g pm2
-    
-    - name: Start or Restart API using PM2
+        
+    - name: Run tests (if available)
+      working-directory: code/backend
       run: |
-        cd code/backend
-        APP_FILE="server.js"  # Changed from index.js to server.js
-        if pm2 describe api > /dev/null; then
-          echo "Restarting existing PM2 process..."
-          pm2 restart api
+        npm test --if-present
+      continue-on-error: false
+        
+    - name: Install PM2 globally (if not already installed)
+      run: |
+        if ! command -v pm2 &> /dev/null; then
+          npm install -g pm2
+        fi
+        
+    - name: Deploy with PM2
+      working-directory: code/backend
+      run: |
+        # Create PM2 ecosystem file for better process management
+        cat > ecosystem.config.js << 'EOF'
+        module.exports = {
+          apps: [{
+            name: 'api',
+            script: 'server.js',
+            instances: 'max',
+            exec_mode: 'cluster',
+            env: {
+              NODE_ENV: 'production',
+              PORT: process.env.PORT || 3000
+            },
+            error_file: './logs/err.log',
+            out_file: './logs/out.log',
+            log_file: './logs/combined.log',
+            time: true,
+            max_memory_restart: '1G',
+            node_args: '--max-old-space-size=1024'
+          }]
+        }
+        EOF
+        
+        # Create logs directory
+        mkdir -p logs
+        
+        # Deploy using PM2
+        if pm2 describe api > /dev/null 2>&1; then
+          echo "Reloading existing PM2 process..."
+          pm2 reload ecosystem.config.js --update-env
         else
           echo "Starting new PM2 process..."
-          pm2 start $APP_FILE --name api
+          pm2 start ecosystem.config.js
         fi
+        
+        # Save PM2 configuration
+        pm2 save
+        
+    - name: Health check
+      run: |
+        sleep 10
+        # Replace with your actual health check endpoint
+        curl -f http://localhost:3000/health || exit 1
+        
+    - name: Cleanup old PM2 logs
+      run: |
+        pm2 flush
