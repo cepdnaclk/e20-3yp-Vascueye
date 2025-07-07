@@ -19,7 +19,7 @@ const SignIn = () => {
       navigate(`/${user.role}-dashboard`);
     }
   }, [user, navigate]);
-``
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
