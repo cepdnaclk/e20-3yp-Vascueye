@@ -27,25 +27,22 @@ jobs:
         
     - name: Install dependencies
       working-directory: code/backend
-      run: |
-        npm ci --only=production
+      run: npm ci --only=production
         
     - name: Set environment variables
       working-directory: code/backend
-      run: |
-        echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
+      run: echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
         
     - name: Build application
       working-directory: code/backend
-      run: |
-        npm run build --if-present
+      run: npm run build --if-present
         
+    - name: Run tests
       working-directory: code/backend
-      run: |
-        npm test --if-present
+      run: npm test --if-present
       continue-on-error: false
         
-    - name: Install PM2 globally (if not already installed)
+    - name: Install PM2 globally
       run: |
         if ! command -v pm2 &> /dev/null; then
           npm install -g pm2
@@ -54,7 +51,6 @@ jobs:
     - name: Deploy with PM2
       working-directory: code/backend
       run: |
-        # Create PM2 ecosystem file for better process management
         cat > ecosystem.config.js << 'EOF'
         module.exports = {
           apps: [{
@@ -75,11 +71,7 @@ jobs:
           }]
         }
         EOF
-        
-        # Create logs directory
         mkdir -p logs
-        
-        # Deploy using PM2
         if pm2 describe api > /dev/null 2>&1; then
           echo "Reloading existing PM2 process..."
           pm2 reload ecosystem.config.js --update-env
@@ -87,16 +79,12 @@ jobs:
           echo "Starting new PM2 process..."
           pm2 start ecosystem.config.js
         fi
-        
-        # Save PM2 configuration
         pm2 save
         
     - name: Health check
       run: |
         sleep 10
-        # Replace with your actual health check endpoint
         curl -f http://localhost:3000/health || exit 1
         
     - name: Cleanup old PM2 logs
-      run: |
-        pm2 flush
+      run: pm2 flush
