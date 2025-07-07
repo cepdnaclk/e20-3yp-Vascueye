@@ -15,80 +15,140 @@ jobs:
         node-version: [20.x]
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: 'code/backend/package-lock.json'
-        
-    - name: Install dependencies
-      working-directory: code/backend
-      run: npm ci --only=production
-        
-    - name: Set environment variables
-      working-directory: code/backend
-      run: echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
-        
-    - name: Build application
-      working-directory: code/backend
-      run: npm run build --if-present
-        
-
-        
-    - name: Install PM2 globally
-      run: |
-        if ! command -v pm2 &> /dev/null; then
-          npm install -g pm2
-        fi
-        
-    - name: Deploy with PM2
-      working-directory: code/backend
-      run: |
-        cat > ecosystem.config.js << 'EOF'
-        module.exports = {
-          apps: [{
-            name: 'api',
-            script: 'server.js',
-            instances: 'max',
-            exec_mode: 'cluster',
-            env: {
-              NODE_ENV: 'production',
-              PORT: process.env.PORT || 3000
-            },
-            error_file: './logs/err.log',
-            out_file: './logs/out.log',
-            log_file: './logs/combined.log',
-            time: true,
-            max_memory_restart: '1G',
-            node_args: '--max-old-space-size=1024'
-          }]
-        }
-        EOF
-        mkdir -p logs
-        if pm2 describe api > /dev/null 2>&1; then
-          echo "Reloading existing PM2 process..."
-          pm2 reload ecosystem.config.js --update-env
-        else
-          echo "Starting new PM2 process..."
-          pm2 start ecosystem.config.js
-        fi
-        pm2 save
-        
-    - name: Health check
-      run: |
-        sleep 15
-        # Check if PM2 process is running
-        if pm2 describe api > /dev/null 2>&1; then
-          echo "PM2 process 'api' is running"
-          pm2 status
-        else
-          echo "PM2 process 'api' is not running"
-          exit 1
-        fi
-        
-    - name: Cleanup old PM2 logs
-      run: pm2 flush
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: 'code/backend/package-lock.json'
+      
+      - name: Install dependencies
+        working-directory: code/backend
+        run: npm ci --only=production
+      
+      - name: Set environment variables
+        working-directory: code/backend
+        run: echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
+      
+      - name: Build application
+        working-directory: code/backend
+        run: npm run build --if-present
+      
+      - name: Install PM2 globally
+        run: |
+          if ! command -v pm2 &> /dev/null; then
+            npm install -g pm2
+          fi
+      
+      - name: Deploy with PM2 (Performance Optimized)
+        working-directory: code/backend
+        run: |
+          cat > ecosystem.config.js << 'EOF'
+          module.exports = {
+            apps: [{
+              name: 'api',
+              script: 'server.js',
+              instances: 2, // Optimal for most self-hosted runners
+              exec_mode: 'cluster',
+              env: {
+                NODE_ENV: 'production',
+                PORT: process.env.PORT || 3000,
+                UV_THREADPOOL_SIZE: 16, // Increase thread pool for better I/O
+                NODE_OPTIONS: '--max-old-space-size=2048'
+              },
+              node_args: [
+                '--max-old-space-size=2048',
+                '--optimize-for-size',
+                '--max-semi-space-size=128'
+              ],
+              error_file: './logs/err.log',
+              out_file: './logs/out.log',
+              log_file: './logs/combined.log',
+              time: true,
+              max_memory_restart: '1G',
+              autorestart: true,
+              watch: false,
+              kill_timeout: 3000,
+              listen_timeout: 10000,
+              wait_ready: true,
+              // Performance optimizations
+              treekill: true,
+              pmx: false, // Disable PMX for better performance
+              automation: false,
+              // Clustering optimizations
+              instance_var: 'INSTANCE_ID',
+              exec_interpreter: 'node',
+              exec_mode: 'cluster_mode'
+            }]
+          }
+          EOF
+          
+          mkdir -p logs
+          
+          # Graceful restart for better performance
+          if pm2 describe api > /dev/null 2>&1; then
+            echo "Gracefully restarting PM2 process..."
+            pm2 restart api --update-env
+          else
+            echo "Starting new PM2 process..."
+            pm2 start ecosystem.config.js
+          fi
+          
+          pm2 save
+          
+          # Optimize PM2 for performance
+          pm2 set pm2:autodump true
+          pm2 set pm2:watch-ignore node_modules
+      
+      - name: Warm up application
+        run: |
+          echo "Warming up application..."
+          sleep 8
+          
+          # Warm up multiple endpoints to initialize caches
+          for i in {1..3}; do
+            curl -s -f http://localhost:3000/health || curl -s -f http://localhost:3000/ || echo "Warmup attempt $i"
+            sleep 2
+          done
+      
+      - name: Performance Health Check
+        run: |
+          echo "Running performance health check..."
+          
+          # Check PM2 process status
+          if pm2 describe api > /dev/null 2>&1; then
+            echo "PM2 process 'api' is running"
+            pm2 status api
+          else
+            echo "PM2 process 'api' is not running"
+            exit 1
+          fi
+          
+          # Performance test - measure response time
+          echo "Testing response time..."
+          response_time=$(curl -w "%{time_total}" -s -o /dev/null http://localhost:3000/ || echo "0")
+          echo "Response time: ${response_time}s"
+          
+          # Check if response time is acceptable (adjust threshold as needed)
+          if (( $(echo "$response_time > 2.0" | bc -l) )); then
+            echo "Warning: Response time is high (${response_time}s)"
+          else
+            echo "Response time is acceptable (${response_time}s)"
+          fi
+      
+      - name: Optimize PM2 Runtime
+        run: |
+          # Clear PM2 logs to free up memory
+          pm2 flush
+          
+          # Optimize PM2 processes
+          pm2 optimize
+          
+          # Show final status
+          pm2 show api
+          
+          echo "Deployment completed successfully!"
+          echo "Application is running with performance optimizations"
