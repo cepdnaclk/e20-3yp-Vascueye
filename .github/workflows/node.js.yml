@@ -31,7 +31,11 @@ jobs:
       
       - name: Set environment variables
         working-directory: code/backend
-        run: echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
+        run: |
+          echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
+          # Add CORS configuration
+          echo "CORS_ORIGIN=https://vescueye.duckdns.org" >> .env
+          echo "CORS_CREDENTIALS=true" >> .env
       
       - name: Build application
         working-directory: code/backend
@@ -43,7 +47,22 @@ jobs:
             npm install -g pm2
           fi
       
-      - name: Deploy with PM2 (Performance Optimized)
+      - name: Clean up existing processes
+        run: |
+          echo "Cleaning up old processes..."
+          # Stop and remove all other processes except api
+          pm2 stop server || true
+          pm2 stop vascueye-backend || true
+          pm2 delete server || true
+          pm2 delete vascueye-backend || true
+          
+          # Clean up any other processes
+          pm2 list | grep -v "api" | awk '{print $2}' | tail -n +4 | head -n -1 | xargs -r pm2 delete || true
+          
+          echo "Remaining processes:"
+          pm2 status
+      
+      - name: Deploy with PM2 (Single API Only)
         working-directory: code/backend
         run: |
           cat > ecosystem.config.js << 'EOF'
@@ -51,57 +70,49 @@ jobs:
             apps: [{
               name: 'api',
               script: 'server.js',
-              instances: 2, // Optimal for most self-hosted runners
-              exec_mode: 'cluster',
+              instances: 1, // Only 1 instance for 1 CPU core
+              exec_mode: 'fork', // Use fork mode instead of cluster
               env: {
                 NODE_ENV: 'production',
                 PORT: process.env.PORT || 3000,
-                UV_THREADPOOL_SIZE: 16, // Increase thread pool for better I/O
-                NODE_OPTIONS: '--max-old-space-size=2048'
+                UV_THREADPOOL_SIZE: 4 // Minimal thread pool
               },
               node_args: [
-                '--max-old-space-size=2048',
-                '--optimize-for-size',
-                '--max-semi-space-size=128'
+                '--max-old-space-size=256', // Very low memory limit
+                '--max-semi-space-size=32'
               ],
               error_file: './logs/err.log',
               out_file: './logs/out.log',
               log_file: './logs/combined.log',
               time: true,
-              max_memory_restart: '1G',
+              max_memory_restart: '200M', // Low memory restart
               autorestart: true,
               watch: false,
               kill_timeout: 3000,
-              listen_timeout: 10000,
+              listen_timeout: 15000,
               wait_ready: true,
-              // Performance optimizations
+              min_uptime: '10s',
+              max_restarts: 3,
+              // Minimal resource usage
               treekill: true,
-              pmx: false, // Disable PMX for better performance
-              automation: false,
-              // Clustering optimizations
-              instance_var: 'INSTANCE_ID',
-              exec_interpreter: 'node',
-              exec_mode: 'cluster_mode'
+              pmx: false,
+              automation: false
             }]
           }
           EOF
           
           mkdir -p logs
           
-          # Graceful restart for better performance
+          # Clean restart of api only
           if pm2 describe api > /dev/null 2>&1; then
-            echo "Gracefully restarting PM2 process..."
+            echo "Restarting api process..."
             pm2 restart api --update-env
           else
-            echo "Starting new PM2 process..."
+            echo "Starting new api process..."
             pm2 start ecosystem.config.js
           fi
           
           pm2 save
-          
-          # Optimize PM2 for performance
-          pm2 set pm2:autodump true
-          pm2 set pm2:watch-ignore node_modules
       
       - name: Warm up application
         run: |
