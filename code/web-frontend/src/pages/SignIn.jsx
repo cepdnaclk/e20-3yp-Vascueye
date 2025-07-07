@@ -60,7 +60,7 @@ const SignIn = () => {
 
       <form onSubmit={handleSubmit} className="auth-form">
         <div className="input-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email eka </label>
           <input
             type="email"
             id="email"
