@@ -9,34 +9,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-    - name: Install dependencies
-      working-directory: ./code/web-frontend
-      run: npm ci
+      - name: Install dependencies
+        working-directory: ./code/web-frontend
+        run: npm ci
 
-    - name: Build React App
-      working-directory: ./code/web-frontend
-      run: CI=false npm run build
+      - name: Build React App
+        working-directory: ./code/web-frontend
+        run: |
+          CI=false npm run build
 
-    - name: Setup SSH Key
-      run: |
-        echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
-        chmod 600 ec2_key.pem
+      - name: Setup SSH Key
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
 
-    - name: Deploy to EC2
-      run: |
-        ssh -o StrictHostKeyChecking=no -i ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          sudo mkdir -p ${{ secrets.REMOTE_APP_PATH }}
-          sudo chown $USER:$USER ${{ secrets.REMOTE_APP_PATH }}
-        EOF
-        scp -r -i ec2_key.pem -o StrictHostKeyChecking=no ./code/web-frontend/build/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.REMOTE_APP_PATH }}
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+            sudo mkdir -p ${{ secrets.REMOTE_APP_PATH }}
+            sudo chown $USER:$USER ${{ secrets.REMOTE_APP_PATH }}
+          EOF
 
-    - name: Cleanup
-      run: rm -f ec2_key.pem
+          scp -r -i ec2_key.pem -o StrictHostKeyChecking=no ./code/web-frontend/build/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.REMOTE_APP_PATH }}
+
+      - name: Cleanup
+        run: rm -f ec2_key.pem
