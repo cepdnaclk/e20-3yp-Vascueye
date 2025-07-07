@@ -23,7 +23,7 @@ jobs:
 
     - name: Build React App
       working-directory: ./code/web-frontend
-      run: npm run build
+      run: CI=false npm run build
 
     - name: Setup SSH Key
       run: |
