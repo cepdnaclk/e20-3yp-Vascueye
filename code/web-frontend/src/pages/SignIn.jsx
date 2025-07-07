@@ -11,7 +11,7 @@ const SignIn = () => {
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const API_URL = process.env.REACT_APP_API_URL || "https://vescueyebackend.duckdns.org/api";
+  const API_URL = process.env.REACT_APP_API_URL || "https://18.206.116.132/api";
 
   // Redirect if already logged in
   useEffect(() => {
