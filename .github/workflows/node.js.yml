@@ -114,10 +114,8 @@ jobs:
             sleep 2
           done
       
-      - name: Performance Health Check
+      - name: Health Check
         run: |
-          echo "Running performance health check..."
-          
           # Check PM2 process status
           if pm2 describe api > /dev/null 2>&1; then
             echo "PM2 process 'api' is running"
@@ -126,26 +124,11 @@ jobs:
             echo "PM2 process 'api' is not running"
             exit 1
           fi
-          
-          # Performance test - measure response time
-          echo "Testing response time..."
-          response_time=$(curl -w "%{time_total}" -s -o /dev/null http://localhost:3000/ || echo "0")
-          echo "Response time: ${response_time}s"
-          
-          # Check if response time is acceptable (adjust threshold as needed)
-          if (( $(echo "$response_time > 2.0" | bc -l) )); then
-            echo "Warning: Response time is high (${response_time}s)"
-          else
-            echo "Response time is acceptable (${response_time}s)"
-          fi
       
-      - name: Optimize PM2 Runtime
+      - name: Finalize Deployment
         run: |
           # Clear PM2 logs to free up memory
           pm2 flush
-          
-          # Optimize PM2 processes
-          pm2 optimize
           
           # Show final status
           pm2 show api
