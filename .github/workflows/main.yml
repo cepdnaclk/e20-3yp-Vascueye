@@ -73,7 +73,7 @@ jobs:
             mkdir -p /www/wwwroot/vescueye.work.gd/code/backend
             
             # Navigate to backend location
-            cd /www/wwwroot/vescueye.work.gd/code/backend
+            cd /www/wwwroot/vescueye.work.gd/code/backend 
             
             # Install dependencies
             npm install
