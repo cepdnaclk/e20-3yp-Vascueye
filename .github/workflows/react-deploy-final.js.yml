@@ -29,6 +29,7 @@ jobs:
       env:
         CI: true
         NODE_ENV: production
+        NODE_OPTIONS: --max_old_space_size=4096  # Increase memory limit to 4GB
     
     - name: Deploy to nginx directory
       run: |
