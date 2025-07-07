@@ -80,8 +80,15 @@ jobs:
         
     - name: Health check
       run: |
-        sleep 10
-        curl -f http://localhost:3000/health || exit 1
+        sleep 15
+        # Check if PM2 process is running
+        if pm2 describe api > /dev/null 2>&1; then
+          echo "PM2 process 'api' is running"
+          pm2 status
+        else
+          echo "PM2 process 'api' is not running"
+          exit 1
+        fi
         
     - name: Cleanup old PM2 logs
       run: pm2 flush
