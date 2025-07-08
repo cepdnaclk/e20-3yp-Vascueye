@@ -32,3 +32,4 @@ jobs:
         touch .env
         echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
     - run: pm2 restart api
+    
