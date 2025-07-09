@@ -1,4 +1,4 @@
-name: Backend.js CI
+name: Node.js CI
 
 on:
   push:
@@ -21,16 +21,19 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Install backend dependencies
-        working-directory: ./code/backend
+      - name: Install dependencies
         run: npm ci
-
-      - name: Create .env file
         working-directory: ./code/backend
-        run: echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
 
-      - name: Reload backend server with pm2
+      - name: Build (if applicable)
+        run: npm run build --if-present
         working-directory: ./code/backend
+
+      - name: Create .env file from secrets
         run: |
-          pm2 reload api || pm2 start server.js --name api
-          pm2 save
+          echo "${{ secrets.VESCUEYE_SECRET }}" > .env
+        working-directory: ./code/backend
+
+      - name: Restart API with pm2
+        run: pm2 restart api
+        working-directory: ./code/backend
