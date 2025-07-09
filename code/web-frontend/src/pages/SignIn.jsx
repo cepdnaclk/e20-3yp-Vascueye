@@ -11,7 +11,7 @@ const SignIn = () => {
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const API_URL = process.env.REACT_APP_API_URL || " http://localhost:5000/api";
+  const API_URL = process.env.REACT_APP_API_URL || " http://localhost:5000/api" || "http://34.236.22.30:5000/api/auth/signin";
 
   // Redirect if already logged in
   useEffect(() => {
