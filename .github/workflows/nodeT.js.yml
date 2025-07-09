@@ -31,7 +31,7 @@ jobs:
 
       - name: Create .env file from secrets
         run: |
-          echo "${{ secrets.VESCUEYE_SECRETS }}" > .env
+          echo "${{ secrets.VESCUEYE_SECRET }}" > .env
         working-directory: ./code/backend
 
       - name: Restart API with pm2
