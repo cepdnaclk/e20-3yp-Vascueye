@@ -49,6 +49,7 @@ body {
   font-weight: 800;
   transition: transform 0.3s ease;
   z-index: 1001;
+  gap: 0.5rem;
 }
 
 .navbar-logo:hover {
@@ -64,6 +65,119 @@ body {
   font-size: 24px;
   letter-spacing: -0.5px;
   text-shadow: 0 2px 10px rgba(0, 188, 212, 0.3);
+}
+
+/* Heart Animation Styles */
+.heart-container {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+}
+
+.heart-svg {
+  width: 100%;
+  height: 100%;
+  color: #e74c3c;
+  filter: drop-shadow(0 2px 8px rgba(231, 76, 60, 0.4));
+}
+
+.heart-icon {
+  animation: heartbeat 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes heartbeat {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+}
+
+/* Hover effect for the heart */
+.navbar-logo:hover .heart-icon {
+  animation-duration: 1s;
+  color: #c0392b;
+}
+
+/* Synchronized animations */
+.navbar-logo:hover .heart-icon,
+.navbar-logo:hover .pulse-line {
+  animation-duration: 1s;
+}
+
+/* ECG Pulse Animation Styles */
+.pulse-container {
+  width: 60px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+.pulse-svg {
+  width: 100%;
+  height: 100%;
+  color: #00bcd4;
+  overflow: visible;
+}
+
+.pulse-line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: ecg-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ecg-pulse {
+  0% {
+    stroke-dashoffset: 200;
+    opacity: 0.3;
+  }
+  20% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  40% {
+    stroke-dashoffset: -50;
+    opacity: 1;
+  }
+  60% {
+    stroke-dashoffset: -100;
+    opacity: 0.8;
+  }
+  80% {
+    stroke-dashoffset: -150;
+    opacity: 0.5;
+  }
+  100% {
+    stroke-dashoffset: -200;
+    opacity: 0.3;
+  }
+}
+
+/* Hover effect for the pulse */
+.navbar-logo:hover .pulse-line {
+  animation-duration: 0.8s;
+  stroke: #4fc3f7;
 }
 
 /* Navigation Links */
@@ -167,7 +281,6 @@ a.signin-link {
   border-radius: 20px;
   transition: all 0.3s ease;
 }
-
 
 /* Sign Up & Logout Buttons */
 .signup-btn,
@@ -298,6 +411,12 @@ a.signin-link {
     display: block;
   }
 
+  /* Hide pulse animation and heart on mobile for better performance */
+  .pulse-container,
+  .heart-container {
+    display: none;
+  }
+
   .navbar-links {
     position: fixed;
     top: 0;
@@ -387,6 +506,17 @@ a.signin-link {
   .logo-text {
     font-size: 1.3rem;
   }
+
+  /* Smaller pulse container and heart for very small screens */
+  .pulse-container {
+    width: 40px;
+    height: 20px;
+  }
+  
+  .heart-container {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 /* Accessibility */
@@ -395,6 +525,14 @@ a.signin-link {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  
+  .pulse-line {
+    animation: none !important;
+  }
+  
+  .heart-icon {
+    animation: none !important;
   }
 }
 

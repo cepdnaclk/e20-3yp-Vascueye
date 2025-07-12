@@ -12,7 +12,8 @@ html, body {
 .home-container {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 30%, #f0f4ff 70%, #e0e7ff 100%);
+  /* Deeper, cooler blue */
+  background: linear-gradient(135deg, #c2d5e8 0%, #dae7f2 30%, #c2d5e8 70%, #acc8e0 100%);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -183,7 +184,7 @@ html, body {
 .title-accent {
   width: 2rem;
   height: 2rem;
-  color: #fbbf24;
+  color: #ffffff;
   animation: sparkle 2s ease-in-out infinite;
 }
 

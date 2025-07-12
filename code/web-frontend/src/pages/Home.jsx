@@ -141,9 +141,14 @@ const Home = () => {
             <div className="auth-card">
               <div className="card-glow"></div>
               <h2 className="auth-title">Experience the Future of Surgical Monitoring</h2>
-              
+              <p>
+                <br />
+              </p>
               <p className="auth-subtitle">
                 Join leading medical professionals in revolutionizing patient care with cutting-edge monitoring technology
+              </p>
+              <p>
+                <br />
               </p>
               <p>
                 <br />
