@@ -73,7 +73,7 @@ const SignIn = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="password">Password eka ..</label>
+          <label htmlFor="password">Password</label>
           <input
             type={showPassword ? "text" : "password"}
             id="password"
