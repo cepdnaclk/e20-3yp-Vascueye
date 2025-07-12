@@ -12,7 +12,7 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   // const API_URL = process.env.REACT_APP_API_URL || " http://localhost:5000/api";
-  const API_URL ="http://34.236.22.30:5000/api/auth/signin";
+  const API_URL ="http://34.236.22.30:5000/api";
   console.log("API_URL:", API_URL);
 
   // Redirect if already logged in
