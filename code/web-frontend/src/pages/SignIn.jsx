@@ -12,7 +12,7 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   // const API_URL = process.env.REACT_APP_API_URL || " http://localhost:5000/api";
-  const API_URL ="http://34.236.22.30:5000/api";
+  const API_URL ="https://vescueyebackend.duckdns.org/api";
   console.log("API_URL:", API_URL);
 
   // Redirect if already logged in
@@ -75,7 +75,7 @@ const SignIn = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="password">Password eka bocca</label>
+          <label htmlFor="password">Password eka ..</label>
           <input
             type={showPassword ? "text" : "password"}
             id="password"
