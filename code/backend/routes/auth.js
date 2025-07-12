@@ -46,7 +46,7 @@ router.post("/forgot-password", async (req, res) => {
   const resetURL = `${REACT_URL}/reset-password/${resetToken}`;
 
   const mailOptions = {
-    from: process.env.OUTLOOK_EMAIL,
+    from: process.env.EMAIL_USER,
     to: user.email,
     subject: "Password Reset Request",
     text: `Click the link to reset your password: ${resetURL}`,
@@ -66,7 +66,7 @@ router.post("/forgot-password", async (req, res) => {
 // ========================== RESET PASSWORD ==========================
 router.post("/reset-password/:token", async (req, res) => {
   const { token } = req.params;
-  const { newPassword } = req.body;
+  const { password } = req.body;
 
   try {
     // Find user with the given reset token
@@ -74,6 +74,8 @@ router.post("/reset-password/:token", async (req, res) => {
       resetToken: token,
       resetTokenExpires: { $gt: Date.now() }, // Ensure token is not expired
     });
+
+    console.log(res);
 
     if (!user) {
       return res
@@ -83,7 +85,7 @@ router.post("/reset-password/:token", async (req, res) => {
 
     // Hash the new password
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
+    user.password = await bcrypt.hash(password, salt);
 
     // Clear reset token fields
     user.resetToken = undefined;
