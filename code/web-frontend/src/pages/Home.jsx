@@ -145,6 +145,9 @@ const Home = () => {
               <p className="auth-subtitle">
                 Join leading medical professionals in revolutionizing patient care with cutting-edge monitoring technology
               </p>
+              <p>
+                <br />
+              </p>
               <p className="auth-subtitle">
                   
               </p>
