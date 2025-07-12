@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/icons/vescueye-logo.png" />
     <title>VascuEye - A Real-Time Blood Flow Monitoring System</title>
     <link rel="stylesheet" href="assets/style.css" />
     <link rel="stylesheet" href="assets/budget.css" />
@@ -21,6 +22,7 @@
           <li><a href="#about">About</a></li>
           <li><a href="#architecture">Architecture</a></li>
           <li><a href="#implementation">Implementation</a></li>
+          <li><a href="#testing">Testing</a></li>
           <li><a href="#budget">Budget</a></li>
           <li><a href="#team">Team</a></li>
         </ul>
@@ -95,7 +97,7 @@
             VascuEye uses <strong>near-infrared (NIR) light</strong>, typically
             around <strong>850 nm</strong>, to illuminate the skin. Human tissue
             reflects most of the IR light, but
-            <strong>deoxygenated hemoglobin in veins absorbs it</strong>, making
+            <strong>oxygenated hemoglobin in veins absorbs it</strong>, making
             veins appear darker under NIR imaging.
           </p>
           <p>
@@ -152,6 +154,65 @@
             </div>
           </div>
         </div>
+        <section class="system-communication" id="connections">
+          <h2>System Component Communication</h2>
+          <div class="communication-container">
+            <div class="communication-description">
+              <p>
+                The <strong>Vescueye</strong> system integrates hardware, cloud
+                services, and applications to monitor facial artery conditions
+                using near-infrared imaging and thermal sensing. Below is a
+                description of how each component interacts:
+              </p>
+              <ul>
+                <li>
+                  <strong>Raspberry Pi 3B:</strong> Captures thermal and
+                  near-infrared images using the Pi NOIR camera and MLX90614
+                  temperature sensor. It processes the data locally and sends
+                  them to the cloud.
+                </li>
+                <li>
+                  <strong>AWS IoT Core:</strong> Acts as the MQTT broker to
+                  securely receive sensor data from the Raspberry Pi. It routes
+                  this data to other AWS services for further processing and
+                  storage.
+                </li>
+                <li>
+                  <strong>AWS S3:</strong> Stores captured image data and logs
+                  securely in cloud storage for access by web and mobile
+                  applications.
+                </li>
+                <li>
+                  <strong>Node.js Server:</strong>
+                  Acts as the backend API that handles requests from web and
+                  mobile apps. It processes patient and doctor data, fetches
+                  image and temperature data from S3, and stores metadata in
+                  MongoDB.
+                </li>
+                <li>
+                  <strong>MongoDB:</strong> Stores structured data such as
+                  patient records, doctor profiles, temperature history, image
+                  URLs, and timestamps.
+                </li>
+                <li>
+                  <strong>Web Admin Interface:</strong> Allows system
+                  administrators to manage patients, doctors, and device status
+                  using a secure web dashboard.
+                </li>
+                <li>
+                  <strong>Doctor's Mobile App:</strong> Lets doctors view flap
+                  condition images and temperature trends, receive alerts, and
+                  access patient details in real-time.
+                </li>
+                <li>
+                  <strong>Display Interface on Pi:</strong> Shows live preview
+                  and status, helping the operator during image capture and
+                  system checks.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
       </section>
 
       <section class="software-architecture">
@@ -205,6 +266,7 @@
         </div>
       </section>
     </section>
+
     <!-- Video Section -->
     <!-- <section class="video">
       <h2>Introduction Video</h2>
@@ -212,7 +274,18 @@
     </section> -->
     <section id="implementation">
       <!-- Image Sections -->
-
+      <section class="Circuit">
+        <div class="circuit-container">
+          <h2>Circuit Design</h2>
+          <div class="circuit-image">
+            <img
+              class="scrolling-image"
+              src="./images/circuit.jpg"
+              alt="Circuit Design"
+            />
+          </div>
+        </div>
+      </section>
       <section class="images hardware-setup">
         <div class="hardware-container">
           <div class="image-box">
@@ -232,33 +305,6 @@
               testing was performed on a hand, and the output results are shown
               below.
             </p>
-          </div>
-        </div>
-      </section>
-      <section class="Circuit">
-        <div class="circuit-container">
-          <h2>Circuit Design</h2>
-          <div class="circuit-image">
-            <img
-              class="scrolling-image"
-              src="./images/circuit.jpg"
-              alt="Circuit Design"
-            />
-          </div>
-        </div>
-      </section>
-      <section class="cad-designs">
-        <div class="cad-container">
-          <h2>Final Look</h2>
-          <div class="cad-images">
-            <div class="cad-image-box">
-              <img src="./images/cad1.png" alt="CAD Design 1" />
-              <p>Top View</p>
-            </div>
-            <div class="cad-image-box">
-              <img src="./images/cad2.png" alt="CAD Design 2" />
-              <p>Bottom View</p>
-            </div>
           </div>
         </div>
       </section>
@@ -308,6 +354,176 @@
           alt="Enhanced Image Sample"
         />
       </section>
+
+      <section class="vein-continuity-scoring" id="vein-scoring">
+        <h2>Vein Continuity Scoring Method</h2>
+
+        <div class="scoring-visual-top">
+          <img
+            src="./images/vein-contnuity.png"
+            alt="Vein Continuity Scoring Steps"
+          />
+          <div class="visual-caption">
+            <em
+              >Pipeline: Color Filtering → Adaptive Thresholding → Morphological
+              Filtering</em
+            >
+          </div>
+        </div>
+
+        <div class="scoring-description">
+          <p>
+            The <strong>vein continuity score</strong> evaluates how clearly and
+            continuously vein patterns appear in near-infrared images. It
+            focuses on two main aspects:
+          </p>
+          <ol>
+            <li>
+              <strong>Presence of Dark Vein Lines:</strong> Only those within
+              the pink skin region are considered for scoring.
+            </li>
+            <li>
+              <strong>Continuity of Vein Lines:</strong> Fewer breaks and more
+              connected segments indicate better continuity.
+            </li>
+          </ol>
+          <p>The scoring method uses a three-step image processing pipeline:</p>
+          <ol>
+            <li>
+              <strong>Pink Region Detection</strong> – Extracts the region of
+              interest using color filtering.
+            </li>
+            <li>
+              <strong>Vein Pattern Detection</strong> – Applies adaptive
+              thresholding to highlight vein lines.
+            </li>
+            <li>
+              <strong>Vein Line Mask Generation</strong> – Uses morphological
+              operations to clean and connect broken lines.
+            </li>
+          </ol>
+          <p>
+            The final score is calculated based on the number of continuous vein
+            segments detected in the pink region. This method provides a
+            quantitative measure of vein visibility and continuity, which is
+            crucial for assessing blood flow.
+          </p>
+          <br />
+          <p>
+            Then we separate images into two classes based on the vein
+            continuity score. If the score is above a certain threshold, we
+            classify it as
+            <strong>Good</strong>, indicating clear and continuous vein
+            patterns. Otherwise, it is <strong>Bad</strong>, indicating a lack
+            of continuity.
+          </p>
+          <br />
+          <p>
+            At this stage selecting threshold value is done manually by testing
+            for various images. In the future, we plan to get this threshold
+            value by using a more scientific approach.
+          </p>
+        </div>
+      </section>
+    </section>
+
+    <section class="cad-designs">
+      <div class="cad-container">
+        <h2>Final Look</h2>
+        <div class="cad-images">
+          <div class="cad-image-box">
+            <img src="./images/cad1.png" alt="CAD Design 1" />
+            <p>Top View</p>
+          </div>
+          <div class="cad-image-box">
+            <img src="./images/cad2.png" alt="CAD Design 2" />
+            <p>Bottom View</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testing-section" id="testing">
+      <h2>System Testing & Validation</h2>
+
+      <div class="testing-category">
+        <h3>🧪 Software Testing</h3>
+        <ul>
+          <li>
+            <strong>Unit Testing:</strong> Conducted using the
+            <code>Jest</code> framework to test critical backend functions such
+            as data validation, device communication handlers, and image upload
+            routines.
+          </li>
+          <li>
+            <strong>Endpoint Testing:</strong> APIs were tested using
+            <code>Postman</code> to ensure correct responses for both valid and
+            invalid requests, secure token validation, and data posting from
+            Raspberry Pi.
+          </li>
+        </ul>
+
+        <div class="testing-images">
+          <div class="test-img">
+            <img src="./images/jtest.png" alt="Unit Testing with Jest" />
+            <figcaption>Unit Testing with Jest</figcaption>
+          </div>
+          <div class="test-img">
+            <img
+              src="./images/postman.png"
+              alt="Endpoint Testing with Postman"
+            />
+            <figcaption>Endpoint Testing with Postman</figcaption>
+          </div>
+        </div>
+      </div>
+
+      <div class="testing-category">
+        <h3>🔧 Hardware Testing</h3>
+        <ul>
+          <li>
+            <strong>MLX90614 Temperature Sensor:</strong>
+            <ul>
+              <li>
+                Tested with human hand and a hot mug for temperature accuracy.
+              </li>
+              <li>Real-time values displayed on terminal via Python script.</li>
+              <li>
+                Validated against a digital thermometer (difference < 0.5°C).
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>VL53L0X Distance Sensor:</strong>
+            <ul>
+              <li>
+                Tested object detection at fixed distances (10 cm and 20 cm).
+              </li>
+              <li>
+                Logged results under varying ambient light to ensure stability.
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="testing-category">
+        <h3>📈 Vein Continuity Score Testing</h3>
+        <ul>
+          <li>
+            Hand vein test yielded a high continuity score of
+            <strong>above 8.5</strong>, demonstrating good vein visibility and
+            connectivity.
+          </li>
+          <li>
+            Tests on various non-skin objects (e.g., paper, plastic) and skin
+            areas with poor vein exposure (e.g.,
+            <strong>palm side near wrist or back of arm</strong>) returned
+            continuity scores of <strong>below 3</strong>, validating the
+            scoring method’s reliability.
+          </li>
+        </ul>
+      </div>
     </section>
 
     <!-- Budget Section -->
@@ -332,8 +548,8 @@
           <tr>
             <td>Raspberry Pi 3 Model B</td>
             <td>1</td>
-            <td>Rs. 20400.00</td>
-            <td>Rs. 20400.00</td>
+            <td>Rs. 20500.00</td>
+            <td>Rs. 20500.00</td>
           </tr>
           <tr>
             <td>Raspberry Pi NoIR Camera Sony IMX219</td>
@@ -541,7 +757,7 @@
                 <i class="fab fa-github"></i>
               </a>
               <a
-                href="https://www.linkedin.com/in/your-linkedin"
+                href="http://linkedin.com/in/h-a-m-t-prasadinie-29a13a261"
                 target="_blank"
                 class="social-icon"
                 title="LinkedIn"
