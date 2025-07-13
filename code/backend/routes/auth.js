@@ -49,7 +49,19 @@ router.post("/forgot-password", async (req, res) => {
     from: process.env.EMAIL_USER,
     to: user.email,
     subject: "Password Reset Request",
-    text: `Click the link to reset your password: ${resetURL}`,
+    html: `
+    <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
+      <h2>Password Reset Request</h2>
+      <p>If you requested a password reset, click the button below:</p>
+      <a href="${resetURL}" 
+         style="display: inline-block; padding: 10px 20px; font-size: 16px; 
+                color: white; background-color: #007bff; text-decoration: none; 
+                border-radius: 5px; margin-top: 10px;">
+         Reset Password
+      </a>
+      <p style="margin-top: 20px;">If you didn’t request this, you can safely ignore this email.</p>
+    </div>
+  `,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
