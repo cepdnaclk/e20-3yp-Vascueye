@@ -11,7 +11,7 @@
 - **Data Storage**: Image and data storage in AWS S3 and MongoDB
 - **Admin Dashboard**: Web-based interface for device and patient management
 - **Mobile Interface**: Dedicated app for doctors to view patient flap conditions
-- **AI-Powered Analysis**: Automated vein continuity scoring using computer vision (OpenCV)
+- **Vein Analysis**: Automated vein continuity scoring using computer vision (OpenCV)
 
 ---
 
