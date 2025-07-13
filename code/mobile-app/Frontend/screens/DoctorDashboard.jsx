@@ -16,10 +16,10 @@ export default function DoctorDashboard() {
   const [error, setError] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const [token, setToken] = useState("");
-
+  const API_URL = process.env.DEPLOYED_URL || process.env.LOCALHOST ;
   const navigation = useNavigation();
   const doctorEmail = "doctor@test.com";
-  const BASE_URL = "http://172.20.10.6:5001/api/users";
+  const BASE_URL = `${API_URL}/api/users`;
 
   useEffect(() => {
     const getToken = async () => {

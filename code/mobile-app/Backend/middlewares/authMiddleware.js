@@ -1,48 +1,56 @@
-/*const jwt=require("jsonwebtoken");
-const verifyToken = (req,res,next)=>{
-    let token   ;
-    let authHeader=req.headers.Authorization|| req.headers.Authorization
-    if(authHeader && authHeader.startsWith("Bearer")){
-        token=authHeader.split(" ")[1];
-        if(!token){
-            return res.status(401).json({message: "No token,authorization denied"});
-        }
-        try{
-            const decode =jwt.verify(token,process.env.JWT_SECRET);
-            req.user=decode;
-            console.log("The decode user is : ",req.user);
-            next();
-        }catch(err){
-           res.status(400).json({message: "Token is not valid"});
-        }
-
-
-        }else{
-        return res.status(401).json({message:"No token, authorization denied"});
-    }
-}
-module.exports=verifyToken;*/
+// authMiddleware.js
 const jwt = require("jsonwebtoken");
+
 const verifyToken = (req, res, next) => {
-    let token;
-    // Fix: Check for both capitalized and lowercase authorization header
-    let authHeader = req.headers.Authorization || req.headers.authorization;
-    
-    if(authHeader && authHeader.startsWith("Bearer")){
-        token = authHeader.split(" ")[1];
-        if(!token){
-            return res.status(401).json({message: "No token, authorization denied"});
+    try {
+        // Get authorization header (Express automatically lowercases header names)
+        const authHeader = req.headers.authorization;
+        
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({
+                message: "No token, authorization denied",
+                success: false
+            });
         }
-        try{
-            const decode = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = decode;
-            console.log("The decode user is : ", req.user);
-            next();
-        } catch(err){
-           res.status(400).json({message: "Token is not valid"});
+
+        // Extract token
+        const token = authHeader.split(" ")[1];
+        
+        if (!token) {
+            return res.status(401).json({
+                message: "No token provided",
+                success: false
+            });
         }
-    } else {
-        return res.status(401).json({message: "No token, authorization denied"});
+
+        // Verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret_key");
+        
+        // Add user info to request object
+        req.user = decoded;
+        console.log("Decoded user:", req.user);
+        
+        next();
+    } catch (error) {
+        console.error("Token verification error:", error);
+        
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({
+                message: "Invalid token",
+                success: false
+            });
+        } else if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                message: "Token expired",
+                success: false
+            });
+        } else {
+            return res.status(401).json({
+                message: "Token verification failed",
+                success: false
+            });
+        }
     }
-}
-module.exports = verifyToken;
+};
+
+module.exports = { verifyToken };

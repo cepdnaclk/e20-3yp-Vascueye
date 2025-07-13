@@ -24,7 +24,7 @@ export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('patient');
-
+  const API_URL = process.env.DEPLOYED_URL || process.env.LOCALHOST ;
   const handleRoleChange = (itemValue) => {
     try {
       console.log('Attempting to change role to:', itemValue);
@@ -41,7 +41,7 @@ export default function SignupScreen({ navigation }) {
     }
 
     try {
-      const response = await fetch('http://172.25.224.1:5000/api/auth/signup', {
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ full_name: name, email, password, role }),

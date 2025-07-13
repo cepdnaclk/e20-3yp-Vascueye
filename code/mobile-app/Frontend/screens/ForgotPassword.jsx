@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityInd
 const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const API_URL = process.env.DEPLOYED_URL || process.env.LOCALHOST ;
   const handleResetPassword = async () => {
     if (!email) {
       Alert.alert("Error", "Please enter your email address.");
@@ -13,7 +13,7 @@ const ForgotPassword = ({ navigation }) => {
 
     setLoading(true);
     try {
-      const response = await fetch('http:///172.20.10.3:3000/api/auth/forgot-password', {
+      const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
