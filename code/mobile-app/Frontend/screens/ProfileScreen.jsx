@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 // Replace with your actual profile image placeholder
-import profilePlaceholder from '../assets/default-profile-pic.png';
+import profilePlaceholder from '../assets/profilepic.png';
 import backgroundImage from '../assets/background.jpg';
 
 export default function ProfileScreen({ navigation }) {
