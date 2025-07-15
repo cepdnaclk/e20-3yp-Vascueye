@@ -26,7 +26,7 @@ LogBox.ignoreLogs(['Warning: ...']);
 const Stack = createStackNavigator();
 
 // Update with your backend base URL (no trailing slash)
-const BASE_URL = 'http://172.20.10.3:5001/api';
+const BASE_URL = 'http://172.20.10.6:5001/api';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

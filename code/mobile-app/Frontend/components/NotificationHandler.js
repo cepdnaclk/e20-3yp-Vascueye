@@ -35,10 +35,9 @@ export default function PushTokenManager() {
         },
         body: JSON.stringify({ token: expoPushToken })
       });
-
-      console.log('✅ Push token sent to backend');
+      console.log('✅ Push token sent to backend'); 
     } catch (error) {
-      console.error('❌ Error getting or sending push token:', error);
+      console.error('❌Error getting or sending push token:', error);
     }
   };
 
