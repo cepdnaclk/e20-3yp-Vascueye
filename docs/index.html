@@ -23,21 +23,21 @@
         --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
         --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        
+
         --bg-primary: #0a0a0f;
         --bg-secondary: #1a1a2e;
         --bg-tertiary: #16213e;
         --bg-card: rgba(255, 255, 255, 0.05);
         --bg-card-hover: rgba(255, 255, 255, 0.08);
-        
+
         --text-primary: #ffffff;
         --text-secondary: #b8c2cc;
         --text-muted: #8892a0;
-        
+
         --border-color: rgba(255, 255, 255, 0.1);
         --shadow-primary: 0 10px 40px rgba(0, 0, 0, 0.3);
         --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.2);
-        
+
         --border-radius: 16px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
@@ -49,7 +49,7 @@
       }
 
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
         background: var(--bg-primary);
         color: var(--text-primary);
         line-height: 1.6;
@@ -58,22 +58,39 @@
 
       /* Animated background */
       body::before {
-        content: '';
+        content: "";
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.1) 0%, transparent 50%);
+        background: radial-gradient(
+            circle at 20% 50%,
+            rgba(120, 119, 198, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 119, 198, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 80%,
+            rgba(120, 200, 255, 0.1) 0%,
+            transparent 50%
+          );
         z-index: -1;
         animation: float 20s ease-in-out infinite;
       }
 
       @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
       }
 
       /* Header */
@@ -123,7 +140,7 @@
       }
 
       .nav-link::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 0;
         left: 0;
@@ -203,7 +220,7 @@
 
       /* Floating particles */
       .hero-section::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
@@ -417,7 +434,7 @@
       .value {
         font-weight: 600;
         color: var(--text-primary);
-        font-family: 'JetBrains Mono', monospace;
+        font-family: "JetBrains Mono", monospace;
       }
 
       /* Software Grid */
@@ -451,7 +468,8 @@
       }
 
       /* Images */
-      .scrolling-image, .image-gallery-item {
+      .scrolling-image,
+      .image-gallery-item {
         width: 100%;
         height: auto;
         border-radius: var(--border-radius);
@@ -496,7 +514,7 @@
       }
 
       .styled-list li::before {
-        content: '→';
+        content: "→";
         position: absolute;
         left: 0;
         color: var(--text-primary);
@@ -509,7 +527,7 @@
       }
 
       .nested-list li::before {
-        content: '•';
+        content: "•";
       }
 
       /* Budget Table */
@@ -656,40 +674,40 @@
         .hero-title {
           font-size: 2.5rem;
         }
-        
+
         .hero-subtitle {
           font-size: 1.2rem;
         }
-        
+
         .section-title {
           font-size: 2rem;
         }
-        
+
         .nir-content-wrapper,
         .architecture-container {
           flex-direction: column;
           gap: 2rem;
         }
-        
+
         .main-nav .nav-list {
           flex-direction: column;
           gap: 1rem;
         }
-        
+
         .header-content {
           flex-direction: column;
           text-align: center;
         }
-        
+
         .footer-content {
           flex-direction: column;
           text-align: center;
         }
-        
+
         .container {
           padding: 0 1rem;
         }
-        
+
         .section-padding {
           padding: 4rem 0;
         }
@@ -737,8 +755,9 @@
         <h1 class="hero-title">Vescueye</h1>
         <p class="hero-subtitle">Real-Time Blood Flow Monitoring System</p>
         <p class="hero-description">
-          Advanced non-invasive monitoring using near-infrared imaging and temperature sensing 
-          for microsurgical procedures and flap viability assessment.
+          Advanced non-invasive monitoring using near-infrared imaging and
+          temperature sensing for microsurgical procedures and flap viability
+          assessment.
         </p>
         <a href="#about" class="cta-button">
           <i class="fas fa-arrow-down"></i> Explore Project
@@ -753,7 +772,9 @@
           <ul class="nav-list">
             <li><a href="#about" class="nav-link">About</a></li>
             <li><a href="#architecture" class="nav-link">Architecture</a></li>
-            <li><a href="#implementation" class="nav-link">Implementation</a></li>
+            <li>
+              <a href="#implementation" class="nav-link">Implementation</a>
+            </li>
             <li><a href="#testing" class="nav-link">Testing</a></li>
             <li><a href="#budget" class="nav-link">Budget</a></li>
             <li><a href="#team" class="nav-link">Team</a></li>
@@ -765,26 +786,27 @@
     <main>
       <section id="about" class="section-padding section-alt-bg">
         <div class="container">
-          <h2 class="section-title">About VescuEye</h2>
+          <h2 class="section-title">About Vescueye</h2>
           <div class="about-container grid-layout">
             <div class="about-box card loading">
               <h3 class="box-title">Problem Definition</h3>
               <p>
-                In microsurgical procedures, especially in oral and maxillofacial
-                surgeries, monitoring blood flow and flap viability is critical.
-                Traditional methods are either invasive, require expensive
-                equipment, or lack real-time monitoring capabilities, increasing
-                the risk of flap failure and complications.
+                In microsurgical procedures, especially in oral and
+                maxillofacial surgeries, monitoring blood flow and flap
+                viability is critical. Traditional methods are either invasive,
+                require expensive equipment, or lack real-time monitoring
+                capabilities, increasing the risk of flap failure and
+                complications.
               </p>
             </div>
             <div class="about-box card loading">
               <h3 class="box-title">Proposed Solution</h3>
               <p>
-                VescuEye is a non-invasive, real-time blood flow monitoring system
-                using near-infrared imaging and temperature sensing. It helps
-                surgeons monitor tissue perfusion remotely, using an embedded
-                system connected to the cloud and a mobile interface for
-                continuous observation and timely interventions.
+                Vescueye is a non-invasive, real-time blood flow monitoring
+                system using near-infrared imaging and temperature sensing. It
+                helps surgeons monitor tissue perfusion remotely, using an
+                embedded system connected to the cloud and a mobile interface
+                for continuous observation and timely interventions.
               </p>
             </div>
           </div>
@@ -796,7 +818,8 @@
             <div class="features-container grid-layout">
               <div class="feature-box card loading">
                 <h3 class="feature-title">
-                  <i class="fas fa-satellite-dish feature-icon"></i> Real-Time Monitoring
+                  <i class="fas fa-satellite-dish feature-icon"></i> Real-Time
+                  Monitoring
                 </h3>
                 <p>
                   Continuously tracks blood flow and tissue temperature during
@@ -808,8 +831,8 @@
                   <i class="fas fa-medkit feature-icon"></i> Non-Invasive
                 </h3>
                 <p>
-                  Eliminates the need for invasive equipment, reducing patient risk
-                  and improving comfort.
+                  Eliminates the need for invasive equipment, reducing patient
+                  risk and improving comfort.
                 </p>
               </div>
               <div class="feature-box card loading">
@@ -823,11 +846,32 @@
               </div>
               <div class="feature-box card loading">
                 <h3 class="feature-title">
-                  <i class="fas fa-mobile-alt feature-icon"></i> User-Friendly Interface
+                  <i class="fas fa-mobile-alt feature-icon"></i> User-Friendly
+                  Interface
                 </h3>
                 <p>
-                  Intuitive mobile and web applications for doctors and admins to
-                  easily monitor and interpret patient data.
+                  Intuitive mobile and web applications for doctors and admins
+                  to easily monitor and interpret patient data.
+                </p>
+              </div>
+              <div class="feature-box card loading">
+                <h3 class="feature-title">
+                  <i class="fas fa-microchip feature-icon"></i> Simple Hardware
+                  Design
+                </h3>
+                <p>
+                  Features a straightforward and robust hardware design for ease
+                  of use and maintenance.
+                </p>
+              </div>
+              <div class="feature-box card loading">
+                <h3 class="feature-title">
+                  <i class="fas fa-users-cog feature-icon"></i> Easy Doctor and
+                  Patient Management
+                </h3>
+                <p>
+                  Streamlines the process of managing doctor and patient data
+                  through an intuitive system.
                 </p>
               </div>
             </div>
@@ -838,11 +882,13 @@
       <section class="nir-vein-method section-padding section-alt-bg">
         <div class="container nir-content-wrapper">
           <div class="nir-text content-block">
-            <h2 class="section-title">Near-Infrared Imaging & Vein Detection</h2>
+            <h2 class="section-title">
+              Near-Infrared Imaging & Vein Detection
+            </h2>
             <p>
-              VescuEye uses <strong>near-infrared (NIR) light</strong>, typically
-              around <strong>850 nm</strong>, to illuminate the skin. Human tissue
-              reflects most of the IR light, but
+              VescuEye uses <strong>near-infrared (NIR) light</strong>,
+              typically around <strong>850 nm</strong>, to illuminate the skin.
+              Human tissue reflects most of the IR light, but
               <strong>oxygenated hemoglobin in veins absorbs it</strong>, making
               veins appear darker under NIR imaging.
             </p>
@@ -853,7 +899,11 @@
             </p>
           </div>
           <div class="nir-image image-block">
-            <img src="./images/method.png" alt="NIR Vein Imaging Method" loading="lazy" />
+            <img
+              src="./images/method.png"
+              alt="NIR Vein Imaging Method"
+              loading="lazy"
+            />
           </div>
         </div>
       </section>
@@ -902,7 +952,10 @@
           </div>
         </section>
 
-        <section class="system-communication section-padding section-alt-bg" id="connections">
+        <section
+          class="system-communication section-padding section-alt-bg"
+          id="connections"
+        >
           <div class="container communication-container">
             <h2 class="section-title">System Component Communication</h2>
             <div class="communication-description content-block">
@@ -1026,27 +1079,28 @@
                 <p>
                   To quantitatively assess flap viability, VescuEye implements a
                   <strong>Vein Continuity Scoring Method</strong>. This method
-                  processes the NIR images through a series of steps to determine
-                  the health of the blood vessels.
+                  processes the NIR images through a series of steps to
+                  determine the health of the blood vessels.
                 </p>
                 <ul class="styled-list">
                   <li>
-                    <strong>Color Filtering:</strong> Extracts relevant color channels
-                    from the NIR image to highlight vein-like structures.
+                    <strong>Color Filtering:</strong> Extracts relevant color
+                    channels from the NIR image to highlight vein-like
+                    structures.
                   </li>
                   <li>
                     <strong>Thresholding:</strong> Converts the image to binary,
-                    separating veins (darker pixels) from background (lighter pixels)
-                    based on a calculated threshold.
+                    separating veins (darker pixels) from background (lighter
+                    pixels) based on a calculated threshold.
                   </li>
                   <li>
                     <strong>Morphological Filtering:</strong> Applies operations
-                    like erosion and dilation to remove noise, fill small gaps in
-                    veins, and smooth contours, enhancing vessel continuity.
+                    like erosion and dilation to remove noise, fill small gaps
+                    in veins, and smooth contours, enhancing vessel continuity.
                   </li>
                   <li>
-                    <strong>Vein Continuity Score Calculation:</strong> Based on the
-                    processed image, an algorithm calculates a score that
+                    <strong>Vein Continuity Score Calculation:</strong> Based on
+                    the processed image, an algorithm calculates a score that
                     represents the continuity and density of the visible vein
                     network, indicating blood flow integrity.
                   </li>
@@ -1102,26 +1156,26 @@
                 <strong>Component Integration Tests:</strong>
                 <ul class="nested-list">
                   <li>
-                    <strong>Camera & LED Synchronization:</strong> Verified proper
-                    operation of Pi NOIR camera with 850nm IR LEDs for consistent
-                    illumination and image capture.
+                    <strong>Camera & LED Synchronization:</strong> Verified
+                    proper operation of Pi NOIR camera with 850nm IR LEDs for
+                    consistent illumination and image capture.
                   </li>
                   <li>
                     <strong>Sensor Accuracy:</strong> Calibrated MLX90614
                     temperature sensor against a professional thermometer for
-                    accurate readings. Tested VL53L0X distance sensor for precise
-                    distance measurements.
+                    accurate readings. Tested VL53L0X distance sensor for
+                    precise distance measurements.
                   </li>
                   <li>
                     <strong>Raspberry Pi Stability:</strong> Monitored system
-                    performance and resource utilization of Raspberry Pi 3B under
-                    continuous data capture and processing loads.
+                    performance and resource utilization of Raspberry Pi 3B
+                    under continuous data capture and processing loads.
                   </li>
                 </ul>
               </li>
               <li>
-                <strong>Power Consumption Analysis:</strong> Measured power
-                draw of the complete device to ensure extended battery life and
+                <strong>Power Consumption Analysis:</strong> Measured power draw
+                of the complete device to ensure extended battery life and
                 efficient operation.
               </li>
               <li>
@@ -1149,8 +1203,9 @@
                     score based on processed images.
                   </li>
                   <li>
-                    <strong>Data Handling:</strong> Ensured proper formatting and
-                    conversion of sensor data before transmission to AWS IoT Core.
+                    <strong>Data Handling:</strong> Ensured proper formatting
+                    and conversion of sensor data before transmission to AWS IoT
+                    Core.
                   </li>
                 </ul>
               </li>
@@ -1183,9 +1238,9 @@
                     Node.js backend, to display on web and mobile interfaces.
                   </li>
                   <li>
-                    <strong>Cloud Service Connectivity:</strong> Ensured seamless
-                    communication between Raspberry Pi, AWS IoT Core, S3, and
-                    MongoDB.
+                    <strong>Cloud Service Connectivity:</strong> Ensured
+                    seamless communication between Raspberry Pi, AWS IoT Core,
+                    S3, and MongoDB.
                   </li>
                 </ul>
               </li>
@@ -1453,8 +1508,11 @@
       <div class="container footer-content">
         <p>&copy; 2025 VescuEye Project</p>
         <div class="footer-links">
-          <a href="https://github.com/cepdnaclk/e20-3yp-Vescueye" target="_blank"
-            class="footer-link">Project Repository</a
+          <a
+            href="https://github.com/cepdnaclk/e20-3yp-Vescueye"
+            target="_blank"
+            class="footer-link"
+            >Project Repository</a
           >
         </div>
       </div>
@@ -1466,49 +1524,49 @@
 
     <script>
       // Smooth scrolling for navigation links
-      document.querySelectorAll('.nav-link').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+      document.querySelectorAll(".nav-link").forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
           e.preventDefault();
-          document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
           });
         });
       });
 
       // Show/Hide scroll-to-top button
-      const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-      window.addEventListener('scroll', () => {
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+      window.addEventListener("scroll", () => {
         if (window.scrollY > 300) {
-          scrollToTopBtn.style.display = 'flex';
+          scrollToTopBtn.style.display = "flex";
         } else {
-          scrollToTopBtn.style.display = 'none';
+          scrollToTopBtn.style.display = "none";
         }
       });
 
-      scrollToTopBtn.addEventListener('click', () => {
+      scrollToTopBtn.addEventListener("click", () => {
         window.scrollTo({
           top: 0,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       });
 
       // Fade-in animation for sections on scroll
       const observerOptions = {
         root: null,
-        rootMargin: '0px',
-        threshold: 0.1
+        rootMargin: "0px",
+        threshold: 0.1,
       };
 
       const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('loaded');
+            entry.target.classList.add("loaded");
             observer.unobserve(entry.target);
           }
         });
       }, observerOptions);
 
-      document.querySelectorAll('.loading').forEach(el => {
+      document.querySelectorAll(".loading").forEach((el) => {
         observer.observe(el);
       });
     </script>
