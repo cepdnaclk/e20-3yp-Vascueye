@@ -118,6 +118,12 @@ exports.login = async (req, res) => {
       });
     }
 
+    if(user.role !== 'doctor') {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Only doctors can log in."
+      });}
+
     // For doctors, get the doctor profile
     let doctorProfile = null;
     if (user.role === 'doctor') {

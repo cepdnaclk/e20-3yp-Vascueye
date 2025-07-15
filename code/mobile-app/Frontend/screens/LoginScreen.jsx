@@ -24,7 +24,7 @@ export default function LoginScreen({ navigation, onLoginSuccess, pendingNavigat
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok ) {
         // Store tokens
         await AsyncStorage.multiSet([
           ['userToken', data.token],
