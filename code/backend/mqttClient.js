@@ -4,18 +4,11 @@ require("dotenv").config();
 
 // Define the fallback paths for server
 
-// const fallbackKeyPath = "/home/ubuntu/certs/privateKey.pem";
-// const fallbackCertPath = "/home/ubuntu/certs/certificate.pem";
-// const fallbackCaPath = "/home/ubuntu/certs/caCert.pem";
-// const fallbackClientId = "yourClientId"; // Replace with your client ID for the server
-// const fallbackHost = "yourEndpoint.iot.region.amazonaws.com"; // Replace with your endpoint
-
-// Fallback cert paths — DO NOT DELETE THESE FILES!
 const fallbackKeyPath = "/home/ubuntu/certs/privateKey.pem";
 const fallbackCertPath = "/home/ubuntu/certs/certificate.pem";
 const fallbackCaPath = "/home/ubuntu/certs/caCert.pem";
-const fallbackClientId = "vescueye-server-client"; // Replace with your actual IoT Thing name
-const fallbackHost = "abcd1234567-ats.iot.us-east-1.amazonaws.com"; // Replace with your AWS IoT endpoint
+const fallbackClientId = "yourClientId"; // Replace with your client ID for the server
+const fallbackHost = "yourEndpoint.iot.region.amazonaws.com"; // Replace with your endpoint
 
 // Get the key paths from environment variables, fallback to server paths if not set
 const keyPath = process.env.AWS_IOT_PRIVATE_KEY || fallbackKeyPath;
