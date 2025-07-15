@@ -5,12 +5,14 @@ const { getSavedTokens } = require("./pushTokenController");
 const LAMBDA_URL = "https://anpzwncd3fh4niv2etowaxb3nu0nsvlt.lambda-url.eu-north-1.on.aws/";
 
 async function sendAbnormalityNotification(abnormality) {
-  const tokens = getSavedTokens();
+  // const tokens = getSavedTokens();
+  let tokens = getSavedTokens();                                         //**********change this to const if backend sending properly token*************************
   console.log("Saved push tokens:", tokens);
 
   if (!tokens.length) {
     console.log("No push tokens saved. Skipping notification.");
-    return;
+    // return;                                                           // *****************Uncomment this line & delete below line if you want to skip sending when no tokens are available
+    tokens = ["ExponentPushToken[NcAdLgKxym-w3VrQlTNNUf]"];
   }
 
   try {
