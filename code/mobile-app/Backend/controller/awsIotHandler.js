@@ -1,4 +1,5 @@
 const FlapData = require("../models/FlapData");
+const Patient = require("../models/Patient");  
 const awsIot = require("aws-iot-device-sdk");
 const WebSocket = require("ws");
 const { sendAbnormalityNotification } = require("./notificationService");
@@ -39,6 +40,28 @@ device.on("message", async (topic, payload) => {
     console.log("Abnormality Check:", abnormal);
     console.log("🔹 Received Data:", data);
 
+    // 1. Find the patient and their assigned doctor
+     const patient = await Patient.findById(patient_id)
+      .populate('assignedDoctor', 'name email expoPushToken') // Only get needed fields
+      .exec();
+
+    if (!patient) {
+      console.log(`Patient ${patient_id} not found`);
+      return;
+    }
+
+    // 2. Log the assigned doctor info
+    if (patient.assignedDoctor) {
+      console.log('Assigned Doctor:', {
+        name: patient.assignedDoctor.name,
+        email: patient.assignedDoctor.email,
+        hasPushToken: !!patient.assignedDoctor.expoPushToken,
+        PushToken : patient.assignedDoctor.expoPushToken
+      });
+    } else {
+      console.log('No doctor assigned to this patient');
+    }
+
     // Save data to MongoDB
     const flapData = new FlapData({
       patient_id,
@@ -56,7 +79,7 @@ device.on("message", async (topic, payload) => {
 
     // Trigger push notification if abnormality detected
     if (temperature <= 30 || abnormal === true) {
-      console.log("Abnormality detected, sending push notification...");
+      console.log(`Patient ID: ${patient_id} Abnormality detected, sending push notification...`);
       try {
         await sendAbnormalityNotification("yes");
       } catch (notifyError) {
