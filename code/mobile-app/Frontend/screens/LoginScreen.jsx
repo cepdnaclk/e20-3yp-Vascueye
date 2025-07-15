@@ -11,10 +11,13 @@ import { Ionicons } from '@expo/vector-icons';
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // const API_URL = process.env.DEPLOYED_URL || process.env.LOCALHOST ;
+
+  const API_URL = "http://172.20.10.6:5001";
 
   const handleLogin = async () => {
   try {
-    const response = await fetch('http://172.20.10.6:5001/api/auth/login', {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
