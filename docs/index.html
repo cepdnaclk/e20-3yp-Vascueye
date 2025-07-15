@@ -565,20 +565,67 @@
       }
 
       /* Team Cards */
+      /* Team Container Grid Layout */
+      .team-container.responsive-grid {
+        display: grid;
+        /*
+   * Sets up a flexible grid.
+   * `auto-fit`: automatically fits as many columns as possible.
+   * `minmax(280px, 1fr)`: each column will be at least 280px wide,
+   * and will expand to take equal fractional space.
+   * Adjusted minmax to 280px for better responsiveness with 3 cards in a row on wider screens.
+   */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem; /* Consistent spacing between cards */
+        justify-content: center; /* Centers the entire grid horizontally if there's extra space */
+        align-items: start; /* Aligns items to the top of their grid area */
+      }
+
+      /* Target the first card (the supervisor) to make it span all columns */
+      .team-container.responsive-grid .team-card:first-child {
+        grid-column: 1 / -1; /* This makes the card span from the first grid line to the last */
+        justify-self: center; /* Centers the card horizontally within its now full-width grid area */
+        max-width: 350px; /* Adjusted max-width for supervisor card for better visual balance */
+        margin: 0 auto; /* Ensures centering works even if max-width is applied */
+      }
+
+      /* General Team Card Styling (Consolidated and using theme variables) */
       .team-card {
+        background: var(
+          --bg-card
+        ); /* Using your defined background card color */
+        border: 1px solid var(--border-color); /* Using your defined border color */
+        border-radius: var(
+          --border-radius
+        ); /* Using your defined border-radius */
+        backdrop-filter: blur(10px); /* Consistent with other cards */
+        transition: var(--transition); /* Consistent with other cards */
+        overflow: hidden; /* Ensures content stays within rounded corners */
         padding: 2rem;
         text-align: center;
-        transition: var(--transition);
+        display: flex; /* Use flexbox for internal content alignment */
+        flex-direction: column;
+        align-items: center; /* Centers content (image, text) horizontally within each card */
+      }
+
+      .team-card:hover {
+        background: var(--bg-card-hover); /* Consistent hover effect */
+        transform: translateY(-5px); /* Consistent hover effect */
+        box-shadow: var(--shadow-card); /* Consistent hover effect */
+      }
+
+      #my-hidden-card {
+        visibility: hidden;
       }
 
       .team-photo {
-        width: 120px;
-        height: 120px;
+        width: 120px; /* Kept your specified width */
+        height: 120px; /* Kept your specified height */
         border-radius: 50%;
         margin-bottom: 1rem;
         object-fit: cover;
         border: 3px solid transparent;
-        background: var(--primary-gradient);
+        background: var(--primary-gradient); /* Consistent gradient border */
         padding: 3px;
       }
 
@@ -586,11 +633,13 @@
         font-size: 1.2rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: var(--text-primary);
+        color: var(--text-primary); /* Using your defined text primary color */
       }
 
       .member-role {
-        color: var(--text-secondary);
+        color: var(
+          --text-secondary
+        ); /* Using your defined text secondary color */
         margin-bottom: 1rem;
       }
 
@@ -606,21 +655,25 @@
         justify-content: center;
         width: 40px;
         height: 40px;
-        background: var(--bg-tertiary);
-        color: var(--text-secondary);
+        background: var(
+          --bg-tertiary
+        ); /* Using your defined background tertiary color */
+        color: var(
+          --text-secondary
+        ); /* Using your defined text secondary color */
         border-radius: 50%;
         text-decoration: none;
         transition: var(--transition);
-        border: 1px solid var(--border-color);
+        border: 1px solid var(--border-color); /* Using your defined border color */
       }
 
       .social-icon:hover {
-        background: var(--primary-gradient);
+        background: var(--primary-gradient); /* Consistent hover effect */
         color: white;
         transform: translateY(-2px);
       }
 
-      /* Footer */
+      /* Footer and Scroll-to-Top styles (from your original code, ensuring no conflicts) */
       .main-footer {
         background: var(--bg-secondary);
         border-top: 1px solid var(--border-color);
@@ -643,6 +696,29 @@
 
       .footer-link:hover {
         color: var(--text-primary);
+      }
+
+      .scroll-to-top-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 50px;
+        height: 50px;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        transition: var(--transition);
+      }
+
+      .scroll-to-top-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
       }
 
       /* Scroll to Top */
@@ -937,7 +1013,7 @@
                 </div>
                 <div class="component-item">
                   <span class="label">IR LEDs:</span>
-                  <span class="value">850nm  Infrared LEDs</span>
+                  <span class="value">850nm Infrared LEDs</span>
                 </div>
                 <div class="component-item">
                   <span class="label">Temperature Sensor:</span>
@@ -965,9 +1041,7 @@
                 using near-infrared imaging and thermal sensing. Below is a
                 description of how each component interacts:
               </p>
-              <p>
-              </br>
-              </p>
+              <p></p>
               <ul class="styled-list">
                 <li>
                   <strong>Raspberry Pi 3B:</strong> Captures thermal and
@@ -1456,7 +1530,7 @@
               </div>
             </div>
 
-             <div class="team-card card">
+            <div class="team-card card">
               <img
                 src="https://people.ce.pdn.ac.lk/images/students/e20/e20453.jpg"
                 alt="R.J Yogesh Profile Picture"
@@ -1485,45 +1559,6 @@
                   </a>
                   <a
                     href="https://people.ce.pdn.ac.lk/students/e20/453/"
-                    target="_blank"
-                    class="social-icon"
-                    title="Department Profile"
-                  >
-                    <i class="fas fa-user"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="team-card card">
-              <img
-                src="https://people.ce.pdn.ac.lk/images/students/e20/e20300.jpg"
-                alt="H.A.M.T Prasadinie Profile Picture"
-                class="team-photo"
-                loading="lazy"
-              />
-              <div class="card-content">
-                <h3 class="member-name">H.A.M.T Prasadinie</h3>
-                <p class="member-role">Team Member</p>
-                <div class="social-links">
-                  <a
-                    href="https://github.com/tharushika0418"
-                    target="_blank"
-                    class="social-icon"
-                    title="GitHub Profile"
-                  >
-                    <i class="fab fa-github"></i>
-                  </a>
-                  <a
-                    href="http://linkedin.com/in/h-a-m-t-prasadinie-29a13a261"
-                    target="_blank"
-                    class="social-icon"
-                    title="LinkedIn Profile"
-                  >
-                    <i class="fab fa-linkedin"></i>
-                  </a>
-                  <a
-                    href="https://people.ce.pdn.ac.lk/students/e20/300/"
                     target="_blank"
                     class="social-icon"
                     title="Department Profile"
@@ -1572,6 +1607,47 @@
                 </div>
               </div>
             </div>
+
+            <div class="team-card card" id="my-hidden-card"></div>
+
+            <div class="team-card card">
+              <img
+                src="https://people.ce.pdn.ac.lk/images/students/e20/e20300.jpg"
+                alt="H.A.M.T Prasadinie Profile Picture"
+                class="team-photo"
+                loading="lazy"
+              />
+              <div class="card-content">
+                <h3 class="member-name">H.A.M.T Prasadinie</h3>
+                <p class="member-role">Team Member</p>
+                <div class="social-links">
+                  <a
+                    href="https://github.com/tharushika0418"
+                    target="_blank"
+                    class="social-icon"
+                    title="GitHub Profile"
+                  >
+                    <i class="fab fa-github"></i>
+                  </a>
+                  <a
+                    href="http://linkedin.com/in/h-a-m-t-prasadinie-29a13a261"
+                    target="_blank"
+                    class="social-icon"
+                    title="LinkedIn Profile"
+                  >
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                  <a
+                    href="https://people.ce.pdn.ac.lk/students/e20/300/"
+                    target="_blank"
+                    class="social-icon"
+                    title="Department Profile"
+                  >
+                    <i class="fas fa-user"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1579,13 +1655,13 @@
 
     <footer class="main-footer">
       <div class="container footer-content">
-        <p>&copy; 2025 VescuEye Project</p>
+        <p>&copy; 2025 Vescueye Project</p>
         <div class="footer-links">
           <a
             href="https://github.com/cepdnaclk/e20-3yp-Vescueye"
             target="_blank"
             class="footer-link"
-            >Project Repository</a
+            >Access Project Repository</a
           >
         </div>
       </div>
