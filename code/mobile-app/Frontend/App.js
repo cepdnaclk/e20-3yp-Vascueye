@@ -23,8 +23,7 @@ import ImageViewer from './screens/ImageViewer';
 const Stack = createStackNavigator();
 
 // Update with your backend base URL (no trailing slash)
-const API_URL = process.env.DEPLOYED_URL || process.env.LOCALHOST ;
-const BASE_URL = `${API_URL}/api`;
+const BASE_URL = 'http://172.20.10.3:5001/api';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

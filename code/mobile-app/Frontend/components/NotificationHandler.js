@@ -28,7 +28,7 @@ export default function PushTokenManager() {
       console.log('✅ Expo Push Token:', expoPushToken);
 
       // ✅ Send to your backend
-      await fetch('http://172.20.10.3:5001/api/savePushToken', {
+      await fetch('http://172.20.10.6:5001/api/savePushToken', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
