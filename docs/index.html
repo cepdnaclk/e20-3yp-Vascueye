@@ -530,6 +530,76 @@
         content: "•";
       }
 
+      /* Software Components Section */
+.software-architecture {
+  /* This section likely inherits padding and possibly background from global .section-padding styles. */
+}
+
+/* Title for the Software Components Section */
+.software-architecture .section-title {
+  text-align: center;
+  margin-bottom: 3rem; /* Space below the title */
+  color: var(--text-primary); /* Uses your primary text color variable */
+}
+
+/* Grid Layout for Software Items */
+.software-grid.grid-layout {
+  display: grid;
+  /* Responsive grid columns: will fit as many items as possible.
+   * Each column will be at least 280px wide and can expand.
+   * Adjust `280px` to your preferred minimum card width.
+   */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem; /* Spacing between the software component cards */
+  justify-content: center; /* Centers the grid items if they don't fill the entire container width */
+  align-items: start; /* Aligns cards to the top of their grid area if they have different heights */
+}
+
+/* Individual Software Item Card Styling */
+.software-item.card {
+  background: var(--bg-card); /* Uses your card background color variable */
+  border: 1px solid var(--border-color); /* Uses your border color variable */
+  border-radius: var(--border-radius); /* Uses your border radius variable */
+  backdrop-filter: blur(10px); /* Applies a blur effect, consistent with other cards */
+  transition: var(--transition); /* Smooth transition for hover effects */
+  overflow: hidden; /* Ensures content stays within rounded corners */
+  padding: 2rem; /* Internal spacing within the card */
+  text-align: center; /* Centers text within the card */
+  display: flex; /* Uses Flexbox for vertical alignment of content */
+  flex-direction: column;
+  align-items: center; /* Centers the icon and text horizontally within the card */
+}
+
+/* Hover Effect for Software Item Cards */
+.software-item.card:hover {
+  background: var(--bg-card-hover); /* Changes background on hover */
+  transform: translateY(-5px); /* Lifts the card slightly on hover */
+  box-shadow: var(--shadow-card); /* Applies a shadow on hover */
+}
+
+/* Styling for Software Icons */
+.software-icon {
+  width: 80px; /* Sets a fixed width for the icons */
+  height: 80px; /* Sets a fixed height for the icons */
+  object-fit: contain; /* Ensures the entire image fits within the bounds without cropping */
+  margin-bottom: 1.5rem; /* Space below the icon */
+}
+
+/* Styling for Software Names */
+.software-name {
+  font-size: 1.4rem; /* Larger font size for the name */
+  font-weight: 600; /* Bold font weight */
+  margin-bottom: 0.8rem; /* Space below the name */
+  color: var(--text-primary); /* Uses your primary text color variable */
+}
+
+/* Styling for Software Description Paragraphs */
+.software-item.card p {
+  font-size: 0.95rem; /* Slightly smaller font size for description */
+  color: var(--text-secondary); /* Uses your secondary text color variable */
+  line-height: 1.6; /* Improves readability of the text */
+}
+
       /* Budget Table */
       .budget-table {
         width: 100%;
