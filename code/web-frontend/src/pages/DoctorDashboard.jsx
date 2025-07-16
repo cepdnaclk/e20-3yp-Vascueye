@@ -143,76 +143,94 @@ const DoctorDashboard = () => {
       </Typography>
       
       {/* Doctor Profile Section */}
-      <Card className="doctor-profile">
-        <CardContent>
-          {user ? (
-            <Box>
-              <Typography>
-                <strong>Name:</strong> {user.name}
+      {/* Doctor Profile Section */}
+<Card className="doctor-profile">
+  <CardContent>
+    {user ? (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 4,
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Left Column - Doctor Info */}
+        <Box sx={{ flex: 1 }}>
+          <Typography>
+            <strong>Name:</strong> {user.name}
+          </Typography>
+          <Typography>
+            <strong>Email:</strong> {user.email}
+          </Typography>
+          <Typography>
+            <strong>Role:</strong> {user.role}
+          </Typography>
+        </Box>
+
+        {/* Right Column - APK Download Section */}
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: 2,
+            backgroundColor: "#f8f9fa",
+            borderRadius: 1,
+            flexDirection: { xs: "column", sm: "row" },
+            gap: 2,
+          }}
+        >
+          {/* QR Code & Text */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              flexDirection: { xs: "column", sm: "row" },
+            }}
+          >
+            <img
+              src={QR_CODE_URL}
+              alt="QR Code for APK Download"
+              style={{
+                width: "80px",
+                height: "80px",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+              }}
+            />
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <QrCode sx={{ color: "#666", fontSize: 20 }} />
+              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                Scan to Download APK
               </Typography>
-              <Typography>
-                <strong>Email:</strong> {user.email}
-              </Typography>
-              <Typography>
-                <strong>Role:</strong> {user.role}
-              </Typography>
-              
-              {/* APK Download Section in Profile */}
-              <Box sx={{ 
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "space-between",
-                marginTop: 2,
-                padding: 2,
-                backgroundColor: "#f8f9fa",
-                borderRadius: 1,
-                flexDirection: { xs: "column", sm: "row" },
-                gap: 2
-              }}>
-                <Box sx={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  gap: 2,
-                  flexDirection: { xs: "column", sm: "row" }
-                }}>
-                  <img 
-                    src={QR_CODE_URL} 
-                    alt="QR Code for APK Download"
-                    style={{ 
-                      width: "80px", 
-                      height: "80px",
-                      border: "1px solid #ddd",
-                      borderRadius: "4px"
-                    }}
-                  />
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <QrCode sx={{ color: "#666", fontSize: 20 }} />
-                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                      Scan to Download APK
-                    </Typography>
-                  </Box>
-                </Box>
-                
-                <Button
-                  variant="contained"
-                  startIcon={<Download />}
-                  onClick={handleAPKDownload}
-                  sx={{
-                    backgroundColor: "#4CAF50",
-                    '&:hover': {
-                      backgroundColor: "#45a049",
-                    },
-                  }}
-                >
-                  Download APK
-                </Button>
-              </Box>
             </Box>
-          ) : (
-            <Typography>Loading profile...</Typography>
-          )}
-        </CardContent>
-      </Card>
+          </Box>
+
+          {/* Download Button */}
+          <Button
+            variant="contained"
+            startIcon={<Download />}
+            onClick={handleAPKDownload}
+            sx={{
+              backgroundColor: "#4CAF50",
+              "&:hover": {
+                backgroundColor: "#45a049",
+              },
+            }}
+          >
+            Download APK
+          </Button>
+        </Box>
+      </Box>
+    ) : (
+      <Typography>Loading profile...</Typography>
+    )}
+  </CardContent>
+</Card>
+
 
       {/* Two Column Layout */}
       <Box
