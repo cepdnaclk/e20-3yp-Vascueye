@@ -4,167 +4,1378 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="images/icons/vescueye-logo.png" />
-    <title>VescuEye - A Real-Time Blood Flow Monitoring System</title>
-    <link rel="stylesheet" href="assets/style.css" />
-    <link rel="stylesheet" href="assets/budget.css" />
-    <link rel="stylesheet" href="assets/team-card.css" />
-    <link rel="stylesheet" href="assets/circuit.css" />
+    <title>Vescueye - A Real-Time Blood Flow Monitoring System</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+
+    <style>
+      :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #1a1a2e;
+        --bg-tertiary: #16213e;
+        --bg-card: rgba(255, 255, 255, 0.05);
+        --bg-card-hover: rgba(255, 255, 255, 0.08);
+
+        --text-primary: #ffffff;
+        --text-secondary: #b8c2cc;
+        --text-muted: #8892a0;
+
+        --border-color: rgba(255, 255, 255, 0.1);
+        --shadow-primary: 0 10px 40px rgba(0, 0, 0, 0.3);
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+        --border-radius: 16px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* Animated background */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at 20% 50%,
+            rgba(120, 119, 198, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 119, 198, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 80%,
+            rgba(120, 200, 255, 0.1) 0%,
+            transparent 50%
+          );
+        z-index: -1;
+        animation: float 20s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      /* Header */
+      .main-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border-color);
+        transition: var(--transition);
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .site-title {
+        font-size: 2rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .main-nav .nav-list {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        position: relative;
+        padding: 0.5rem 0;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary-gradient);
+        transition: var(--transition);
+      }
+
+      .nav-link:hover {
+        color: var(--text-primary);
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Hero Section */
+      .hero-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        background: var(--dark-gradient);
+        overflow: hidden;
+      }
+
+      .hero-content {
+        max-width: 800px;
+        padding: 2rem;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #ffffff 0%, #b8c2cc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .hero-subtitle {
+        font-size: 1.5rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        animation: fadeInUp 1s ease-out 0.2s both;
+      }
+
+      .hero-description {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 3rem;
+        animation: fadeInUp 1s ease-out 0.4s both;
+      }
+
+      .cta-button {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background: var(--primary-gradient);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: var(--transition);
+        animation: fadeInUp 1s ease-out 0.6s both;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+      }
+
+      /* Floating particles */
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+        animation: float 30s linear infinite;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      /* Sections */
+      .section-padding {
+        padding: 6rem 0;
+      }
+
+      .section-alt-bg {
+        background: var(--bg-secondary);
+        position: relative;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 3rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .section-title-sub {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        color: var(--text-primary);
+      }
+
+      /* Cards */
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        backdrop-filter: blur(10px);
+        transition: var(--transition);
+        overflow: hidden;
+      }
+
+      .card:hover {
+        background: var(--bg-card-hover);
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-card);
+      }
+
+      /* Grid Layouts */
+      .grid-layout {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .two-col-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+
+      .three-col-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+
+      .responsive-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      /* About Section */
+      .about-container {
+        margin-top: 4rem;
+      }
+
+      .about-box {
+        padding: 2.5rem;
+        text-align: center;
+      }
+
+      .box-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+
+      .about-box p {
+        color: var(--text-secondary);
+        line-height: 1.8;
+      }
+
+      /* Features Section */
+      .features-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .feature-box {
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-right: 1rem;
+      }
+
+      .feature-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .feature-box p {
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+
+      /* NIR Section */
+      .nir-content-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 4rem;
+      }
+
+      .content-block {
+        flex: 1;
+      }
+
+      .image-block {
+        flex: 1;
+      }
+
+      .nir-text p {
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+
+      .nir-text strong {
+        color: var(--text-primary);
+      }
+
+      .nir-image img {
+        width: 100%;
+        height: auto;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-card);
+      }
+
+      /* Architecture Section */
+      .architecture-container {
+        display: flex;
+        gap: 4rem;
+        align-items: flex-start;
+      }
+
+      .architecture-components {
+        padding: 2rem;
+      }
+
+      .component-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .component-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+      }
+
+      .label {
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      .value {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* Software Grid */
+      .software-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+
+      .software-item {
+        padding: 2rem;
+        text-align: center;
+        transition: var(--transition);
+      }
+
+      .software-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+        border-radius: 12px;
+      }
+
+      .software-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+
+      .software-item p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      /* Images */
+      .scrolling-image,
+      .image-gallery-item {
+        width: 100%;
+        height: auto;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+      }
+
+      .image-gallery-item:hover {
+        transform: scale(1.02);
+      }
+
+      .image-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      /* Testing Section */
+      .testing-category {
+        margin-bottom: 3rem;
+        padding: 2rem;
+      }
+
+      .category-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+      }
+
+      .styled-list {
+        list-style: none;
+        margin-left: 0;
+      }
+
+      .styled-list li {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+        position: relative;
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+
+      .styled-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--text-primary);
+        font-weight: bold;
+      }
+
+      .nested-list {
+        margin-top: 0.5rem;
+        margin-left: 1rem;
+      }
+
+      .nested-list li::before {
+        content: "•";
+      }
+
+      /* Software Components Section */
+.software-architecture {
+  /* This section likely inherits padding and possibly background from global .section-padding styles. */
+}
+
+/* Title for the Software Components Section */
+.software-architecture .section-title {
+  text-align: center;
+  margin-bottom: 3rem; /* Space below the title */
+  color: var(--text-primary); /* Uses your primary text color variable */
+}
+
+/* Grid Layout for Software Items */
+.software-grid.grid-layout {
+  display: grid;
+  /* Responsive grid columns: will fit as many items as possible.
+   * Each column will be at least 280px wide and can expand.
+   * Adjust `280px` to your preferred minimum card width.
+   */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem; /* Spacing between the software component cards */
+  justify-content: center; /* Centers the grid items if they don't fill the entire container width */
+  align-items: start; /* Aligns cards to the top of their grid area if they have different heights */
+}
+
+/* Individual Software Item Card Styling */
+.software-item.card {
+  background: var(--bg-card); /* Uses your card background color variable */
+  border: 1px solid var(--border-color); /* Uses your border color variable */
+  border-radius: var(--border-radius); /* Uses your border radius variable */
+  backdrop-filter: blur(10px); /* Applies a blur effect, consistent with other cards */
+  transition: var(--transition); /* Smooth transition for hover effects */
+  overflow: hidden; /* Ensures content stays within rounded corners */
+  padding: 2rem; /* Internal spacing within the card */
+  text-align: center; /* Centers text within the card */
+  display: flex; /* Uses Flexbox for vertical alignment of content */
+  flex-direction: column;
+  align-items: center; /* Centers the icon and text horizontally within the card */
+}
+
+/* Hover Effect for Software Item Cards */
+.software-item.card:hover {
+  background: var(--bg-card-hover); /* Changes background on hover */
+  transform: translateY(-5px); /* Lifts the card slightly on hover */
+  box-shadow: var(--shadow-card); /* Applies a shadow on hover */
+}
+
+/* Styling for Software Icons */
+.software-icon {
+  width: 80px; /* Sets a fixed width for the icons */
+  height: 80px; /* Sets a fixed height for the icons */
+  object-fit: contain; /* Ensures the entire image fits within the bounds without cropping */
+  margin-bottom: 1.5rem; /* Space below the icon */
+}
+
+/* Styling for Software Names */
+.software-name {
+  font-size: 1.4rem; /* Larger font size for the name */
+  font-weight: 600; /* Bold font weight */
+  margin-bottom: 0.8rem; /* Space below the name */
+  color: var(--text-primary); /* Uses your primary text color variable */
+}
+
+/* Styling for Software Description Paragraphs */
+.software-item.card p {
+  font-size: 0.95rem; /* Slightly smaller font size for description */
+  color: var(--text-secondary); /* Uses your secondary text color variable */
+  line-height: 1.6; /* Improves readability of the text */
+}
+
+      /* Budget Table */
+      .budget-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--bg-card);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-card);
+      }
+
+      .budget-table th {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 1rem;
+        font-weight: 600;
+        text-align: left;
+      }
+
+      .budget-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-secondary);
+      }
+
+      .budget-table tr:hover {
+        background: var(--bg-card-hover);
+      }
+
+      .budget-table .total {
+        font-weight: 600;
+        color: var(--text-primary);
+        background: var(--bg-tertiary);
+      }
+
+      /* Team Cards */
+      /* Team Container Grid Layout */
+      .team-container.responsive-grid {
+        display: grid;
+        /*
+   * Sets up a flexible grid.
+   * `auto-fit`: automatically fits as many columns as possible.
+   * `minmax(280px, 1fr)`: each column will be at least 280px wide,
+   * and will expand to take equal fractional space.
+   * Adjusted minmax to 280px for better responsiveness with 3 cards in a row on wider screens.
+   */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem; /* Consistent spacing between cards */
+        justify-content: center; /* Centers the entire grid horizontally if there's extra space */
+        align-items: start; /* Aligns items to the top of their grid area */
+      }
+
+      /* Target the first card (the supervisor) to make it span all columns */
+      /* Team Container Grid Layout */
+.team-container.responsive-grid {
+  display: grid;
+  /*
+   * This will create 4 equal columns on wider screens.
+   * On smaller screens, it will automatically fit as many columns
+   * as possible (e.g., 2 or 1) with a minimum width of 220px.
+   */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem; /* Consistent spacing between cards */
+  justify-content: center; /* Centers the entire grid horizontally if there's extra space */
+  align-items: start; /* Aligns cards to the top of their grid cell vertically */
+  max-width: 1200px; /* Optional: Limit the grid width for better control on very wide screens */
+  margin: 0 auto; /* Center the entire grid container */
+}
+
+/* IMPORTANT: Remove or comment out the following rule if you want 4 cards in a row
+   and the supervisor is no longer special-cased to span a full row. */
+/*
+.team-container.responsive-grid .team-card:first-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  max-width: 350px;
+  margin: 0 auto;
+}
+*/
+
+/* Team Container Grid Layout */
+.team-container.responsive-grid {
+  display: grid;
+  /* Default responsive layout: automatically fit columns, min 220px wide */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  justify-content: center; /* Centers the grid items if they don't fill the full width */
+  align-items: start; /* Aligns cards to the top of their grid cell */
+  max-width: 1200px; /* Optional: Limit the overall grid width */
+  margin: 0 auto; /* Center the entire grid container */
+}
+
+/* Styles for the new Project Resources section */
+.resources-links-container {
+  display: flex; /* Use flexbox to arrange links */
+  flex-wrap: wrap; /* Allow links to wrap to the next line on smaller screens */
+  justify-content: center; /* Center the links horizontally */
+  gap: 1.5rem; /* Space between individual links */
+  margin-top: 2.5rem; /* Space above the links container */
+  max-width: 900px; /* Optional: Limit the width of the links container */
+  margin-left: auto; /* Center the container itself */
+  margin-right: auto;
+}
+
+.resource-link {
+  display: flex; /* Use flexbox for icon and text inside link */
+  align-items: center; /* Vertically align icon and text */
+  gap: 0.6rem; /* Space between icon and text */
+  background: var(--bg-card); /* Consistent background with your cards */
+  border: 1px solid var(--border-color); /* Consistent border */
+  border-radius: var(--border-radius); /* Consistent border-radius */
+  padding: 1rem 1.8rem; /* Padding inside the link box */
+  text-decoration: none; /* Remove underline */
+  color: var(--text-primary); /* Consistent text color */
+  transition: var(--transition); /* Smooth transition for hover effects */
+  font-weight: 500;
+  white-space: nowrap; /* Prevent text from wrapping within the link */
+  font-size: 1rem; /* Adjust font size as needed */
+  box-shadow: var(--shadow-small); /* Subtle shadow */
+}
+
+.resource-link:hover {
+  background: var(--bg-card-hover); /* Consistent hover background */
+  transform: translateY(-3px); /* Slight lift on hover */
+  box-shadow: var(--shadow-card); /* Enhanced shadow on hover */
+  color: var(--primary-color); /* Change text color on hover for emphasis */
+}
+
+.resource-link i {
+  font-size: 1.2rem; /* Size of the icon */
+  color: var(--primary-color); /* Color of the icon */
+}
+
+.resource-link:hover i {
+  color: var(--primary-text-color); /* Example: make icon white on hover if primary-color is dark */
+}
+
+/* Styles for the new Contact Us section */
+.contact-info-container {
+  display: flex;
+  flex-direction: column; /* Stacks the contact items vertically */
+  align-items: center; /* Centers the items horizontally within the container */
+  gap: 1.5rem; /* Provides space between the address and email items */
+  margin-top: 2.5rem; /* Space above this section's content */
+}
+
+.contact-item {
+  display: flex; /* Uses flexbox for the icon and text within each item */
+  align-items: center; /* Vertically aligns the icon and text */
+  gap: 1rem; /* Space between the icon and the text/link */
+  background: var(--bg-card); /* Uses your defined card background for consistency */
+  border: 1px solid var(--border-color); /* Consistent border */
+  border-radius: var(--border-radius); /* Consistent border-radius */
+  padding: 1rem 2rem; /* Internal padding for each contact item */
+  color: var(--text-primary); /* Sets text color */
+  font-size: 1.1rem;
+  text-align: center; /* Centers text within its own line, if it wraps */
+  max-width: 600px; /* Limits the maximum width for better readability */
+  width: 100%; /* Allows it to take full width up to max-width */
+  box-shadow: var(--shadow-small); /* Adds a subtle shadow */
+}
+
+.contact-item p,
+.contact-item a {
+  margin: 0; /* Removes default margins from paragraphs and links */
+  color: var(--text-primary); /* Ensures link text color is consistent */
+  text-decoration: none; /* Removes underline from the email link */
+  transition: color var(--transition); /* Smooth transition for hover effect on link */
+}
+
+.contact-item a:hover {
+  color: var(--primary-color); /* Changes link color on hover */
+}
+
+.contact-icon {
+  font-size: 1.5rem; /* Sizes the icon */
+  color: var(--primary-color); /* Colors the icon using your primary theme color */
+}
+
+/* Optional: Adjustments for very small screens */
+@media (max-width: 600px) {
+  .contact-item {
+    padding: 1rem 1.5rem; /* Slightly less padding on smaller screens */
+    font-size: 1rem; /* Slightly smaller font size */
+  }
+}
+
+/* Media query to explicitly ensure 3 columns on larger screens (e.g., desktops) */
+@media (min-width: 992px) { /* Adjust breakpoint as needed for when you want 3 columns to appear */
+  .team-container.responsive-grid {
+    grid-template-columns: repeat(4, 1fr); /* Forces 3 equal columns */
+  }
+}
+
+/* Specific styling for Dr. Isuru Nawinne's card (the first card) */
+.team-container.responsive-grid .team-card:first-child {
+  grid-column: 1 / -1; /* This makes the card span all available columns (e.g., 3 columns) */
+  justify-self: center; /* Centers the card horizontally within its now full-width grid area */
+  max-width: 350px; /* Keeps the supervisor card at a balanced width */
+  margin: 0 auto; /* Ensures centering works well with max-width */
+}
+
+/* General Team Card Styling (Consolidated and using theme variables) */
+.team-card {
+  background: var(--bg-card); /* Using your defined background card color */
+  border: 1px solid var(--border-color); /* Using your defined border color */
+  border-radius: var(--border-radius); /* Using your defined border-radius */
+  backdrop-filter: blur(10px); /* Consistent with other cards */
+  transition: var(--transition); /* Consistent with other cards */
+  overflow: hidden; /* Ensures content stays within rounded corners */
+  padding: 1rem;
+  text-align: center;
+  display: flex; /* Use flexbox for internal content alignment */
+  flex-direction: column;
+  align-items: center; /* Centers content (image, text) horizontally within each card */
+  max-width: 300px; /* Kept your desired max-width for individual cards */
+}
+
+      .team-card:hover {
+        background: var(--bg-card-hover); /* Consistent hover effect */
+        transform: translateY(-5px); /* Consistent hover effect */
+        box-shadow: var(--shadow-card); /* Consistent hover effect */
+      }
+
+      #my-hidden-card {
+        visibility: hidden;
+      }
+
+      .team-photo {
+        width: 120px; /* Kept your specified width */
+        height: 120px; /* Kept your specified height */
+        border-radius: 50%;
+        margin-bottom: 1rem;
+        object-fit: cover;
+        border: 3px solid transparent;
+        background: var(--primary-gradient); /* Consistent gradient border */
+        padding: 3px;
+      }
+
+      .member-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary); /* Using your defined text primary color */
+      }
+
+      .member-role {
+        color: var(
+          --text-secondary
+        ); /* Using your defined text secondary color */
+        margin-bottom: 1rem;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: var(
+          --bg-tertiary
+        ); /* Using your defined background tertiary color */
+        color: var(
+          --text-secondary
+        ); /* Using your defined text secondary color */
+        border-radius: 50%;
+        text-decoration: none;
+        transition: var(--transition);
+        border: 1px solid var(--border-color); /* Using your defined border color */
+      }
+
+      .social-icon:hover {
+        background: var(--primary-gradient); /* Consistent hover effect */
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      /* Footer and Scroll-to-Top styles (from your original code, ensuring no conflicts) */
+      .main-footer {
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        padding: 2rem 0;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .footer-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .footer-link:hover {
+        color: var(--text-primary);
+      }
+
+      .scroll-to-top-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 50px;
+        height: 50px;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        transition: var(--transition);
+      }
+
+      .scroll-to-top-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+      }
+
+      /* General image gallery item styling specific to Implementation section */
+.implementation-section .image-gallery-item.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+  overflow: hidden;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column; /* ADD THIS LINE: Stacks children vertically */
+  justify-content: center; /* Centers content vertically within the card if there's extra space */
+  align-items: center; /* Centers content horizontally within the card */
+}
+
+/* You might want to add some top margin to the figcaption for spacing */
+.implementation-section .image-gallery-item.card figcaption {
+  margin-top: 0.8rem; /* Provides space between the image and the caption */
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* The rest of your CSS for this section remains the same */
+
+/* Specific Grid for the Image Gallery within the Implementation section */
+.implementation-section .image-gallery.three-col-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* Hover effect for image gallery items within Implementation section */
+.implementation-section .image-gallery-item.card:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+}
+
+/* Image styling within the card, specific to Implementation section */
+.implementation-section .image-gallery-item.card img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--border-radius);
+}
+
+/* Media query for responsiveness specifically for this image gallery */
+@media (max-width: 992px) {
+  .implementation-section .image-gallery.three-col-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .implementation-section .image-gallery.three-col-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+      /* Scroll to Top */
+      .scroll-to-top-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 50px;
+        height: 50px;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        transition: var(--transition);
+      }
+
+      .scroll-to-top-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+      }
+
+      /* Styling for the sub-section title within Implementation */
+.implementation-section .section-title-sub {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-size: 1.8rem; /* Adjust as needed */
+}
+
+/* Specific Grid for the Image Gallery within the Implementation section */
+.implementation-section .image-gallery.three-col-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Forces 3 equal columns on larger screens */
+  gap: 1.5rem; /* Spacing between the image cards */
+  justify-content: center; /* Centers the grid if items don't fill the width */
+}
+
+/* General image gallery item styling specific to Implementation section */
+.implementation-section .image-gallery-item.card {
+  background: var(--bg-card); /* Consistent with your theme's card background */
+  border: 1px solid var(--border-color); /* Consistent border */
+  border-radius: var(--border-radius); /* Consistent border radius */
+  backdrop-filter: blur(10px); /* Consistent blur effect */
+  transition: var(--transition); /* Smooth transitions for hover effects */
+  overflow: hidden; /* Ensures content stays within rounded corners */
+  padding: 1rem; /* Padding inside the image card */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centers the image within the card */
+}
+
+/* Hover effect for image gallery items within Implementation section */
+.implementation-section .image-gallery-item.card:hover {
+  background: var(--bg-card-hover); /* Changes background on hover */
+  transform: translateY(-3px); /* Lifts the card slightly on hover */
+  box-shadow: var(--shadow-card); /* Applies a shadow on hover */
+}
+
+/* Image styling within the card, specific to Implementation section */
+.implementation-section .image-gallery-item.card img {
+  max-width: 100%; /* Ensures the image scales down to fit within its card container */
+  height: auto; /* Maintains the image's original aspect ratio */
+  /* IMPORTANT: The 'object-fit' property is removed here to prevent any cropping.
+     The image will now scale down to fit its container while
+     maintaining its aspect ratio, ensuring the full image is visible. */
+  display: block; /* Removes any extra space below the image */
+  border-radius: var(--border-radius); /* Applies consistent rounded corners to the images */
+}
+
+/* Media query for responsiveness specifically for this image gallery */
+@media (max-width: 992px) { /* Adjust breakpoint as needed for when it should become more flexible */
+  .implementation-section .image-gallery.three-col-grid {
+    /* Allow images to stack into 2 or 1 columns on smaller screens, while maintaining a minimum size */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 576px) { /* For very small screens (e.g., mobile portrait), make them stack vertically */
+  .implementation-section .image-gallery.three-col-grid {
+    grid-template-columns: 1fr; /* Single column layout */
+  }
+}
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+          font-size: 1.2rem;
+        }
+
+        .section-title {
+          font-size: 2rem;
+        }
+
+        .nir-content-wrapper,
+        .architecture-container {
+          flex-direction: column;
+          gap: 2rem;
+        }
+
+        .main-nav .nav-list {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .header-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .footer-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .section-padding {
+          padding: 4rem 0;
+        }
+      }
+
+      /* Add smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary-gradient);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary-gradient);
+      }
+
+      /* Add loading animation */
+      .loading {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: var(--transition);
+      }
+
+      .loading.loaded {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
   </head>
   <body>
-    <header>
-      <h1>VescuEye</h1>
-      <nav>
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#architecture">Architecture</a></li>
-          <li><a href="#implementation">Implementation</a></li>
-          <li><a href="#testing">Testing</a></li>
-          <li><a href="#budget">Budget</a></li>
-          <li><a href="#team">Team</a></li>
-        </ul>
-      </nav>
+    <section class="hero-section" id="home">
+      <div class="hero-content">
+        <h1 class="hero-title">Vescueye</h1>
+        <p class="hero-subtitle">Real-Time Blood Flow Monitoring System</p>
+        <p class="hero-description">
+          Advanced non-invasive monitoring using near-infrared imaging and
+          temperature sensing for microsurgical procedures and flap viability
+          assessment.
+        </p>
+        <a href="#about" class="cta-button">
+          <i class="fas fa-arrow-down"></i> Explore Project
+        </a>
+      </div>
+    </section>
+
+    <header class="main-header">
+      <div class="header-content">
+        <h1 class="site-title">Vescueye</h1>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#architecture" class="nav-link">Architecture</a></li>
+            <li>
+              <a href="#implementation" class="nav-link">Implementation</a>
+            </li>
+            <li><a href="#testing" class="nav-link">Testing</a></li>
+            <li><a href="#budget" class="nav-link">Budget</a></li>
+            <li><a href="#team" class="nav-link">Team</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
 
-    <section id="about">
-      <div>
-        <h2>About VescuEye</h2>
-        <div class="about-container">
-          <div class="about-box">
-            <h3>Problem Definition</h3>
-            <p>
-              In microsurgical procedures, especially in oral and maxillofacial
-              surgeries, monitoring blood flow and flap viability is critical.
-              Traditional methods are either invasive, require expensive
-              equipment, or lack real-time monitoring capabilities, increasing
-              the risk of flap failure and complications.
-            </p>
-          </div>
-          <div class="about-box">
-            <h3>Proposed Solution</h3>
-            <p>
-              VescuEye is a non-invasive, real-time blood flow monitoring system
-              using near-infrared imaging and temperature sensing. It helps
-              surgeons monitor tissue perfusion remotely, using an embedded
-              system connected to the cloud and a mobile interface for
-              continuous observation and timely interventions.
-            </p>
-          </div>
-        </div>
-      </div>
-      <section id="features">
-        <h2>Key Features</h2>
-        <div class="features-container">
-          <div class="feature-box">
-            <h3>📡 Real-Time Monitoring</h3>
-            <p>
-              Continuously tracks blood flow and tissue temperature during
-              surgical procedures using NIR imaging and thermal sensors.
-            </p>
-          </div>
-          <div class="feature-box">
-            <h3>🩺 Non-Invasive</h3>
-            <p>
-              Eliminates the need for invasive equipment, reducing patient risk
-              and improving comfort.
-            </p>
-          </div>
-          <div class="feature-box">
-            <h3>☁️ Cloud Integration</h3>
-            <p>
-              Stores data securely in the cloud for remote access, allowing
-              doctors to monitor flap health anytime, anywhere.
-            </p>
-          </div>
-          <div class="feature-box">
-            <h3>📱 User-Friendly Interface</h3>
-            <p>
-              Intuitive mobile and web applications for doctors and admins to
-              easily monitor and interpret patient data.
-            </p>
-          </div>
-        </div>
-      </section>
-    </section>
-    <section class="nir-vein-method">
-      <div class="nir-content-wrapper">
-        <div class="nir-text">
-          <h2>Near-Infrared Imaging & Vein Detection</h2>
-          <p>
-            VescuEye uses <strong>near-infrared (NIR) light</strong>, typically
-            around <strong>850 nm</strong>, to illuminate the skin. Human tissue
-            reflects most of the IR light, but
-            <strong>oxygenated hemoglobin in veins absorbs it</strong>, making
-            veins appear darker under NIR imaging.
-          </p>
-          <p>
-            A <strong>700 nm long-pass filter</strong> blocks visible light,
-            allowing only IR to pass. This enhances contrast between veins and
-            surrounding tissue for accurate, non-invasive visualization.
-          </p>
-        </div>
-        <div class="nir-image">
-          <img src="./images/method.png" alt="NIR Vein Imaging" />
-        </div>
-      </div>
-    </section>
-
-    <section class="images" id="architecture">
-      <section class="high-level-architecture">
-        <h2>High Level Architecture</h2>
-        <div class="architecture-container">
-          <div class="architecture-image">
-            <img
-              class="scrolling-image"
-              src="./images/HLA.png"
-              alt="Hardware Setup"
-            />
-          </div>
-          <div class="architecture-components">
-            <h3>Components Used</h3>
-            <div class="component-card">
-              <div class="component-item">
-                <span class="label">Cloud Platform:</span>
-                <span class="value">AWS (Amazon Web Services)</span>
-              </div>
-              <div class="component-item">
-                <span class="label">Single Board Computer:</span>
-                <span class="value">Raspberry Pi 3B</span>
-              </div>
-              <div class="component-item">
-                <span class="label">Camera:</span>
-                <span class="value">Pi NOIR Camera</span>
-              </div>
-              <div class="component-item">
-                <span class="label">IR LEDs:</span>
-                <span class="value">840nm / 950nm Infrared LEDs</span>
-              </div>
-              <div class="component-item">
-                <span class="label">Temperature Sensor:</span>
-                <span class="value">MLX90614</span>
-              </div>
-
-              <div class="component-item">
-                <span class="label">Distance Sensor:</span>
-                <span class="value">vl53l0x</span>
-              </div>
+    <main>
+      <section id="about" class="section-padding section-alt-bg">
+        <div class="container">
+          <h2 class="section-title">About Vescueye</h2>
+          <div class="about-container grid-layout">
+            <div class="about-box card loading">
+              <h3 class="box-title">Problem Definition</h3>
+              <p>
+                In microsurgical procedures, especially in oral and
+                maxillofacial surgeries, monitoring blood flow and flap
+                viability is critical. Traditional methods are either invasive,
+                require expensive equipment, or lack real-time monitoring
+                capabilities, increasing the risk of flap failure and
+                complications.
+              </p>
+            </div>
+            <div class="about-box card loading">
+              <h3 class="box-title">Proposed Solution</h3>
+              <p>
+                Vescueye is a non-invasive, real-time blood flow monitoring
+                system using near-infrared imaging and temperature sensing. It
+                helps surgeons monitor tissue perfusion remotely, using an
+                embedded system connected to the cloud and a mobile interface
+                for continuous observation and timely interventions.
+              </p>
             </div>
           </div>
         </div>
-        <section class="system-communication" id="connections">
-          <h2>System Component Communication</h2>
-          <div class="communication-container">
-            <div class="communication-description">
+
+        <section id="features" class="section-padding">
+          <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-container grid-layout">
+              <div class="feature-box card loading">
+                <h3 class="feature-title">
+                  <i class="fas fa-satellite-dish feature-icon"></i> Real-Time
+                  Monitoring
+                </h3>
+                <p>
+                  Continuously tracks blood flow and tissue temperature during
+                  surgical procedures using NIR imaging and thermal sensors.
+                </p>
+              </div>
+              <div class="feature-box card loading">
+                <h3 class="feature-title">
+                  <i class="fas fa-medkit feature-icon"></i> Non-Invasive
+                </h3>
+                <p>
+                  Eliminates the need for invasive equipment, reducing patient
+                  risk and improving comfort.
+                </p>
+              </div>
+              <div class="feature-box card loading">
+                <h3 class="feature-title">
+                  <i class="fas fa-cloud feature-icon"></i> Cloud Integration
+                </h3>
+                <p>
+                  Stores data securely in the cloud for remote access, allowing
+                  doctors to monitor flap health anytime, anywhere.
+                </p>
+              </div>
+              <div class="feature-box card loading">
+                <h3 class="feature-title">
+                  <i class="fas fa-mobile-alt feature-icon"></i> User-Friendly
+                  Interface
+                </h3>
+                <p>
+                  Intuitive mobile and web applications for doctors and admins
+                  to easily monitor and interpret patient data.
+                </p>
+              </div>
+              <div class="feature-box card loading">
+                <h3 class="feature-title">
+                  <i class="fas fa-microchip feature-icon"></i> Simple Hardware
+                  Design
+                </h3>
+                <p>
+                  Features a straightforward and robust hardware design for ease
+                  of use and maintenance.
+                </p>
+              </div>
+              <div class="feature-box card loading">
+                <h3 class="feature-title">
+                  <i class="fas fa-users-cog feature-icon"></i> Easy Doctor and
+                  Patient Management
+                </h3>
+                <p>
+                  Streamlines the process of managing doctor and patient data
+                  through an intuitive system.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="nir-vein-method section-padding section-alt-bg">
+        <div class="container nir-content-wrapper">
+          <div class="nir-text content-block">
+            <h2 class="section-title">
+              Near-Infrared Imaging & Vein Detection
+            </h2>
+            <p>
+              Vescueye uses <strong>near-infrared (NIR) light</strong>,
+              typically around <strong>850 nm</strong>, to illuminate the skin.
+              Human tissue reflects most of the IR light, but
+              <strong>oxygenated hemoglobin in veins absorbs it</strong>, making
+              veins appear darker under NIR imaging.
+            </p>
+            <p>
+              A <strong>700 nm long-pass filter</strong> blocks visible light,
+              allowing only IR to pass. This enhances contrast between veins and
+              surrounding tissue for accurate, non-invasive visualization.
+            </p>
+          </div>
+          <div class="nir-image image-block">
+            <img
+              src="./images/updated_method.png"
+              alt="NIR Vein Imaging Method"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="images section-padding" id="architecture">
+        <section class="high-level-architecture">
+          <div class="container architecture-container">
+            <div class="architecture-image image-block">
+              <h2 class="section-title-sub">High Level Architecture</h2>
+              <img
+                class="scrolling-image"
+                src="./images/updated_hla.png"
+                alt="High Level Architecture Diagram"
+                loading="lazy"
+              />
+            </div>
+            <div class="architecture-components content-block card">
+              <h3 class="box-title">Components Used</h3>
+              <div class="component-list">
+                <div class="component-item">
+                  <span class="label">Cloud Platform:</span>
+                  <span class="value">AWS (Amazon Web Services)</span>
+                </div>
+                <div class="component-item">
+                  <span class="label">Single Board Computer:</span>
+                  <span class="value">Raspberry Pi 3B</span>
+                </div>
+                <div class="component-item">
+                  <span class="label">Camera:</span>
+                  <span class="value">Pi NOIR V2 Camera</span>
+                </div>
+                <div class="component-item">
+                  <span class="label">IR LEDs:</span>
+                  <span class="value">850nm Infrared LEDs</span>
+                </div>
+                <div class="component-item">
+                  <span class="label">Temperature Sensor:</span>
+                  <span class="value">MLX90614</span>
+                </div>
+                <div class="component-item">
+                  <span class="label">Distance Sensor:</span>
+                  <span class="value">vl53l0x</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div></br></div>
+        </section>
+
+        <section
+          class="system-communication section-padding section-alt-bg"
+          id="connections"
+        >
+          <div class="container communication-container">
+            <h2 class="section-title">System Component Communication</h2>
+            <div class="communication-description content-block">
               <p>
                 The <strong>Vescueye</strong> system integrates hardware, cloud
                 services, and applications to monitor facial artery conditions
                 using near-infrared imaging and thermal sensing. Below is a
                 description of how each component interacts:
               </p>
-              <ul>
+              <p></br></p>
+              <ul class="styled-list">
                 <li>
                   <strong>Raspberry Pi 3B:</strong> Captures thermal and
                   near-infrared images using the Pi NOIR camera and MLX90614
@@ -200,597 +1411,894 @@
                   using a secure web dashboard.
                 </li>
                 <li>
-                  <strong>Doctor's Mobile App:</strong> Lets doctors view flap
-                  condition images and temperature trends, receive alerts, and
-                  access patient details in real-time.
+                  <strong>Mobile Doctor Application:</strong> Provides doctors
+                  with a mobile interface to view patient data, monitor blood
+                  flow and temperature in real-time, and receive alerts.
                 </li>
                 <li>
-                  <strong>Display Interface on Pi:</strong> Shows live preview
-                  and status, helping the operator during image capture and
-                  system checks.
+                  <strong>Patient Web Portal:</strong> Allows patients to view
+                  their historical data and progress, promoting engagement and
+                  transparency.
                 </li>
               </ul>
             </div>
           </div>
         </section>
+
+        <section class="software-architecture section-padding">
+          <div class="container">
+            <h2 class="section-title">Software Components</h2>
+            <div class="software-grid grid-layout">
+              <div class="software-item card">
+                <img src="./images/icons/opencv.png" alt="OpenCV Icon" class="software-icon" />
+                <h3 class="software-name">OpenCV</h3>
+                <p>
+                  Used for real-time image processing, contrast enhancement, and
+                  vein visualization techniques.
+                </p>
+              </div>
+              <div class="software-item card">
+                <img src="./images/icons/nodejs.png" alt="Node.js Icon" class="software-icon" />
+                <h3 class="software-name">Node.js</h3>
+                <p>
+                  Handles server-side operations, manages API endpoints, and
+                  communicates with database and cloud.
+                </p>
+              </div>
+              <div class="software-item card">
+                <img src="./images/icons/MongoDB-Logo.png" alt="MongoDB Icon" class="software-icon" />
+                <h3 class="software-name">MongoDB</h3>
+                <p>
+                  Stores patient data, temperature records, and processed image
+                  metadata in a scalable NoSQL database.
+                </p>
+              </div>
+              <div class="software-item card">
+                <img src="./images/icons/aws-iot-core.jpg" alt="AWS IoT Core Icon" class="software-icon" />
+                <h3 class="software-name">AWS IoT Core</h3>
+                <p>
+                  Securely connects the Raspberry Pi hardware to the cloud, enabling
+                  real-time data upload and monitoring.
+                </p>
+              </div>
+              <div class="software-item card">
+                <img src="./images/icons/react.png" alt="React Native Icon" class="software-icon" />
+                <h3 class="software-name">React Native</h3>
+                <p>
+                  Develops a cross-platform mobile application for doctors and users
+                  to access real-time monitoring data.
+                </p>
+              </div>
+               <div class="software-item card">
+                <img src="./images/icons/amazons3.png" alt="Amazon S3 Icon" class="software-icon" />
+                <h3 class="software-name">Amazon S3</h3>
+                <p>
+                  Utilized for secure, scalable, and durable storage of raw image
+                  and video data captured by the system.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       </section>
 
-      <section class="software-architecture">
-        <h2>Software Components</h2>
-
-        <div class="software-grid">
-          <div class="software-item">
-            <img src="./images/icons/opencv.png" alt="OpenCV" />
-            <h3>OpenCV</h3>
-            <p>
-              Used for real-time image processing, contrast enhancement, and
-              vein visualization techniques.
-            </p>
-          </div>
-
-          <div class="software-item">
-            <img src="./images/icons/nodejs.png" alt="Node.js" />
-            <h3>Node.js</h3>
-            <p>
-              Handles server-side operations, manages API endpoints, and
-              communicates with the database and cloud.
-            </p>
-          </div>
-
-          <div class="software-item">
-            <img src="./images/icons/MongoDB-Logo.png" alt="MongoDB" />
-            <h3>MongoDB</h3>
-            <p>
-              Stores patient data, temperature records, and processed image
-              metadata in a scalable NoSQL database.
-            </p>
-          </div>
-
-          <div class="software-item">
-            <img src="./images/icons/aws-iot-core.jpg" alt="AWS IoT Core" />
-            <h3>AWS IoT Core</h3>
-            <p>
-              Securely connects the Raspberry Pi hardware to the cloud, enabling
-              real-time data upload and monitoring.
-            </p>
-          </div>
-
-          <div class="software-item">
-            <img src="./images/icons/react.png" alt="React Native" />
-            <h3>React Native</h3>
-            <p>
-              Develops a cross-platform mobile application for doctors and users
-              to access real-time monitoring data.
-            </p>
-          </div>
-        </div>
-      </section>
-    </section>
-
-    <!-- Video Section -->
-    <!-- <section class="video">
-      <h2>Introduction Video</h2>
-      <a href="./videos/intro.mp4" target="_blank">Watch Video</a>
-    </section> -->
-    <section id="implementation">
-      <!-- Image Sections -->
-      <section class="Circuit">
-        <div class="circuit-container">
-          <h2>Circuit Design</h2>
-          <div class="circuit-image">
+        <section class="circuit-design section-padding" id="circuit">
+          <h2 class="section-title">Circuit Design & Hardware Structure</h2>
+          <div class="container image-center">
             <img
               class="scrolling-image"
-              src="./images/circuit.jpg"
+              src="./images/updated_circuit.png"
               alt="Circuit Design"
+              loading="lazy"
             />
           </div>
-        </div>
+        </section>
       </section>
-      <section class="images hardware-setup">
-        <div class="hardware-container">
-          <div class="image-box">
-            <img
-              class="scrolling-image"
-              src="./images/hardware_setup.jpg"
-              alt="Hardware Setup"
-            />
-          </div>
-          <div class="text-box">
-            <h2>Initial Hardware Setup</h2>
+
+          <section id="implementation" class="section-padding section-alt-bg">
+  <div class="container">
+    <h2 class="section-title">Implementation</h2>
+
+    <div class="implementation-section">
+      <h3 class="section-title-sub">Raw Images Captured Using Our Device</h3>
+      <div class="image-gallery grid-layout three-col-grid">
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop1.jpg"
+            alt="Raw Image 1"
+            loading="lazy"
+          />
+          <figcaption>Sample Hand Test Output 01</figcaption>
+        </div>
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop2.jpg"
+            alt="Raw Image 2"
+            loading="lazy"
+          />
+          <figcaption>Sample Wrist Test Output 02</figcaption>
+        </div>
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop3.jpg"
+            alt="Raw Image 3"
+            loading="lazy"
+          />
+          <figcaption>Sample Hand Test Output 03</figcaption>
+        </div>
+      </div>
+    </div>
+
+    </div>
+</section>
+
+<section class="nir-vein-method section-padding section-alt-bg">
+        <div class="container nir-content-wrapper">
+          <div class="nir-text content-block">
+            <h2 class="section-title">
+              Enhanced Vein Visualization
+            </h2>
             <p>
-              We initially built the circuit on a breadboard using fifteen 940nm
-              IR LEDs since 850nm variants were not available at the time. To
-              power the LEDs, we used an external power supply and incorporated
-              a 5V voltage regulator to ensure a constant 5V input. Initial
-              testing was performed on a hand, and the output results are shown
-              below.
+              To improve the clarity of vein structures captured by the camera, 
+              we implemented several image enhancement techniques using OpenCV. 
+              One of the most effective methods was <strong>CLAHE (Contrast Limited Adaptive Histogram Equalization)</strong>, 
+              which helps enhance local contrast in infrared images without amplifying noise.
+            </p>
+            <p>
+              Additionally, we performed <strong>grayscale conversion</strong>, followed by <strong>contrast stretching</strong> and <strong>Gaussian blurring</strong> 
+              to suppress noise and improve edge definition. These preprocessing steps significantly enhanced the visibility of veins, 
+              especially under uneven lighting conditions.
             </p>
           </div>
-        </div>
-      </section>
-
-      <section class="hand-test-section">
-        <h2>Hand Test Output</h2>
-        <div class="hand-images">
-          <img src="./images/hand1.jpg" alt="Hand Test 1" />
-          <img src="./images/hand2.jpg" alt="Hand Test 2" />
-          <img src="./images/hand3.jpg" alt="Hand Test 3" />
-        </div>
-      </section>
-
-      <section class="vein-visualization">
-        <div class="vein-container">
-          <h2>Enhanced Vein Visualization</h2>
-          <p>
-            To improve the clarity of vein structures captured by the camera, we
-            implemented several image enhancement techniques using OpenCV. One
-            of the most effective methods was
-            <strong
-              >CLAHE (Contrast Limited Adaptive Histogram Equalization)</strong
-            >, which helps enhance local contrast in infrared images without
-            amplifying noise.
-          </p>
-          <p>
-            Additionally, we performed <strong>grayscale conversion</strong>,
-            followed by <strong>contrast stretching</strong> and
-            <strong>Gaussian blurring</strong> to suppress noise and improve
-            edge definition. These preprocessing steps significantly enhanced
-            the visibility of veins, especially under uneven lighting
-            conditions.
-          </p>
-          <p>
-            This improved visualization played a crucial role in enabling
-            real-time monitoring and assessment of blood flow using our
-            near-infrared imaging system.
-          </p>
-        </div>
-      </section>
-
-      <section class="images">
-        <h2>Enhanced Image Sample</h2>
-        <img
-          class="scrolling-image"
-          src="./images/enhanced_image.png"
-          alt="Enhanced Image Sample"
-        />
-      </section>
-
-      <section class="vein-continuity-scoring" id="vein-scoring">
-        <h2>Vein Continuity Scoring Method</h2>
-
-        <div class="scoring-visual-top">
-          <img
-            src="./images/vein-contnuity.png"
-            alt="Vein Continuity Scoring Steps"
-          />
-          <div class="visual-caption">
-            <em
-              >Pipeline: Color Filtering → Adaptive Thresholding → Morphological
-              Filtering</em
-            >
-          </div>
-        </div>
-
-        <div class="scoring-description">
-          <p>
-            The <strong>vein continuity score</strong> evaluates how clearly and
-            continuously vein patterns appear in near-infrared images. It
-            focuses on two main aspects:
-          </p>
-          <ol>
-            <li>
-              <strong>Presence of Dark Vein Lines:</strong> Only those within
-              the pink skin region are considered for scoring.
-            </li>
-            <li>
-              <strong>Continuity of Vein Lines:</strong> Fewer breaks and more
-              connected segments indicate better continuity.
-            </li>
-          </ol>
-          <p>The scoring method uses a three-step image processing pipeline:</p>
-          <ol>
-            <li>
-              <strong>Pink Region Detection</strong> – Extracts the region of
-              interest using color filtering.
-            </li>
-            <li>
-              <strong>Vein Pattern Detection</strong> – Applies adaptive
-              thresholding to highlight vein lines.
-            </li>
-            <li>
-              <strong>Vein Line Mask Generation</strong> – Uses morphological
-              operations to clean and connect broken lines.
-            </li>
-          </ol>
-          <p>
-            The final score is calculated based on the number of continuous vein
-            segments detected in the pink region. This method provides a
-            quantitative measure of vein visibility and continuity, which is
-            crucial for assessing blood flow.
-          </p>
-          <br />
-          <p>
-            Then we separate images into two classes based on the vein
-            continuity score. If the score is above a certain threshold, we
-            classify it as
-            <strong>Good</strong>, indicating clear and continuous vein
-            patterns. Otherwise, it is <strong>Bad</strong>, indicating a lack
-            of continuity.
-          </p>
-          <br />
-          <p>
-            At this stage selecting threshold value is done manually by testing
-            for various images. In the future, we plan to get this threshold
-            value by using a more scientific approach.
-          </p>
-        </div>
-      </section>
-    </section>
-
-    <section class="cad-designs">
-      <div class="cad-container">
-        <h2>Final Look</h2>
-        <div class="cad-images">
-          <div class="cad-image-box">
-            <img src="./images/cad1.png" alt="CAD Design 1" />
-            <p>Top View</p>
-          </div>
-          <div class="cad-image-box">
-            <img src="./images/cad2.png" alt="CAD Design 2" />
-            <p>Bottom View</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="testing-section" id="testing">
-      <h2>System Testing & Validation</h2>
-
-      <div class="testing-category">
-        <h3>🧪 Software Testing</h3>
-        <ul>
-          <li>
-            <strong>Unit Testing:</strong> Conducted using the
-            <code>Jest</code> framework to test critical backend functions such
-            as data validation, device communication handlers, and image upload
-            routines.
-          </li>
-          <li>
-            <strong>Endpoint Testing:</strong> APIs were tested using
-            <code>Postman</code> to ensure correct responses for both valid and
-            invalid requests, secure token validation, and data posting from
-            Raspberry Pi.
-          </li>
-        </ul>
-
-        <div class="testing-images">
-          <div class="test-img">
-            <img src="./images/jtest.png" alt="Unit Testing with Jest" />
-            <figcaption>Unit Testing with Jest</figcaption>
-          </div>
-          <div class="test-img">
+          <div class="nir-image image-block">
             <img
-              src="./images/postman.png"
-              alt="Endpoint Testing with Postman"
+              src="./images/image_processing2.png"
+              alt="NIR Vein Imaging Method"
+              loading="lazy"
             />
-            <figcaption>Endpoint Testing with Postman</figcaption>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="testing-category">
-        <h3>🔧 Hardware Testing</h3>
-        <ul>
-          <li>
-            <strong>MLX90614 Temperature Sensor:</strong>
-            <ul>
+          <div class="container communication-container">
+            <p></br></p>
+            <h3 class="section-title">Vein Continuity Scoring Method</h3>
+            <div class="communication-description content-block">
+              <p></br></p>
+                <p>
+                  To quantitatively assess flap viability, VescuEye implements a
+                  <strong>Vein Continuity Scoring Method</strong>. This method
+                  processes the NIR images through a series of steps to
+                  determine the health of the blood vessels.
+                </p>
+                <ul class="styled-list">
+                  <li>
+                    <strong>Color Filtering:</strong> Extracts relevant color
+                    channels from the NIR image to highlight vein-like
+                    structures.
+                  </li>
+                  <li>
+                    <strong>Thresholding:</strong> Converts the image to binary,
+                    separating veins (darker pixels) from background (lighter
+                    pixels) based on a calculated threshold.
+                  </li>
+                  <li>
+                    <strong>Morphological Filtering:</strong> Applies operations
+                    like erosion and dilation to remove noise, fill small gaps
+                    in veins, and smooth contours, enhancing vessel continuity.
+                  </li>
+                  <li>
+                    <strong>Vein Continuity Score Calculation:</strong> Based on
+                    the processed image, an algorithm calculates a score that
+                    represents the continuity and density of the visible vein
+                    network, indicating blood flow integrity.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <section class="circuit-design section-padding" id="circuit">
+          <div class="container image-center">
+            <img
+              class="scrolling-image"
+              src="./images/vein-contnuity.png"
+              alt="Circuit Design"
+              loading="lazy"
+            />
+          </div>
+        </section>
+      </section>
+
+          <div class="implementation-section section-padding">
+            <h3 class="section-title">Final Look (CAD Designs)</h3>
+            <div class="image-gallery grid-layout responsive-grid">
+              <div class="image-gallery-item card loading">
+                <img
+                  src="./images/cad1.jpg"
+                  alt="CAD Design 1"
+                  loading="lazy"
+                />
+                <figcaption>Front View</figcaption>
+              </div>
+              <div class="image-gallery-item card loading">
+                <img
+                  src="./images/cad2.jpg"
+                  alt="CAD Design 2"
+                  loading="lazy"
+                />
+                <figcaption>Rear View</figcaption>
+              </div>
+              <div class="image-gallery-item card loading">
+                <img
+                  src="./images/cad3.jpg"
+                  alt="CAD Design 3"
+                  loading="lazy"
+                />
+                <figcaption>Section View</figcaption>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="implementation-section section-padding">
+            <h3 class="section-title">Final Product</h3>
+            <div class="image-gallery grid-layout responsive-grid">
+              <div class="image-gallery-item card loading">
+                <img
+                  src="./images/FINAL1.jpg"
+                  alt="CAD Design 1"
+                  loading="lazy"
+                />
+                <figcaption>Front View</figcaption>
+              </div>
+              <div class="image-gallery-item card loading">
+                <img
+                  src="./images/FINAL2.jpg"
+                  alt="CAD Design 2"
+                  loading="lazy"
+                />
+                <figcaption>Rear View</figcaption>
+              </div>
+              <div class="image-gallery-item card loading">
+                <img
+                  src="./images/FINAL3.jpg"
+                  alt="CAD Design 3"
+                  loading="lazy"
+                />
+                <figcaption>Power Unit</figcaption>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <section id="testing" class="section-padding section-alt-bg">
+        <div class="container">
+          <h2 class="section-title">Testing & Validation</h2>
+
+          <div class="testing-category card loading">
+            <h3 class="category-title">Hardware Testing</h3>
+            <ul class="styled-list">
               <li>
-                Tested with human hand and a hot mug for temperature accuracy.
+                <strong>Component Integration Tests:</strong>
+                <ul class="nested-list">
+                  <li>
+                    <strong>Camera & LED Synchronization:</strong> Verified
+                    proper operation of Pi NOIR camera with 850nm IR LEDs for
+                    consistent illumination and image capture.
+                  </li>
+                  <li>
+                    <strong>Sensor Accuracy:</strong> Calibrated MLX90614
+                    temperature sensor against a professional thermometer for
+                    accurate readings. Tested VL53L0X distance sensor for
+                    precise distance measurements.
+                  </li>
+                  <li>
+                    <strong>Raspberry Pi Stability:</strong> Monitored system
+                    performance and resource utilization of Raspberry Pi 3B
+                    under continuous data capture and processing loads.
+                  </li>
+                </ul>
               </li>
-              <li>Real-time values displayed on terminal via Python script.</li>
               <li>
-                Validated against a digital thermometer (difference < 0.5°C).
+                <strong>Power Consumption Analysis:</strong> Measured power draw
+                of the complete device to ensure extended battery life and
+                efficient operation.
+              </li>
+              <li>
+                <strong>Environmental Resilience:</strong> Tested device
+                functionality under varying ambient temperatures and lighting
+                conditions to simulate real-world surgical environments.
               </li>
             </ul>
-          </li>
-          <li>
-            <strong>VL53L0X Distance Sensor:</strong>
-            <ul>
+          </div>
+
+          <div class="testing-category card loading">
+            <h3 class="category-title">Software Testing</h3>
+            <ul class="styled-list">
               <li>
-                Tested object detection at fixed distances (10 cm and 20 cm).
+                <strong>Unit Testing (Jest):</strong>
+                <ul class="nested-list">
+                  <li>
+                    <strong>Image Processing Algorithms:</strong> Verified the
+                    accuracy of color filtering, thresholding, and morphological
+                    filtering functions for vein enhancement.
+                  </li>
+                  <li>
+                    <strong>Vein Continuity Scoring:</strong> Validated the
+                    algorithm's ability to calculate a consistent and meaningful
+                    score based on processed images.
+                  </li>
+                  <li>
+                    <strong>Data Handling:</strong> Ensured proper formatting
+                    and conversion of sensor data before transmission to AWS IoT
+                    Core.
+                  </li>
+                </ul>
               </li>
               <li>
-                Logged results under varying ambient light to ensure stability.
+                <strong>API Testing (Postman):</strong>
+                <ul class="nested-list">
+                  <li>
+                    <strong>Endpoint Validation:</strong> Tested all Node.js API
+                    endpoints for correct data retrieval, creation, update, and
+                    deletion operations (patients, doctors, historical data).
+                  </li>
+                  <li>
+                    <strong>Authentication & Authorization:</strong> Verified
+                    secure access controls for different user roles (admin,
+                    doctor, patient).
+                  </li>
+                  <li>
+                    <strong>Error Handling:</strong> Assessed API responses for
+                    various error scenarios (e.g., invalid input, missing data,
+                    server errors).
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Integration Testing:</strong>
+                <ul class="nested-list">
+                  <li>
+                    <strong>End-to-End Data Flow:</strong> Tracked data from
+                    sensor capture on Raspberry Pi, through AWS IoT Core and
+                    Node.js backend, to display on web and mobile interfaces.
+                  </li>
+                  <li>
+                    <strong>Cloud Service Connectivity:</strong> Ensured
+                    seamless communication between Raspberry Pi, AWS IoT Core,
+                    S3, and MongoDB.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>User Acceptance Testing (UAT):</strong> Conducted pilot
+                tests with potential users (medical professionals) to gather
+                feedback on usability, functionality, and overall satisfaction.
               </li>
             </ul>
-          </li>
-        </ul>
-      </div>
+          </div>
+        </div>
 
-      <div class="testing-category">
-        <h3>📈 Vein Continuity Score Testing</h3>
-        <ul>
-          <li>
-            Hand vein test yielded a high continuity score of
-            <strong>above 8.5</strong>, demonstrating good vein visibility and
-            connectivity.
-          </li>
-          <li>
-            Tests on various non-skin objects (e.g., paper, plastic) and skin
-            areas with poor vein exposure (e.g.,
-            <strong>palm side near wrist or back of arm</strong>) returned
-            continuity scores of <strong>below 3</strong>, validating the
-            scoring method’s reliability.
-          </li>
-        </ul>
+    <div class="implementation-section">
+      <h3 class="section-title-sub">System Testing & Validation</h3>
+      <div class="image-gallery grid-layout three-col-grid">
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/test1.jpg"
+            alt="Raw Image 1"
+            loading="lazy"
+          />
+          <figcaption>End Point Testing with Postman</figcaption>
+        </div>
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/test2.jpg"
+            alt="Raw Image 2"
+            loading="lazy"
+          />
+          <figcaption>MongoDB Testing</figcaption>
+        </div>
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/test3.jpg"
+            alt="Raw Image 3"
+            loading="lazy"
+          />
+          <figcaption>Unit Testing</figcaption>
+        </div>
       </div>
+    </div>
+
+    <div class="container">
+          <h2 class="section-title"></h2>
+
+          <div class="testing-category card loading">
+  <h3 class="category-title">Vein Continuity Score Testing</h3>
+  <ul class="styled-list">
+    <li>
+      <strong>Informal Validation:</strong>
+      Conducted using NIR images captured via our prototype to evaluate the behavior of the vein continuity scoring algorithm in real conditions.
+    </li>
+    <li>
+      <strong>Visible Vein Areas:</strong>
+      <ul class="nested-list">
+        <li>
+          <strong>Back of the Hand / Forearm:</strong> Scores ranged from <strong>8.0 to 9.3</strong>, indicating strong and consistent vein visibility.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong>Low Visibility Areas:</strong>
+      <ul class="nested-list">
+        <li>
+          <strong>Palm Side Near Wrist:</strong> Scores between <strong>2.5 to 3.2</strong>, reflecting reduced visibility in regions with fewer surface veins.
+        </li>
+        <li>
+          <strong>Back of Upper Arm:</strong> Scores ranged from <strong>1.8 to 2.7</strong>, confirming difficulty in capturing continuous vein paths in such areas.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong>Non-Skin Surfaces:</strong>
+      <ul class="nested-list">
+        <li>
+          <strong>Paper & Plastic Materials:</strong> Scores consistently below <strong>2.0</strong>, confirming that the algorithm avoids false detection on irrelevant surfaces.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong>Conclusion:</strong>
+      Although not clinically validated, these results support the algorithm’s reliability in differentiating between vascular and non-vascular patterns across diverse test scenarios.
+    </li>
+  </ul>
+</div>
+
+      </section>
+
+      <section id="budget" class="section-padding">
+        <div class="container">
+          <h2 class="section-title">Project Budget</h2>
+          <div class="budget-table-container loading">
+            <table class="budget-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Item/Description</th>
+                  <th>Quantity</th>
+                  <th>Unit Cost (LKR)</th>
+                  <th>Total Cost (LKR)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Hardware</td>
+                  <td>Raspberry Pi 3B</td>
+                  <td>1</td>
+                  <td>20,500</td>
+                  <td>20,500</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>Raspberry Pi NoIR Camera Sony IMX219</td>
+                  <td>1</td>
+                  <td>7,800</td>
+                  <td>7,800</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>5 inch LCD Touch Display</td>
+                  <td>1</td>
+                  <td>10,390</td>
+                  <td>10,390</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>850nm IR LED</td>
+                  <td>52</td>
+                  <td>20</td>
+                  <td>1,040</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>MLX90614 Temperature Sensor</td>
+                  <td>1</td>
+                  <td>4,500</td>
+                  <td>4,500</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>VL53L0X Distance Sensor</td>
+                  <td>1</td>
+                  <td>1,090</td>
+                  <td>1,090</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>Power Supply & Cables</td>
+                  <td>1</td>
+                  <td>2,100</td>
+                  <td>2,100</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>Other Electronic Components</td>
+                  <td>1</td>
+                  <td>1,000</td>
+                  <td>1,000</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>Enclosure/CAD 3D Printing</td>
+                  <td>1</td>
+                  <td>12,000</td>
+                  <td>12,000</td>
+                </tr>
+                <tr>
+                  <td>Software/Cloud Services</td>
+                  <td>AWS IoT Core (estimated usage)</td>
+                  <td>N/A</td>
+                  <td>0 (Free Tier)</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>AWS S3 (estimated storage)</td>
+                  <td>N/A</td>
+                  <td>0 (Free Tier)</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>MongoDB Atlas (cloud tier)</td>
+                  <td>N/A</td>
+                  <td>0 (Free Tier)</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>Miscellaneous</td>
+                  <td>Prototyping Materials (wires, resistors, etc.)</td>
+                  <td>1</td>
+                  <td>1,000</td>
+                  <td>1,000</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="total">
+                  <td colspan="4">Total Project Cost</td>
+                  <td>61,420 LKR</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="team" class="section-padding section-alt-bg">
+        <div class="container">
+          <h2 class="section-title">Our Team</h2>
+          <div class="team-container grid-layout responsive-grid">
+            <div class="team-card card">
+              <img
+                src="https://people.ce.pdn.ac.lk/images/staff/academic-staff/isuru-nawinne.png"
+                alt="Dr. Isuru Nawinne Profile Picture"
+                class="team-photo"
+                loading="lazy"
+              />
+              <div class="card-content">
+                <h3 class="member-name">Dr. Isuru Nawinne</h3>
+                <p class="member-role">Project Supervisor</p>
+                <div class="social-links">
+                  <a
+                    href="https://www.linkedin.com/in/isuru-nawinne-73302833/"
+                    target="_blank"
+                    class="social-icon"
+                    title="LinkedIn Profile"
+                  >
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                  <a
+                    href="https://people.ce.pdn.ac.lk/staff/academic/isuru-nawinne/"
+                    target="_blank"
+                    class="social-icon"
+                    title="Department Profile"
+                  >
+                    <i class="fas fa-user-tie"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="team-card card">
+              <img
+                src="https://avatars.githubusercontent.com/u/150885177?v=4"
+                alt="T.L.B Mapagedara Profile Picture"
+                class="team-photo"
+                loading="lazy"
+              />
+              <div class="card-content">
+                <h3 class="member-name">T.L.B Mapagedara</h3>
+                <p class="member-role">Team Member</p>
+                <div class="social-links">
+                  <a
+                    href="https://github.com/Tharindu09"
+                    target="_blank"
+                    class="social-icon"
+                    title="GitHub Profile"
+                  >
+                    <i class="fab fa-github"></i>
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/tharindu-mapagedara-6119572a0/"
+                    target="_blank"
+                    class="social-icon"
+                    title="LinkedIn Profile"
+                  >
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                  <a
+                    href="https://people.ce.pdn.ac.lk/students/e20/248/"
+                    target="_blank"
+                    class="social-icon"
+                    title="Department Profile"
+                  >
+                    <i class="fas fa-user"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="team-card card">
+              <img
+                src="https://people.ce.pdn.ac.lk/images/students/e20/e20453.jpg"
+                alt="R.J Yogesh Profile Picture"
+                class="team-photo"
+                loading="lazy"
+              />
+              <div class="card-content">
+                <h3 class="member-name">R.J Yogesh</h3>
+                <p class="member-role">Team Member</p>
+                <div class="social-links">
+                  <a
+                    href="https://github.com/janithyogesh"
+                    target="_blank"
+                    class="social-icon"
+                    title="GitHub Profile"
+                  >
+                    <i class="fab fa-github"></i>
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/janith-rathuge-6242a7260"
+                    target="_blank"
+                    class="social-icon"
+                    title="LinkedIn Profile"
+                  >
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                  <a
+                    href="https://people.ce.pdn.ac.lk/students/e20/453/"
+                    target="_blank"
+                    class="social-icon"
+                    title="Department Profile"
+                  >
+                    <i class="fas fa-user"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="team-card card">
+              <img
+                src="https://people.ce.pdn.ac.lk/images/students/e20/e20158.jpg"
+                alt="J.G.C Jananga Profile Picture"
+                class="team-photo"
+                loading="lazy"
+              />
+              <div class="card-content">
+                <h3 class="member-name">J.G.C Jananga</h3>
+                <p class="member-role">Team Member</p>
+                <div class="social-links">
+                  <a
+                    href="https://github.com/tgcjananga"
+                    target="_blank"
+                    class="social-icon"
+                    title="GitHub Profile"
+                  >
+                    <i class="fab fa-github"></i>
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/chamuditha-jananga-18bb2a277"
+                    target="_blank"
+                    class="social-icon"
+                    title="LinkedIn Profile"
+                  >
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                  <a
+                    href="https://people.ce.pdn.ac.lk/students/e20/158/"
+                    target="_blank"
+                    class="social-icon"
+                    title="Department Profile"
+                  >
+                    <i class="fas fa-user"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="team-card card" id="my-hidden-card"></div> -->
+
+            <div class="team-card card">
+              <img
+                src="https://people.ce.pdn.ac.lk/images/students/e20/e20300.jpg"
+                alt="H.A.M.T Prasadinie Profile Picture"
+                class="team-photo"
+                loading="lazy"
+              />
+              <div class="card-content">
+                <h3 class="member-name">H.A.M.T Prasadinie</h3>
+                <p class="member-role">Team Member</p>
+                <div class="social-links">
+                  <a
+                    href="https://github.com/tharushika0418"
+                    target="_blank"
+                    class="social-icon"
+                    title="GitHub Profile"
+                  >
+                    <i class="fab fa-github"></i>
+                  </a>
+                  <a
+                    href="http://linkedin.com/in/h-a-m-t-prasadinie-29a13a261"
+                    target="_blank"
+                    class="social-icon"
+                    title="LinkedIn Profile"
+                  >
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                  <a
+                    href="https://people.ce.pdn.ac.lk/students/e20/300/"
+                    target="_blank"
+                    class="social-icon"
+                    title="Department Profile"
+                  >
+                    <i class="fas fa-user"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+       </section> <section id="resources" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Quick Links</h2>
+            <div class="resources-links-container">
+                <a href="https://projects.ce.pdn.ac.lk/3yp/e20/Vescueye/" target="_blank" class="resource-link" title="Visit Project Website">
+                    <i class="fas fa-globe"></i> Project Website
+                </a>
+                <a href="https://expo.dev/accounts/vescueye-testuser/projects/Vescueye/builds/dece2a59-1b77-47f8-b3e0-d1aaf1c12730" target="_blank" class="resource-link" title="Download Mobile APK">
+                    <i class="fas fa-mobile-alt"></i>Download Mobile APK
+                </a>
+                <a href="https://ce.pdn.ac.lk/" target="_blank" class="resource-link" title="Visit Department Page">
+                    <i class="fas fa-building"></i> Department Web Page
+                </a>
+                <a href="https://github.com/cepdnaclk/e20-3yp-Vescueye" target="_blank" class="resource-link" title="Explore GitHub Repository">
+                    <i class="fab fa-github"></i> GitHub Repository
+                </a>
+            </div>
+        </div>
+        <div class="container">
+          <h2 class="section-title"></h2>
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-info-container">
+                <!-- <div class="contact-item">
+                    <i class="fas fa-map-marker-alt contact-icon"></i>
+                    <p>Department of Computer Engineering, Faculty of Engineering, University of Peradeniya</p>
+                </div> -->
+                <div class="contact-item">
+                    <i class="fas fa-envelope contact-icon"></i>
+                    <a href="mailto:rehabgait@eng.pdn.ac.lk">vescueye@gmail.com</a>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Budget Section -->
-    <section id="budget" class="budget">
-      <h2>Project Budget</h2>
-      <table class="budget-table">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Unit Cost</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Temperature Sensor (MLX90614)</td>
-            <td>1</td>
-            <td>Rs. 4500.00</td>
-            <td>Rs. 4500.00</td>
-          </tr>
-          <tr>
-            <td>Raspberry Pi 3 Model B</td>
-            <td>1</td>
-            <td>Rs. 20500.00</td>
-            <td>Rs. 20500.00</td>
-          </tr>
-          <tr>
-            <td>Raspberry Pi NoIR Camera Sony IMX219</td>
-            <td>1</td>
-            <td>Rs. 7800.00</td>
-            <td>Rs. 7800.00</td>
-          </tr>
-          <tr>
-            <td>IR LEDs (850nm)</td>
-            <td>10</td>
-            <td>Rs. 200.00</td>
-            <td>Rs. 2000.00</td>
-          </tr>
-          <tr>
-            <td>IR LEDs (940nm)</td>
-            <td>10</td>
-            <td>Rs. 200.00</td>
-            <td>Rs. 2000.00</td>
-          </tr>
-          <tr>
-            <td>3.5 Inch LCD Display</td>
-            <td>1</td>
-            <td>Rs. 4000.00</td>
-            <td>Rs. 4000.00</td>
-          </tr>
-          <tr>
-            <td>Wires and Other Electronic Components</td>
-            <td>-</td>
-            <td>Rs. 1000.00</td>
-            <td>Rs. 1000.00</td>
-          </tr>
-          <tr class="total">
-            <td>Total Price</td>
-            <td>-</td>
-            <td>-</td>
-            <td>Rs. 41700.00</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    </main>
 
-    <!-- Team Member Cards -->
-    <section id="team" class="team-members">
-      <h2>Meet the Team</h2>
-      <div class="team-cards">
-        <!-- Supervisor Card -->
-        <div class="team-card">
-          <img
-            src="https://people.ce.pdn.ac.lk/images/staff/academic-staff/isuru-nawinne.png"
-            alt="Supervisor Image"
-          />
-          <div class="card-content">
-            <h3>Dr. Isuru Nawinne</h3>
-            <p>Project Supervisor</p>
-            <div class="social-links">
-              <a
-                href="https://www.linkedin.com/in/isuru-nawinne-73302833/"
-                target="_blank"
-                class="social-icon"
-                title="LinkedIn"
-              >
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a
-                href="https://people.ce.pdn.ac.lk/staff/academic/isuru-nawinne/"
-                target="_blank"
-                class="social-icon"
-                title="Department Profile"
-              >
-                <i class="fas fa-user-tie"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <!-- Card 1 -->
-        <div class="team-card">
-          <img
-            src="https://avatars.githubusercontent.com/u/150885177?v=4"
-            alt="T.L.B Mapagedara"
-          />
-          <div class="card-content">
-            <h3>T.L.B Mapagedara</h3>
-            <p>Team Member</p>
-            <div class="social-links">
-              <a
-                href="https://github.com/Tharindu09"
-                target="_blank"
-                class="social-icon"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/tharindu-mapagedara-6119572a0/"
-                target="_blank"
-                class="social-icon"
-                title="LinkedIn"
-              >
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a
-                href="https://people.ce.pdn.ac.lk/students/e20/248/"
-                target="_blank"
-                class="social-icon"
-                title="Department Profile"
-              >
-                <i class="fas fa-user"></i>
-              </a>
-            </div>
-          </div>
-        </div>
+  
+<footer class="main-footer">
+  <div class="container footer-content">
+    <p>&copy; 2025 Vescueye - All rights reserved.</p>
+    <p>
+      <svg class="location-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      Department of Computer Engineering, Faculty of Engineering, University of Peradeniya.
+    </p>
+  </div>
+</footer>
 
-        <!-- Card 2 -->
-        <div class="team-card">
-          <img
-            src="https://people.ce.pdn.ac.lk/images/students/e20/e20158.jpg"
-            alt="J.G.C Jananga"
-          />
-          <div class="card-content">
-            <h3>J.G.C Jananga</h3>
-            <p>Team Member</p>
-            <div class="social-links">
-              <a
-                href="https://github.com/tgcjananga"
-                target="_blank"
-                class="social-icon"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/chamuditha-jananga-18bb2a277"
-                target="_blank"
-                class="social-icon"
-                title="LinkedIn"
-              >
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a
-                href="https://people.ce.pdn.ac.lk/students/e20/158/"
-                target="_blank"
-                class="social-icon"
-                title="Department Profile"
-              >
-                <i class="fas fa-user"></i>
-              </a>
-            </div>
-          </div>
-        </div>
+<style>
+.main-footer {
+  background-color: rgba(10, 10, 15, 0.95);;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+}
 
-        <!-- Card 3 -->
-        <div class="team-card">
-          <img
-            src="https://people.ce.pdn.ac.lk/images/students/e20/e20453.jpg"
-            alt="R.J Yogesh"
-          />
-          <div class="card-content">
-            <h3>R.J Yogesh</h3>
-            <p>Team Member</p>
-            <div class="social-links">
-              <a
-                href="https://github.com/janithyogesh"
-                target="_blank"
-                class="social-icon"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/janith-rathuge-6242a7260"
-                target="_blank"
-                class="social-icon"
-                title="LinkedIn"
-              >
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a
-                href="https://people.ce.pdn.ac.lk/students/e20/453/"
-                target="_blank"
-                class="social-icon"
-                title="Department Profile"
-              >
-                <i class="fas fa-user"></i>
-              </a>
-            </div>
-          </div>
-        </div>
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
-        <!-- Card 4 -->
-        <div class="team-card">
-          <img
-            src="https://people.ce.pdn.ac.lk/images/students/e20/e20300.jpg"
-            alt="H.A.M.T Prasadinie"
-          />
-          <div class="card-content">
-            <h3>H.A.M.T Prasadinie</h3>
-            <p>Team Member</p>
-            <div class="social-links">
-              <a
-                href="https://github.com/tharushika0418"
-                target="_blank"
-                class="social-icon"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
-              <a
-                href="http://linkedin.com/in/h-a-m-t-prasadinie-29a13a261"
-                target="_blank"
-                class="social-icon"
-                title="LinkedIn"
-              >
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a
-                href="https://people.ce.pdn.ac.lk/students/e20/300/"
-                target="_blank"
-                class="social-icon"
-                title="Department Profile"
-              >
-                <i class="fas fa-user"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+.footer-content p {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
-    <footer>
-      <p>&copy; 2025 VescuEye Project</p>
-      <div class="footer-links">
-        <a href="https://github.com/cepdnaclk/e20-3yp-Vescueye" target="_blank"
-          >Project Repository</a
-        >
-        |
-        <a href="http://www.ce.pdn.ac.lk/" target="_blank"
-          >Department of Computer Engineering</a
-        >
-      </div>
-    </footer>
+.location-icon {
+  flex-shrink: 0;
+  color: #fff;
+}
+</style>
 
-    <script src="assets/script.js"></script>
+    <button id="scrollToTopBtn" class="scroll-to-top-btn">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+      // Smooth scrolling for navigation links
+      document.querySelectorAll(".nav-link").forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      // Show/Hide scroll-to-top button
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          scrollToTopBtn.style.display = "flex";
+        } else {
+          scrollToTopBtn.style.display = "none";
+        }
+      });
+
+      scrollToTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      // Fade-in animation for sections on scroll
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("loaded");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".loading").forEach((el) => {
+        observer.observe(el);
+      });
+    </script>
   </body>
 </html>
