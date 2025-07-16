@@ -11,7 +11,10 @@ import {
   Grid,
   CircularProgress,
   TextField,
+  Divider,
+  Alert,
 } from "@mui/material";
+import { Download, Android, QrCode } from "@mui/icons-material"; // Add these icons
 import FlapDetailModal from "../components/FlapDetailModal";
 import "../styles/DoctorDashboard.css"; // Import separate CSS file
 
@@ -35,6 +38,9 @@ const DoctorDashboard = () => {
   const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
+
+  // APK download URL
+  const APK_DOWNLOAD_URL = "https://expo.dev/accounts/vescueye-testuser/projects/Vescueye/builds/dece2a59-1b77-47f8-b3e0-d1aaf1c12730";
 
   // Fetch assigned patients when component loads
   useEffect(() => {
@@ -127,11 +133,16 @@ const DoctorDashboard = () => {
     setFilteredPatients(results);
   };
 
+  const handleAPKDownload = () => {
+    window.open(APK_DOWNLOAD_URL, '_blank');
+  };
+
   return (
     <Box className="dashboard-container">
       <Typography variant="h4" sx={{ marginBottom: "20px" }}>
         Doctor Dashboard
       </Typography>
+      
       {/* Doctor Profile Section */}
       <Card className="doctor-profile">
         <CardContent>
@@ -153,8 +164,43 @@ const DoctorDashboard = () => {
         </CardContent>
       </Card>
 
-      {/* Two Column Layout */}
+      {/* Mobile App Download Section */}
+      <Card sx={{ marginBottom: 3, backgroundColor: "#f8f9fa" }}>
+        <CardContent>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+            <Android sx={{ color: "#4CAF50", fontSize: 30 }} />
+            <Typography variant="h6">
+              Vescueye Mobile App
+            </Typography>
+          </Box>
+          
+          <Typography variant="body2" sx={{ mb: 2, color: "#666" }}>
+            Download the Vescueye mobile app for convenient access to patient data on the go.
+          </Typography>
+          
+          <Alert severity="info" sx={{ mb: 2 }}>
+            <Typography variant="body2">
+              Note: You may need to enable "Install from Unknown Sources" in your Android settings.
+            </Typography>
+          </Alert>
 
+          <Button
+            variant="contained"
+            startIcon={<Download />}
+            onClick={handleAPKDownload}
+            sx={{
+              backgroundColor: "#4CAF50",
+              '&:hover': {
+                backgroundColor: "#45a049",
+              },
+            }}
+          >
+            Download APK
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Two Column Layout */}
       <Box
         sx={{
           display: "flex",
