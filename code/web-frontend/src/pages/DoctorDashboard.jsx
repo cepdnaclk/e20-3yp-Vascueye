@@ -14,33 +14,32 @@ import {
   Divider,
   Alert,
 } from "@mui/material";
-import { Download, Android, QrCode } from "@mui/icons-material"; // Add these icons
+import { Download, Android, QrCode } from "@mui/icons-material";
 import FlapDetailModal from "../components/FlapDetailModal";
-import "../styles/DoctorDashboard.css"; // Import separate CSS file
+import "../styles/DoctorDashboard.css";
 
 const DoctorDashboard = () => {
   const { user } = useContext(AuthContext);
-
-  //   const navigate = useNavigate();
-
   const [assignedPatients, setAssignedPatients] = useState([]);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [flapData, setFlapData] = useState([]);
   const [selectedFlap, setSelectedFlap] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState([]);
+  
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
   const token = localStorage.getItem("token");
-
   const navigate = useNavigate();
 
   // APK download URL
   const APK_DOWNLOAD_URL = "https://expo.dev/accounts/vescueye-testuser/projects/Vescueye/builds/dece2a59-1b77-47f8-b3e0-d1aaf1c12730";
+
+  // Generate QR code URL using a free QR code API
+  const QR_CODE_URL = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(APK_DOWNLOAD_URL)}`;
 
   // Fetch assigned patients when component loads
   useEffect(() => {
@@ -356,6 +355,59 @@ const DoctorDashboard = () => {
           </Card>
         </Box>
       </Box>
+
+      {/* QR Code Section - At Bottom */}
+      <Card 
+        sx={{ 
+          marginTop: 4, 
+          marginBottom: 3,
+          backgroundColor: "#f5f5f5",
+          border: "1px solid #e0e0e0"
+        }}
+      >
+        <CardContent>
+          <Box sx={{ 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: 3,
+            textAlign: { xs: "center", sm: "left" }
+          }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <QrCode sx={{ color: "#666", fontSize: 20 }} />
+              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                Scan to Download APK
+              </Typography>
+            </Box>
+            
+            <Box sx={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: 2,
+              flexDirection: { xs: "column", sm: "row" }
+            }}>
+              <img 
+                src={QR_CODE_URL} 
+                alt="QR Code for APK Download"
+                style={{ 
+                  width: "100px", 
+                  height: "100px",
+                  border: "1px solid #ddd",
+                  borderRadius: "4px"
+                }}
+              />
+              <Typography variant="body2" sx={{ 
+                color: "#666", 
+                maxWidth: "300px",
+                fontSize: "0.875rem"
+              }}>
+                Point your mobile device camera at this QR code to quickly download the Vescueye mobile app.
+              </Typography>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
     </Box>
   );
 };
