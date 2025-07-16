@@ -16,7 +16,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // Adjust the import path based on your project structure
 // import { AuthContext } from "../contexts/AuthContext"; // Uncomment and adjust path as needed
 const { LOCALHOST, DEPLOYED_URL } = Constants.expoConfig.extra;
-const API_URL = DEPLOYED_URL||LOCALHOST ;
+// const API_URL = DEPLOYED_URL||LOCALHOST ;
+const API_URL = "http://52.205.100.211:5001";
 const API_BASE_URL = `${API_URL}/api/users`; 
 
 export default function DoctorProfile({ navigation }) {

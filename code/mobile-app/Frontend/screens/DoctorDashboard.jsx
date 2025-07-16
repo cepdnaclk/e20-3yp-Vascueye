@@ -28,8 +28,9 @@ export default function DoctorDashboard() {
 
   const navigation = useNavigation();
   const { LOCALHOST, DEPLOYED_URL } = Constants.expoConfig.extra;
-  const API_URL = DEPLOYED_URL||LOCALHOST ;
-  
+  // const API_URL = DEPLOYED_URL||LOCALHOST ;
+  const API_URL = "http://52.205.100.211:5001";
+
   const BASE_URL = `${API_URL}/api/users`;
 
   // Filter patients based on search query

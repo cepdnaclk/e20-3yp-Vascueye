@@ -12,7 +12,8 @@ const ForgotPassword = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const { LOCALHOST, DEPLOYED_URL } = Constants.expoConfig.extra;    // 2. Get environment variables from app.config.js
   // const API_URL = "http://172.20.10.6:5001";
-  const API_URL = DEPLOYED_URL||LOCALHOST ;
+  // const API_URL = DEPLOYED_URL||LOCALHOST ;
+  const API_URL = "http://52.205.100.211:5001";
   const handleResetPassword = async () => {
     if (!email) {
       Alert.alert("Error", "Please enter your email address.");

@@ -5,7 +5,8 @@ import * as Device from 'expo-device';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { LOCALHOST, DEPLOYED_URL } = Constants.expoConfig.extra;
-const API_URL = DEPLOYED_URL||LOCALHOST ;
+// const API_URL = DEPLOYED_URL||LOCALHOST ;
+const API_URL = "http://52.205.100.211:5001";
 
 export const registerForPushNotificationsAsync = async () => {
   if (!Device.isDevice) {

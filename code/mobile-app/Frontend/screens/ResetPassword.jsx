@@ -42,7 +42,8 @@ const ResetPassword = ({ navigation }) => {
     setLoading(true);
     try {
       const { LOCALHOST, DEPLOYED_URL } = Constants.expoConfig.extra;
-      const API_URL = DEPLOYED_URL||LOCALHOST ;
+      // const API_URL = DEPLOYED_URL||LOCALHOST ;
+      const API_URL = "http://52.205.100.211:5001";
       const response = await fetch(`${API_URL}/api/auth/reset-password/${token.trim()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
