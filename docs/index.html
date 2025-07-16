@@ -691,6 +691,51 @@
   margin: 0 auto; /* Center the entire grid container */
 }
 
+/* Styles for the new Project Resources section */
+.resources-links-container {
+  display: flex; /* Use flexbox to arrange links */
+  flex-wrap: wrap; /* Allow links to wrap to the next line on smaller screens */
+  justify-content: center; /* Center the links horizontally */
+  gap: 1.5rem; /* Space between individual links */
+  margin-top: 2.5rem; /* Space above the links container */
+  max-width: 900px; /* Optional: Limit the width of the links container */
+  margin-left: auto; /* Center the container itself */
+  margin-right: auto;
+}
+
+.resource-link {
+  display: flex; /* Use flexbox for icon and text inside link */
+  align-items: center; /* Vertically align icon and text */
+  gap: 0.6rem; /* Space between icon and text */
+  background: var(--bg-card); /* Consistent background with your cards */
+  border: 1px solid var(--border-color); /* Consistent border */
+  border-radius: var(--border-radius); /* Consistent border-radius */
+  padding: 1rem 1.8rem; /* Padding inside the link box */
+  text-decoration: none; /* Remove underline */
+  color: var(--text-primary); /* Consistent text color */
+  transition: var(--transition); /* Smooth transition for hover effects */
+  font-weight: 500;
+  white-space: nowrap; /* Prevent text from wrapping within the link */
+  font-size: 1rem; /* Adjust font size as needed */
+  box-shadow: var(--shadow-small); /* Subtle shadow */
+}
+
+.resource-link:hover {
+  background: var(--bg-card-hover); /* Consistent hover background */
+  transform: translateY(-3px); /* Slight lift on hover */
+  box-shadow: var(--shadow-card); /* Enhanced shadow on hover */
+  color: var(--primary-color); /* Change text color on hover for emphasis */
+}
+
+.resource-link i {
+  font-size: 1.2rem; /* Size of the icon */
+  color: var(--primary-color); /* Color of the icon */
+}
+
+.resource-link:hover i {
+  color: var(--primary-text-color); /* Example: make icon white on hover if primary-color is dark */
+}
+
 /* Media query to explicitly ensure 3 columns on larger screens (e.g., desktops) */
 @media (min-width: 992px) { /* Adjust breakpoint as needed for when you want 3 columns to appear */
   .team-container.responsive-grid {
@@ -2074,6 +2119,26 @@
           </div>
         </div>
       </section>
+
+       </section> <section id="resources" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Project Resources</h2>
+            <div class="resources-links-container">
+                <a href="https://yourprojectwebsite.com" target="_blank" class="resource-link" title="Visit Project Website">
+                    <i class="fas fa-globe"></i> Project Website
+                </a>
+                <a href="https://yourproject.com/app/your_app.apk" target="_blank" class="resource-link" title="Download Mobile APK">
+                    <i class="fas fa-mobile-alt"></i> Mobile APK
+                </a>
+                <a href="https://ce.pdn.ac.lk/" target="_blank" class="resource-link" title="Visit Department Page">
+                    <i class="fas fa-building"></i> Department Web Page
+                </a>
+                <a href="https://github.com/cepdnaclk/e20-3yp-Vescueye" target="_blank" class="resource-link" title="Explore GitHub Repository">
+                    <i class="fab fa-github"></i> GitHub Repository
+                </a>
+            </div>
+        </div>
+    </section>
     </main>
 
     <footer class="main-footer">
