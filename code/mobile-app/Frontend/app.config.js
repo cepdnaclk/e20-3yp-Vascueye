@@ -35,6 +35,8 @@ export default {
     extra: {
       LOCALHOST: process.env.LOCALHOST,
       DEPLOYED_URL: process.env.DEPLOYED_URL,
+      LOCALHOST_WEB : process.env.LOCALHOST_WEB,
+      DEPLOYED_URL_WEB: process.env.DEPLOYED_URL_WEB,
       eas: {
         projectId: "f940952a-6476-4913-bb35-f669e2181817"
       }
