@@ -1,7 +1,8 @@
+import Constants from 'expo-constants';  
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator } from "react-native";
-
-const WEBSOCKET_URL = "http://172.20.10.6:8080"; 
+const { LOCALHOST_WEB, DEPLOYED_URL_WEB } = Constants.expoConfig.extra;
+const API_URL = DEPLOYED_URL_WEB||LOCALHOST_WEB ;
 
 const LiveFlapScreen = () => {
   const [flapData, setFlapData] = useState([]);
