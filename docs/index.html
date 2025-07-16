@@ -791,6 +791,67 @@
         box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
       }
 
+      /* General image gallery item styling specific to Implementation section */
+.implementation-section .image-gallery-item.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+  overflow: hidden;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column; /* ADD THIS LINE: Stacks children vertically */
+  justify-content: center; /* Centers content vertically within the card if there's extra space */
+  align-items: center; /* Centers content horizontally within the card */
+}
+
+/* You might want to add some top margin to the figcaption for spacing */
+.implementation-section .image-gallery-item.card figcaption {
+  margin-top: 0.8rem; /* Provides space between the image and the caption */
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* The rest of your CSS for this section remains the same */
+
+/* Specific Grid for the Image Gallery within the Implementation section */
+.implementation-section .image-gallery.three-col-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* Hover effect for image gallery items within Implementation section */
+.implementation-section .image-gallery-item.card:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+}
+
+/* Image styling within the card, specific to Implementation section */
+.implementation-section .image-gallery-item.card img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--border-radius);
+}
+
+/* Media query for responsiveness specifically for this image gallery */
+@media (max-width: 992px) {
+  .implementation-section .image-gallery.three-col-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .implementation-section .image-gallery.three-col-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
       /* Scroll to Top */
       .scroll-to-top-btn {
         position: fixed;
@@ -1308,6 +1369,7 @@
             alt="Raw Image 1"
             loading="lazy"
           />
+          <figcaption>Sample Hand Test Output 01(Infrared)</figcaption>
         </div>
         <div class="image-gallery-item card loading">
           <img
@@ -1315,6 +1377,7 @@
             alt="Raw Image 2"
             loading="lazy"
           />
+          <figcaption>Sample Wrist Test Output 02(Infrared)</figcaption>
         </div>
         <div class="image-gallery-item card loading">
           <img
@@ -1322,6 +1385,7 @@
             alt="Raw Image 3"
             loading="lazy"
           />
+          <figcaption>Sample Hand Test Output 03(Infrared)</figcaption>
         </div>
       </div>
     </div>
@@ -1570,6 +1634,35 @@
             </ul>
           </div>
         </div>
+
+        <div class="implementation-section">
+      <h3 class="section-title-sub">System Testing & Validation</h3>
+      <div class="image-gallery grid-layout three-col-grid">
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop1.jpg"
+            alt="Raw Image 1"
+            loading="lazy"
+          />
+          <figcaption>Sample Hand Test Output (Infrared)</figcaption>
+        </div>
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop2.jpg"
+            alt="Raw Image 2"
+            loading="lazy"
+          />
+        </div>
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop3.jpg"
+            alt="Raw Image 3"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+
       </section>
 
       <section id="budget" class="section-padding">
