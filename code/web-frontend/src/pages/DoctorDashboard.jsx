@@ -156,46 +156,61 @@ const DoctorDashboard = () => {
               <Typography>
                 <strong>Role:</strong> {user.role}
               </Typography>
+              
+              {/* APK Download Section in Profile */}
+              <Box sx={{ 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "space-between",
+                marginTop: 2,
+                padding: 2,
+                backgroundColor: "#f8f9fa",
+                borderRadius: 1,
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 2
+              }}>
+                <Box sx={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  gap: 2,
+                  flexDirection: { xs: "column", sm: "row" }
+                }}>
+                  <img 
+                    src={QR_CODE_URL} 
+                    alt="QR Code for APK Download"
+                    style={{ 
+                      width: "80px", 
+                      height: "80px",
+                      border: "1px solid #ddd",
+                      borderRadius: "4px"
+                    }}
+                  />
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <QrCode sx={{ color: "#666", fontSize: 20 }} />
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      Scan to Download APK
+                    </Typography>
+                  </Box>
+                </Box>
+                
+                <Button
+                  variant="contained"
+                  startIcon={<Download />}
+                  onClick={handleAPKDownload}
+                  sx={{
+                    backgroundColor: "#4CAF50",
+                    '&:hover': {
+                      backgroundColor: "#45a049",
+                    },
+                  }}
+                >
+                  Download APK
+                </Button>
+              </Box>
             </Box>
           ) : (
             <Typography>Loading profile...</Typography>
           )}
-        </CardContent>
-      </Card>
-
-      {/* Mobile App Download Section */}
-      <Card sx={{ marginBottom: 3, backgroundColor: "#f8f9fa" }}>
-        <CardContent>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
-            <Android sx={{ color: "#4CAF50", fontSize: 30 }} />
-            <Typography variant="h6">
-              Vescueye Mobile App
-            </Typography>
-          </Box>
-          
-          <Typography variant="body2" sx={{ mb: 2, color: "#666" }}>
-            Download the Vescueye mobile app for convenient access to patient data on the go.
-          </Typography>
-          
-          <Alert severity="info" sx={{ mb: 2 }}>
-            <Typography variant="body2">
-              Note: You may need to enable "Install from Unknown Sources" in your Android settings.
-            </Typography>
-          </Alert>
-
-          <Button
-            variant="contained"
-            startIcon={<Download />}
-            onClick={handleAPKDownload}
-            sx={{
-              backgroundColor: "#4CAF50",
-              '&:hover': {
-                backgroundColor: "#45a049",
-              },
-            }}
-          >
-            Download APK
-          </Button>
         </CardContent>
       </Card>
 
@@ -355,59 +370,6 @@ const DoctorDashboard = () => {
           </Card>
         </Box>
       </Box>
-
-      {/* QR Code Section - At Bottom */}
-      <Card 
-        sx={{ 
-          marginTop: 4, 
-          marginBottom: 3,
-          backgroundColor: "#f5f5f5",
-          border: "1px solid #e0e0e0"
-        }}
-      >
-        <CardContent>
-          <Box sx={{ 
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center",
-            flexDirection: { xs: "column", sm: "row" },
-            gap: 3,
-            textAlign: { xs: "center", sm: "left" }
-          }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <QrCode sx={{ color: "#666", fontSize: 20 }} />
-              <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                Scan to Download APK
-              </Typography>
-            </Box>
-            
-            <Box sx={{ 
-              display: "flex", 
-              alignItems: "center", 
-              gap: 2,
-              flexDirection: { xs: "column", sm: "row" }
-            }}>
-              <img 
-                src={QR_CODE_URL} 
-                alt="QR Code for APK Download"
-                style={{ 
-                  width: "100px", 
-                  height: "100px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px"
-                }}
-              />
-              <Typography variant="body2" sx={{ 
-                color: "#666", 
-                maxWidth: "300px",
-                fontSize: "0.875rem"
-              }}>
-                Point your mobile device camera at this QR code to quickly download the Vescueye mobile app.
-              </Typography>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
     </Box>
   );
 };
