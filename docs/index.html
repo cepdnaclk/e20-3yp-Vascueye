@@ -652,31 +652,75 @@
       }
 
       /* Target the first card (the supervisor) to make it span all columns */
-      .team-container.responsive-grid .team-card:first-child {
-        grid-column: 1 / -1; /* This makes the card span from the first grid line to the last */
-        justify-self: center; /* Centers the card horizontally within its now full-width grid area */
-        max-width: 350px; /* Adjusted max-width for supervisor card for better visual balance */
-        margin: 0 auto; /* Ensures centering works even if max-width is applied */
-      }
+      /* Team Container Grid Layout */
+.team-container.responsive-grid {
+  display: grid;
+  /*
+   * This will create 4 equal columns on wider screens.
+   * On smaller screens, it will automatically fit as many columns
+   * as possible (e.g., 2 or 1) with a minimum width of 220px.
+   */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem; /* Consistent spacing between cards */
+  justify-content: center; /* Centers the entire grid horizontally if there's extra space */
+  align-items: start; /* Aligns cards to the top of their grid cell vertically */
+  max-width: 1200px; /* Optional: Limit the grid width for better control on very wide screens */
+  margin: 0 auto; /* Center the entire grid container */
+}
 
-      /* General Team Card Styling (Consolidated and using theme variables) */
-      .team-card {
-        background: var(
-          --bg-card
-        ); /* Using your defined background card color */
-        border: 1px solid var(--border-color); /* Using your defined border color */
-        border-radius: var(
-          --border-radius
-        ); /* Using your defined border-radius */
-        backdrop-filter: blur(10px); /* Consistent with other cards */
-        transition: var(--transition); /* Consistent with other cards */
-        overflow: hidden; /* Ensures content stays within rounded corners */
-        padding: 2rem;
-        text-align: center;
-        display: flex; /* Use flexbox for internal content alignment */
-        flex-direction: column;
-        align-items: center; /* Centers content (image, text) horizontally within each card */
-      }
+/* IMPORTANT: Remove or comment out the following rule if you want 4 cards in a row
+   and the supervisor is no longer special-cased to span a full row. */
+/*
+.team-container.responsive-grid .team-card:first-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  max-width: 350px;
+  margin: 0 auto;
+}
+*/
+
+/* Team Container Grid Layout */
+.team-container.responsive-grid {
+  display: grid;
+  /* Default responsive layout: automatically fit columns, min 220px wide */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  justify-content: center; /* Centers the grid items if they don't fill the full width */
+  align-items: start; /* Aligns cards to the top of their grid cell */
+  max-width: 1200px; /* Optional: Limit the overall grid width */
+  margin: 0 auto; /* Center the entire grid container */
+}
+
+/* Media query to explicitly ensure 3 columns on larger screens (e.g., desktops) */
+@media (min-width: 992px) { /* Adjust breakpoint as needed for when you want 3 columns to appear */
+  .team-container.responsive-grid {
+    grid-template-columns: repeat(4, 1fr); /* Forces 3 equal columns */
+  }
+}
+
+/* Specific styling for Dr. Isuru Nawinne's card (the first card) */
+.team-container.responsive-grid .team-card:first-child {
+  grid-column: 1 / -1; /* This makes the card span all available columns (e.g., 3 columns) */
+  justify-self: center; /* Centers the card horizontally within its now full-width grid area */
+  max-width: 350px; /* Keeps the supervisor card at a balanced width */
+  margin: 0 auto; /* Ensures centering works well with max-width */
+}
+
+/* General Team Card Styling (Consolidated and using theme variables) */
+.team-card {
+  background: var(--bg-card); /* Using your defined background card color */
+  border: 1px solid var(--border-color); /* Using your defined border color */
+  border-radius: var(--border-radius); /* Using your defined border-radius */
+  backdrop-filter: blur(10px); /* Consistent with other cards */
+  transition: var(--transition); /* Consistent with other cards */
+  overflow: hidden; /* Ensures content stays within rounded corners */
+  padding: 1rem;
+  text-align: center;
+  display: flex; /* Use flexbox for internal content alignment */
+  flex-direction: column;
+  align-items: center; /* Centers content (image, text) horizontally within each card */
+  max-width: 300px; /* Kept your desired max-width for individual cards */
+}
 
       .team-card:hover {
         background: var(--bg-card-hover); /* Consistent hover effect */
@@ -1987,7 +2031,7 @@
               </div>
             </div>
 
-            <div class="team-card card" id="my-hidden-card"></div>
+            <!-- <div class="team-card card" id="my-hidden-card"></div> -->
 
             <div class="team-card card">
               <img
