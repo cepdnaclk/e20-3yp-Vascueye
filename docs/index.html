@@ -815,6 +815,68 @@
         box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
       }
 
+      /* Styling for the sub-section title within Implementation */
+.implementation-section .section-title-sub {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-size: 1.8rem; /* Adjust as needed */
+}
+
+/* Specific Grid for the Image Gallery within the Implementation section */
+.implementation-section .image-gallery.three-col-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Forces 3 equal columns on larger screens */
+  gap: 1.5rem; /* Spacing between the image cards */
+  justify-content: center; /* Centers the grid if items don't fill the width */
+}
+
+/* General image gallery item styling specific to Implementation section */
+.implementation-section .image-gallery-item.card {
+  background: var(--bg-card); /* Consistent with your theme's card background */
+  border: 1px solid var(--border-color); /* Consistent border */
+  border-radius: var(--border-radius); /* Consistent border radius */
+  backdrop-filter: blur(10px); /* Consistent blur effect */
+  transition: var(--transition); /* Smooth transitions for hover effects */
+  overflow: hidden; /* Ensures content stays within rounded corners */
+  padding: 1rem; /* Padding inside the image card */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centers the image within the card */
+}
+
+/* Hover effect for image gallery items within Implementation section */
+.implementation-section .image-gallery-item.card:hover {
+  background: var(--bg-card-hover); /* Changes background on hover */
+  transform: translateY(-3px); /* Lifts the card slightly on hover */
+  box-shadow: var(--shadow-card); /* Applies a shadow on hover */
+}
+
+/* Image styling within the card, specific to Implementation section */
+.implementation-section .image-gallery-item.card img {
+  max-width: 100%; /* Ensures the image scales down to fit within its card container */
+  height: auto; /* Maintains the image's original aspect ratio */
+  /* IMPORTANT: The 'object-fit' property is removed here to prevent any cropping.
+     The image will now scale down to fit its container while
+     maintaining its aspect ratio, ensuring the full image is visible. */
+  display: block; /* Removes any extra space below the image */
+  border-radius: var(--border-radius); /* Applies consistent rounded corners to the images */
+}
+
+/* Media query for responsiveness specifically for this image gallery */
+@media (max-width: 992px) { /* Adjust breakpoint as needed for when it should become more flexible */
+  .implementation-section .image-gallery.three-col-grid {
+    /* Allow images to stack into 2 or 1 columns on smaller screens, while maintaining a minimum size */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 576px) { /* For very small screens (e.g., mobile portrait), make them stack vertically */
+  .implementation-section .image-gallery.three-col-grid {
+    grid-template-columns: 1fr; /* Single column layout */
+  }
+}
+
       /* Responsive Design */
       @media (max-width: 768px) {
         .hero-title {
@@ -1233,49 +1295,67 @@
         </section>
       </section>
 
-      <section id="implementation" class="section-padding section-alt-bg">
-        <div class="container">
-          <h2 class="section-title">Implementation</h2>
+          <section id="implementation" class="section-padding section-alt-bg">
+  <div class="container">
+    <h2 class="section-title">Implementation</h2>
 
-          <div class="implementation-section section-padding">
-            <h3 class="section-title-sub">Sample Images Capturerd Using Device</h3>
-            <div class="image-gallery grid-layout two-col-grid">
-              <div class="image-gallery-item card loading">
-                <img
-                  src="./images/hand-test-IR.jpg"
-                  alt="Hand Test Output IR"
-                  loading="lazy"
-                />
-              </div>
-              <div class="image-gallery-item card loading">
-                <img
-                  src="./images/hand-test-therm.jpg"
-                  alt="Hand Test Output Thermal"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
+    <div class="implementation-section">
+      <h3 class="section-title-sub">Raw Images Captured Using Our Device</h3>
+      <div class="image-gallery grid-layout three-col-grid">
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop1.jpg"
+            alt="Raw Image 1"
+            loading="lazy"
+          />
+        </div>
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop2.jpg"
+            alt="Raw Image 2"
+            loading="lazy"
+          />
+        </div>
+        <div class="image-gallery-item card loading">
+          <img
+            src="./images/crop3.jpg"
+            alt="Raw Image 3"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
 
-          <div class="implementation-section section-padding">
-            <h3 class="section-title-sub">Enhanced Image Sample</h3>
-            <div class="image-gallery grid-layout two-col-grid">
-              <div class="image-gallery-item card loading">
-                <img
-                  src="./images/result_NIR.jpg"
-                  alt="Result NIR"
-                  loading="lazy"
-                />
-              </div>
-              <div class="image-gallery-item card loading">
-                <img
-                  src="./images/result_therm.jpg"
-                  alt="Result Thermal"
-                  loading="lazy"
-                />
-              </div>
-            </div>
+    </div>
+</section>
+
+<section class="nir-vein-method section-padding section-alt-bg">
+        <div class="container nir-content-wrapper">
+          <div class="nir-text content-block">
+            <h2 class="section-title">
+              Enhanced Vein Visualization
+            </h2>
+            <p>
+              To improve the clarity of vein structures captured by the camera, 
+              we implemented several image enhancement techniques using OpenCV. 
+              One of the most effective methods was <strong>CLAHE (Contrast Limited Adaptive Histogram Equalization)</strong>, 
+              which helps enhance local contrast in infrared images without amplifying noise.
+            </p>
+            <p>
+              Additionally, we performed <strong>grayscale conversion</strong>, followed by <strong>contrast stretching</strong> and <strong>Gaussian blurring</strong> 
+              to suppress noise and improve edge definition. These preprocessing steps significantly enhanced the visibility of veins, 
+              especially under uneven lighting conditions.
+            </p>
           </div>
+          <div class="nir-image image-block">
+            <img
+              src="./images/updated_method.png"
+              alt="NIR Vein Imaging Method"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
 
           <div class="implementation-section section-padding">
             <h3 class="section-title-sub">Vein Continuity Scoring Method</h3>
