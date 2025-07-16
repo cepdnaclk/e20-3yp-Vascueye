@@ -1369,7 +1369,7 @@
             alt="Raw Image 1"
             loading="lazy"
           />
-          <figcaption>Sample Hand Test Output 01(Infrared)</figcaption>
+          <figcaption>Sample Hand Test Output 01</figcaption>
         </div>
         <div class="image-gallery-item card loading">
           <img
@@ -1377,7 +1377,7 @@
             alt="Raw Image 2"
             loading="lazy"
           />
-          <figcaption>Sample Wrist Test Output 02(Infrared)</figcaption>
+          <figcaption>Sample Wrist Test Output 02</figcaption>
         </div>
         <div class="image-gallery-item card loading">
           <img
@@ -1385,7 +1385,7 @@
             alt="Raw Image 3"
             loading="lazy"
           />
-          <figcaption>Sample Hand Test Output 03(Infrared)</figcaption>
+          <figcaption>Sample Hand Test Output 03</figcaption>
         </div>
       </div>
     </div>
@@ -1641,7 +1641,7 @@
           </div>
         </div>
 
-        <div class="implementation-section">
+    <div class="implementation-section">
       <h3 class="section-title-sub">System Testing & Validation</h3>
       <div class="image-gallery grid-layout three-col-grid">
         <div class="image-gallery-item card loading">
@@ -1670,6 +1670,50 @@
         </div>
       </div>
     </div>
+
+    <div class="container">
+          <h2 class="section-title"></h2>
+
+          <div class="testing-category card loading">
+  <h3 class="category-title">Vein Continuity Score Testing</h3>
+  <ul class="styled-list">
+    <li>
+      <strong>Informal Validation:</strong>
+      Conducted using NIR images captured via our prototype to evaluate the behavior of the vein continuity scoring algorithm in real conditions.
+    </li>
+    <li>
+      <strong>Visible Vein Areas:</strong>
+      <ul class="nested-list">
+        <li>
+          <strong>Back of the Hand / Forearm:</strong> Scores ranged from <strong>8.1 to 9.3</strong>, indicating strong and consistent vein visibility.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong>Low Visibility Areas:</strong>
+      <ul class="nested-list">
+        <li>
+          <strong>Palm Side Near Wrist:</strong> Scores between <strong>2.5 to 3.2</strong>, reflecting reduced visibility in regions with fewer surface veins.
+        </li>
+        <li>
+          <strong>Back of Upper Arm:</strong> Scores ranged from <strong>1.8 to 2.7</strong>, confirming difficulty in capturing continuous vein paths in such areas.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong>Non-Skin Surfaces:</strong>
+      <ul class="nested-list">
+        <li>
+          <strong>Paper & Plastic Materials:</strong> Scores consistently below <strong>2.0</strong>, confirming that the algorithm avoids false detection on irrelevant surfaces.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong>Conclusion:</strong>
+      Although not clinically validated, these results support the algorithm’s reliability in differentiating between vascular and non-vascular patterns across diverse test scenarios.
+    </li>
+  </ul>
+</div>
 
       </section>
 
